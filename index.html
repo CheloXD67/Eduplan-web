@@ -15,11 +15,12 @@ body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;back
 button,input{font:inherit}
 button{cursor:pointer;border:0}
 .app{min-height:100vh;display:flex}
-.sidebar{width:245px;background:#fff;border-right:1px solid var(--line);padding:24px 16px;position:sticky;top:0;height:100vh}
-.logo{display:flex;align-items:center;gap:10px;font-size:24px;font-weight:800;margin:0 10px 30px}
-.logo-icon{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--primary),var(--primary2));color:white;display:grid;place-items:center}
-.nav button{width:100%;padding:13px 14px;margin:3px 0;border-radius:12px;background:transparent;color:#5d6577;text-align:left}
-.nav button.active,.nav button:hover{background:#eef0ff;color:var(--primary);font-weight:700}
+.sidebar{width:290px;flex:0 0 290px;background:linear-gradient(180deg,#fff 0%,#f8f8ff 100%);border-right:1px solid var(--line);padding:30px 20px 22px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;box-shadow:8px 0 28px rgba(32,39,70,.035)}
+.logo{display:flex;align-items:center;gap:12px;font-size:28px;font-weight:850;margin:0 8px 12px;letter-spacing:-.6px}
+.logo-icon{width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,var(--primary),var(--primary2));color:white;display:grid;place-items:center}
+.nav{margin-top:18px}.nav button{width:100%;padding:16px 16px;margin:6px 0;border-radius:14px;font-size:16px;background:transparent;color:#5d6577;text-align:left}
+.nav button.active,.nav button:hover{background:#eef0ff;color:var(--primary);font-weight:800;box-shadow:inset 3px 0 0 var(--primary)}
+.sidebar-footer{margin-top:auto;padding:18px 16px;background:linear-gradient(145deg,#eef0ff,#f8f7ff);border:1px solid #e3e5ff;border-radius:18px}.sidebar-footer .footer-title{font-weight:800;margin-bottom:7px;color:#454bc5}.sidebar-footer p{font-size:13px;line-height:1.5;color:var(--muted);margin:0 0 12px}.sidebar-stat{display:flex;align-items:center;justify-content:space-between;font-size:13px;font-weight:700;padding-top:10px;border-top:1px solid #dfe2fa}.sidebar-stat strong{font-size:18px;color:var(--primary)}
 .content{flex:1;padding:30px;max-width:1450px;margin:auto}
 .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:25px}
 .greeting h1{margin:0;font-size:30px}.greeting p{margin:5px 0;color:var(--muted)}
@@ -36,7 +37,7 @@ button{cursor:pointer;border:0}
 .calendar-head button{background:#f0f1f8;width:34px;height:34px;border-radius:10px}
 .week{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;text-align:center;font-size:12px;color:var(--muted);margin-bottom:6px}
 .days{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
-.day{min-height:54px;border:1px solid var(--line);border-radius:10px;background:#fff;padding:7px;text-align:left;font-size:13px}
+.day{min-height:54px;border:1px solid var(--line);border-radius:10px;background:#fff;padding:7px;text-align:left;font-size:13px;cursor:pointer;transition:transform .15s,border-color .15s,background .15s}.day:hover{border-color:var(--primary);background:#f7f7ff;transform:translateY(-1px)}.day.selected{outline:2px solid var(--primary);background:#eef0ff}.day:focus-visible{outline:2px solid var(--primary)}
 .day.today{background:#eef0ff;border:2px solid var(--primary);color:var(--primary);font-weight:800}
 .day.task{position:relative}.dot{width:6px;height:6px;border-radius:50%;background:var(--primary);display:inline-block;margin-left:4px}
 .progress{height:12px;background:#eceef5;border-radius:99px;overflow:hidden}.bar{height:100%;width:0%;transition:width .45s ease;background:linear-gradient(90deg,var(--primary),var(--primary2));border-radius:99px}
@@ -48,8 +49,8 @@ button{cursor:pointer;border:0}
 .add{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}.add input{flex:1;min-width:180px;border:1px solid var(--line);border-radius:11px;padding:11px}.add button{background:var(--primary);color:white;border-radius:11px;padding:0 15px}
 .section{display:none}.section.active{display:block}
 .kpi{display:flex;align-items:center;justify-content:space-between}.badge{padding:6px 10px;background:#e9faf3;color:#208b61;border-radius:99px;font-size:12px;font-weight:700}
-@media(max-width:900px){.sidebar{display:none}.content{padding:18px}.grid{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr 1fr}}
-@media(max-width:560px){.stats{grid-template-columns:1fr}.topbar h1{font-size:25px}.card{padding:17px}}
+@media(max-width:900px){.sidebar{width:220px;flex-basis:220px;padding:22px 12px}.logo{font-size:23px}.nav button{padding:13px 10px;font-size:14px}.content{padding:18px}.grid{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr 1fr}}
+@media(max-width:560px){.sidebar{display:none}.stats{grid-template-columns:1fr}.topbar h1{font-size:25px}.card{padding:17px}}
 
 .motivation{font-size:16px;line-height:1.55;margin:12px 0 2px}.motivation-card{background:linear-gradient(135deg,#f7f8ff,#ffffff)}
 .edubot-card{max-width:850px;margin:0 auto}.edubot-head{display:flex;gap:14px;align-items:center}.edubot-head h2{margin:0 0 3px}.bot-avatar{width:54px;height:54px;border-radius:16px;background:#eef0ff;display:grid;place-items:center;font-size:28px}.chat-messages{height:360px;overflow:auto;margin:20px 0;padding:14px;background:#f7f8fc;border-radius:16px;display:flex;flex-direction:column;gap:12px}.chat{max-width:82%;padding:12px 14px;border-radius:14px;display:flex;flex-direction:column;gap:4px;line-height:1.45}.chat.bot{align-self:flex-start;background:white;border:1px solid var(--line)}.chat.user{align-self:flex-end;background:#eef0ff;color:#272a55}.quick-actions{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}.quick-actions button{background:#f0f1f8;border-radius:10px;padding:9px 12px}.chat-input{display:flex;gap:8px}.chat-input input{flex:1;border:1px solid var(--line);border-radius:11px;padding:11px}.chat-input button{background:var(--primary);color:white;border-radius:11px;padding:0 16px}.bot-note{font-size:12px;color:var(--muted);margin-top:10px}
@@ -68,6 +69,11 @@ button{cursor:pointer;border:0}
       <button data-page="progreso">📈 Progreso</button>
       <button data-page="edubot">🤖 EduBot</button>
     </nav>
+    <div class="sidebar-footer">
+      <div class="footer-title">✨ Tu espacio de estudio</div>
+      <p>Pequeños avances cada día construyen grandes metas. Organiza, avanza y celebra lo que logras.</p>
+      <div class="sidebar-stat"><span>Mis tareas activas</span><strong id="sidebarTaskCount">0</strong></div>
+    </div>
   </aside>
 
   <main class="content">
@@ -121,6 +127,12 @@ button{cursor:pointer;border:0}
         <div class="calendar-head"><button onclick="changeMonth(-1)">‹</button><h2 id="monthTitle2">Agosto 2026</h2><button onclick="changeMonth(1)">›</button></div>
         <div class="week"><span>Lunes</span><span>Martes</span><span>Miércoles</span><span>Jueves</span><span>Viernes</span><span>Sábado</span><span>Domingo</span></div>
         <div id="calendar2" class="days"></div>
+        <div id="selectedDayPanel" class="calendar-help" style="display:none">
+          <h3 id="selectedDayTitle" style="margin:0 0 8px;color:var(--text)">Agregar tarea</h3>
+          <p id="selectedDayTasks" style="margin:0 0 12px"></p>
+          <div class="add"><input id="calendarTaskName" placeholder="Ej. Terminar la tarea de Comunicación"><input id="calendarTaskDate" type="date" aria-label="Fecha de la tarea"><button onclick="addTaskFromCalendar()">Guardar tarea ＋</button></div>
+          <small style="display:block;margin-top:8px">La tarea quedará guardada en este navegador y aparecerá en el calendario.</small>
+        </div>
         <div id="calendarSummary" class="calendar-help">📌 Las tareas con fecha de entrega aparecerán dentro del día correspondiente. Agrega una tarea para empezar a llenar tu calendario.</div>
       </div>
       <div class="mini-grid">
@@ -193,6 +205,7 @@ button{cursor:pointer;border:0}
 <script>
 let tasks=JSON.parse(localStorage.getItem('eduplan_tasks') || '[]');
 let current=new Date(); current.setDate(1);
+let selectedCalendarDate='';
 
 function normalizeTask(t){
   if(typeof t.progress!=='number') t.progress=t.done?100:0;
@@ -221,6 +234,7 @@ function renderTasks(){
   document.getElementById('taskPreview').innerHTML=tasks.length ? tasks.slice(0,3).map((t,i)=>taskCard(t,i)).join('') : '<div class="empty-panel"><div class="big">🌱</div><h3>Tu espacio empieza aquí</h3><p>Cuando agregues tareas, aquí verás un resumen rápido de lo que tienes entre manos.</p><button class="secondary-btn" onclick="showPage(&quot;tareas&quot;)">Agregar una tarea</button></div>';
   const total=tasks.length, completed=tasks.filter(t=>t.progress===100).length, pending=total-completed;
   const percent=total?Math.round(tasks.reduce((sum,t)=>sum+t.progress,0)/total):0;
+  const sidebarCount=document.getElementById('sidebarTaskCount'); if(sidebarCount)sidebarCount.textContent=pending;
   document.getElementById('pending').textContent=pending; document.getElementById('pending2').textContent=pending; document.getElementById('completed').textContent=completed; document.getElementById('progressKpi').textContent=percent+'%';
   // La pantalla inicial empieza en cero y se actualiza con las tareas reales del navegador.
   // Las horas no se inventan: quedan en 0 h hasta que exista una función para registrar tiempo de estudio.
@@ -325,11 +339,16 @@ function drawCalendar(id){
     const key=dateKey(y,m,d);
     const dayTasks=tasks.filter(t=>t.dueDate===key);
     const day=document.createElement('div'); day.className='day';
+    day.setAttribute('role','button'); day.setAttribute('tabindex','0');
+    day.setAttribute('aria-label',`Agregar tarea para el ${d}/${String(m+1).padStart(2,'0')}/${y}`);
     const now=new Date();
     if(y===now.getFullYear()&&m===now.getMonth()&&d===now.getDate())day.classList.add('today');
     if(dayTasks.length)day.classList.add('task');
-    const labels=dayTasks.map(t=>`<div style="margin-top:5px;font-size:11px;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${escapeHtml(t.text)}">${escapeHtml(t.text)}</div>`).join('');
-    day.innerHTML=`<strong>${d}</strong>${dayTasks.length?'<span class="dot"></span>':''}${labels}`;
+    if(selectedCalendarDate===key)day.classList.add('selected');
+    const labels=dayTasks.slice(0,2).map(t=>`<div style="margin-top:5px;font-size:11px;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${escapeHtml(t.text)}">${escapeHtml(t.text)}</div>`).join('');
+    day.innerHTML=`<strong>${d}</strong>${dayTasks.length?'<span class="dot"></span>':''}${labels}${dayTasks.length>2?`<small>+${dayTasks.length-2}</small>`:''}`;
+    day.addEventListener('click',()=>selectCalendarDate(key,id));
+    day.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();selectCalendarDate(key,id);}});
     el.appendChild(day);
   }
   document.getElementById('monthTitle').textContent=`${months[m]} ${y}`;
@@ -337,6 +356,36 @@ function drawCalendar(id){
   const summary=document.getElementById('calendarSummary'); if(summary){const monthTasks=tasks.filter(t=>t.dueDate&&t.dueDate.startsWith(`${y}-${String(m+1).padStart(2,'0')}`));summary.textContent=monthTasks.length?`📌 Este mes tienes ${monthTasks.length} tarea(s) con fecha de entrega. Revisa los días marcados para verlas. La más próxima es: ${monthTasks.slice().sort((a,b)=>a.dueDate.localeCompare(b.dueDate))[0].text} (${formatDate(monthTasks.slice().sort((a,b)=>a.dueDate.localeCompare(b.dueDate))[0].dueDate)}).`:'📌 No hay tareas con fecha de entrega en este mes. Agrega una tarea con fecha y aparecerá en el día correspondiente.';}
 }
 function escapeHtml(str){return String(str).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
+function selectCalendarDate(key,sourceId){
+  selectedCalendarDate=key;
+  const [y,m,d]=key.split('-');
+  const panel=document.getElementById('selectedDayPanel');
+  const dateInput=document.getElementById('calendarTaskDate');
+  document.getElementById('selectedDayTitle').textContent=`📅 Nueva tarea para el ${d}/${m}/${y}`;
+  dateInput.value=key;
+  const dayTasks=tasks.filter(t=>t.dueDate===key);
+  document.getElementById('selectedDayTasks').textContent=dayTasks.length?`Ya tienes ${dayTasks.length} tarea(s) ese día: ${dayTasks.map(t=>t.text).join(', ')}.`:'Todavía no tienes tareas para este día. Escribe una abajo para añadirla.';
+  panel.style.display='block';
+  drawCalendar('calendar'); drawCalendar('calendar2');
+  if(sourceId==='calendar') { showPage('calendario'); }
+  panel.scrollIntoView({behavior:'smooth',block:'nearest'});
+  document.getElementById('calendarTaskName').focus({preventScroll:true});
+}
+function addTaskFromCalendar(){
+  const input=document.getElementById('calendarTaskName');
+  const dateInput=document.getElementById('calendarTaskDate');
+  const text=input.value.trim(), dueDate=dateInput.value;
+  if(!text){input.focus();return;}
+  if(!dueDate){dateInput.focus();return;}
+  tasks.push({text,done:false,progress:0,dueDate});
+  selectedCalendarDate=dueDate;
+  input.value='';
+  saveTasks(); renderTasks(); drawCalendar('calendar'); drawCalendar('calendar2');
+  const [y,m,d]=dueDate.split('-');
+  document.getElementById('selectedDayTitle').textContent=`✅ Tarea agregada para el ${d}/${m}/${y}`;
+  const dayTasks=tasks.filter(t=>t.dueDate===dueDate);
+  document.getElementById('selectedDayTasks').textContent=`Ahora tienes ${dayTasks.length} tarea(s) ese día: ${dayTasks.map(t=>t.text).join(', ')}.`;
+}
 function changeMonth(n){current.setMonth(current.getMonth()+n);drawCalendar('calendar');drawCalendar('calendar2')}
 renderTasks(); drawCalendar('calendar'); drawCalendar('calendar2');
 </script>
