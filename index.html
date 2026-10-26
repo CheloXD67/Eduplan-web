@@ -91,6 +91,20 @@ button{cursor:pointer;border:0}
 @keyframes taskCelebrate{0%{transform:scale(.985)}65%{transform:scale(1.012)}100%{transform:scale(1)}}
 @media(prefers-reduced-motion:reduce){.task-row,.task-actions label,.task-actions input[type="checkbox"]{transition:none;animation:none}}
 
+
+/* Reproductor flotante de EduPlan */
+#eduMiniMusic{position:fixed;right:22px;bottom:22px;width:292px;z-index:9999;background:linear-gradient(145deg,#29205e,#6252bd);color:#fff;border:1px solid #a99cff;border-radius:18px;padding:13px;box-shadow:0 16px 45px #21164c55;backdrop-filter:blur(14px);font-family:inherit;transition:transform .22s,opacity .22s}
+#eduMiniMusic.dragging{transition:none;opacity:.94;cursor:grabbing}
+#eduMiniMusic .mini-top{display:flex;align-items:center;gap:10px;margin-bottom:10px;cursor:grab;touch-action:none}
+#eduMiniMusic .mini-cover{width:48px;height:48px;flex:0 0 48px;border-radius:11px;background:#47358c url('https://img.youtube.com/vi/UGDQVZ4caR0/hqdefault.jpg') center/cover}
+#eduMiniMusic .mini-meta{min-width:0;flex:1}.mini-meta strong{display:block;font-size:13px}.mini-meta small{display:block;opacity:.78;font-size:11px;margin-top:3px}
+#eduMiniMusic button{border:0;color:inherit;cursor:pointer}#eduMiniMusic .mini-icon{background:transparent;font-size:19px;padding:7px;border-radius:9px}#eduMiniMusic .mini-icon:hover{background:#ffffff20}#eduMiniMusic .mini-controls{display:flex;justify-content:center;align-items:center;gap:18px}#eduMiniMusic .mini-play{width:42px;height:42px;border-radius:50%;background:#fff!important;color:#4e3db1!important;font-size:18px!important;font-weight:800}
+#eduMiniMusic .mini-hint{font-size:10px;opacity:.7;text-align:center;margin-top:7px}#eduMiniMusic.minimized{width:172px;padding:9px}#eduMiniMusic.minimized .mini-cover,#eduMiniMusic.minimized .mini-controls,#eduMiniMusic.minimized .mini-hint{display:none}#eduMiniMusic.minimized .mini-top{margin:0}#eduMiniMusic.minimized .mini-meta small{display:none}
+#eduTakanakaEgg{display:none;margin-top:14px;min-height:190px;border-radius:16px;overflow:hidden;position:relative;background:linear-gradient(0deg,#171033dc,#17103330),url('https://img.youtube.com/vi/UGDQVZ4caR0/maxresdefault.jpg') center/cover;color:white;padding:20px;box-sizing:border-box;align-items:end;box-shadow:inset 0 0 0 1px #ffffff45;cursor:pointer}
+#eduTakanakaEgg.show{display:flex;animation:eggReveal .55s ease-out both}#eduTakanakaEgg .egg-copy{font-size:18px;font-weight:750;line-height:1.4;text-shadow:0 2px 10px #10082b}#eduTakanakaEgg small{display:block;font-size:11px;opacity:.85;margin-top:8px;font-weight:500}
+@keyframes eggReveal{from{opacity:0;transform:translateY(8px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+@media(max-width:600px){#eduMiniMusic{right:10px;bottom:10px;width:250px}#eduMiniMusic.minimized{width:150px}}
+
 </style>
 </head>
 <body>
@@ -162,6 +176,8 @@ button{cursor:pointer;border:0}
           <div class="card motivation-card" style="margin-top:18px">
             <div class="kpi"><h3>💬 Mensaje del día</h3><span class="badge">EduPlan</span></div>
             <p id="motivationMessage" class="motivation">🌱 Cada tarea que completas es un paso más hacia tu meta. ¡Tú puedes!</p>
+            <div id="eduTakanakaEgg" role="button" tabindex="0" aria-label="Easter egg musical"><div class="egg-copy">“Un pequeño paso hoy, una gran aventura mañana.”<small>🎸 Easter egg desbloqueado · Masayoshi Takanaka — OH! TENGO SUERTE</small></div></div>
+            <p id="eduEggHint" style="font-size:11px;color:var(--muted,#777);margin-top:8px">Psst… toca esta frase 5 veces 👀</p>
           </div>
         </div>
       </div>
@@ -238,7 +254,7 @@ button{cursor:pointer;border:0}
         <div class="card">
           <div class="kpi"><h3>♫ Música para estudiar</h3><span class="badge">Reproductor integrado</span></div>
           <p class="muted">Reproduce música aquí mismo, sin salir de EduPlan. Pulsa ▶ en el reproductor para comenzar.</p>
-          <div class="music-player-wrap"><iframe id="studyMusicPlayer" width="100%" height="220" src="https://www.youtube.com/embed/rFZHOHl-L8A?rel=0" title="Música para estudiar en EduPlan" style="border:0;border-radius:14px;background:#111" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe><p style="margin:8px 0 0;font-size:13px;text-align:center"><a href="https://www.youtube.com/watch?v=rFZHOHl-L8A" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:underline">¿No se reproduce? Abrir la música en YouTube</a></p></div>
+          <div class="music-player-wrap"><iframe id="studyMusicPlayer" width="100%" height="220" src="https://www.youtube.com/embed/rFZHOHl-L8A?rel=0&enablejsapi=1" title="Música para estudiar en EduPlan" style="border:0;border-radius:14px;background:#111" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe><p style="margin:8px 0 0;font-size:13px;text-align:center"><a href="https://www.youtube.com/watch?v=rFZHOHl-L8A" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:underline">¿No se reproduce? Abrir la música en YouTube</a></p></div>
           <div class="music-options">
             <button class="music-option" onclick="setStudyMusic('rFZHOHl-L8A','Música elegida por ti')"><span>♫</span><div><strong>Música elegida por ti</strong><small>Ritmo suave para concentrarte</small></div><span>▶</span></button>
             <button class="music-option" onclick="openStudyMusic('rain sounds for studying 1 hour')"><span>☂</span><div><strong>Lluvia y naturaleza</strong><small>Buscar más sonidos en YouTube</small></div><span>↗</span></button>
@@ -476,7 +492,7 @@ function setBreakMode(){pauseTimer();timerIsBreak=true;timerSeconds=5*60;timerIn
 function toggleTimer(){if(timerInterval){pauseTimer();return;}document.getElementById('timerStartBtn').textContent='⏸ Pausar';document.getElementById('timerStatus').textContent=timerIsBreak?'Descanso en curso…':'¡Enfócate! El tiempo de estudio se registrará al terminar.';timerInterval=setInterval(()=>{timerSeconds--;paintTimer();if(timerSeconds<=0){pauseTimer();playPomodoroAlarm();if(!timerIsBreak){const now=new Date();studySessions.push({date:now.toISOString().slice(0,10),minutes:Math.round(timerInitial/60),finishedAt:now.toISOString()});saveStudySessions();document.getElementById('timerStatus').textContent=randomEduPlanPhrase()+' 🎉 ¡Sesión Pomodoro completada! Ganaste 10 XP. ¡Buen trabajo!';}else document.getElementById('timerStatus').textContent='🔔 '+randomEduPlanPhrase()+' Tu descanso terminó; cuando quieras, empieza otra sesión.';timerIsBreak=false;timerSeconds=timerInitial=25*60;document.getElementById('timerModeLabel').textContent='Enfoque';document.getElementById('timerStartBtn').textContent='▶ Iniciar';paintTimer();updateStudyDashboard();}},1000);}
 function pauseTimer(){if(timerInterval){clearInterval(timerInterval);timerInterval=null;}const b=document.getElementById('timerStartBtn');if(b)b.textContent='▶ Continuar';}
 function resetTimer(){pauseTimer();timerSeconds=timerInitial;paintTimer();document.getElementById('timerStatus').textContent='Temporizador reiniciado.';}
-function setStudyMusic(videoId,label){const player=document.getElementById('studyMusicPlayer');if(player){player.src='https://www.youtube.com/embed/'+videoId+'?rel=0';player.title=label+' para estudiar en EduPlan';}}
+function setStudyMusic(videoId,label){const player=document.getElementById('studyMusicPlayer');if(player){player.src='https://www.youtube.com/embed/'+videoId+'?rel=0&enablejsapi=1';player.title=label+' para estudiar en EduPlan';}}
 function openStudyMusic(query){const url='https://www.youtube.com/results?search_query='+encodeURIComponent(query);const tab=window.open(url,'_blank');if(!tab){const status=document.getElementById('timerStatus');if(status)status.textContent='Tu navegador bloqueó la pestaña. Permite ventanas emergentes para EduPlan o abre YouTube manualmente.';}}
 function getStudyStats(){const today=new Date();const key=d=>d.toISOString().slice(0,10);const todayKey=key(today);const weekStart=new Date(today);weekStart.setHours(0,0,0,0);weekStart.setDate(today.getDate()-((today.getDay()+6)%7));const week=[];for(let i=0;i<7;i++){const d=new Date(weekStart);d.setDate(weekStart.getDate()+i);const k=key(d);week.push({key:k,label:['L','M','X','J','V','S','D'][i],minutes:studySessions.filter(x=>x.date===k).reduce((a,x)=>a+(Number(x.minutes)||0),0)});}const todaySessions=studySessions.filter(x=>x.date===todayKey).length;let streak=0;const dates=new Set(studySessions.map(x=>x.date));let d=new Date(today);if(!dates.has(key(d)))d.setDate(d.getDate()-1);while(dates.has(key(d))&&streak<366){streak++;d.setDate(d.getDate()-1);}return {week,todaySessions,streak,totalMinutes:studySessions.reduce((a,x)=>a+(Number(x.minutes)||0),0)};}
 const WELCOME_XP_KEY='eduplan_welcome_xp_claimed_v1';
@@ -564,5 +580,30 @@ function changeMonth(n){current.setMonth(current.getMonth()+n);drawCalendar('cal
 renderTasks(); drawCalendar('calendar'); drawCalendar('calendar2');
 updateStudyDashboard();
 </script>
+
+<div id="eduMiniMusic" aria-label="Reproductor flotante de EduPlan">
+  <div class="mini-top" id="eduMiniDragHandle" title="Arrastra para mover el reproductor">
+    <div class="mini-cover" aria-hidden="true"></div><div class="mini-meta"><strong>EduPlan Music 🎧</strong><small id="eduMiniTrack">Música para estudiar</small></div>
+    <button class="mini-icon" id="eduMiniMin" aria-label="Minimizar reproductor" title="Minimizar">−</button>
+    <button class="mini-icon" id="eduMiniClose" aria-label="Ocultar reproductor" title="Ocultar">×</button>
+  </div>
+  <div class="mini-controls"><button class="mini-icon" id="eduMiniPrev" aria-label="Canción anterior" title="Anterior">⏮</button><button class="mini-play" id="eduMiniPlay" aria-label="Pausar o reproducir" title="Pausar/Reproducir">▶</button><button class="mini-icon" id="eduMiniNext" aria-label="Siguiente canción" title="Siguiente">⏭</button></div>
+  <div class="mini-hint">Arrastra desde la parte superior · controles de YouTube</div>
+</div>
+<script>
+(function(){
+ const frame=document.getElementById('studyMusicPlayer'); const mini=document.getElementById('eduMiniMusic'); if(!frame||!mini)return;
+ const tracks=[{id:'rFZHOHl-L8A',name:'Música elegida por ti'},{id:'UGDQVZ4caR0',name:'OH! TENGO SUERTE · Masayoshi Takanaka'}];let current=0,playing=false,minimized=false,eggClicks=0;
+ function sendYT(func,args=[]){try{frame.contentWindow.postMessage(JSON.stringify({event:'command',func,args}), '*')}catch(e){}}
+ function loadTrack(i){current=(i+tracks.length)%tracks.length;const t=tracks[current];frame.src='https://www.youtube.com/embed/'+t.id+'?rel=0&enablejsapi=1&autoplay=1';document.getElementById('eduMiniTrack').textContent=t.name;document.getElementById('eduMiniPlay').textContent='Ⅱ';playing=true;}
+ document.getElementById('eduMiniPrev').addEventListener('click',()=>loadTrack(current-1));document.getElementById('eduMiniNext').addEventListener('click',()=>loadTrack(current+1));
+ document.getElementById('eduMiniPlay').addEventListener('click',()=>{if(!playing){sendYT('playVideo');document.getElementById('eduMiniPlay').textContent='Ⅱ';playing=true}else{sendYT('pauseVideo');document.getElementById('eduMiniPlay').textContent='▶';playing=false}});
+ document.getElementById('eduMiniMin').addEventListener('click',()=>{minimized=!minimized;mini.classList.toggle('minimized',minimized);document.getElementById('eduMiniMin').textContent=minimized?'+':'−'});
+ document.getElementById('eduMiniClose').addEventListener('click',()=>{mini.style.display='none';const b=document.createElement('button');b.textContent='🎧 Música';b.title='Mostrar reproductor';b.style='position:fixed;right:18px;bottom:18px;z-index:9998;border:0;border-radius:999px;padding:12px 16px;background:#6252bd;color:white;box-shadow:0 8px 25px #21164c55;cursor:pointer';b.id='eduMiniRestore';b.onclick=()=>{mini.style.display='block';b.remove()};document.body.appendChild(b)});
+ const handle=document.getElementById('eduMiniDragHandle');let drag=null;handle.addEventListener('pointerdown',e=>{if(e.target.closest('button'))return;const r=mini.getBoundingClientRect();drag={x:e.clientX-r.left,y:e.clientY-r.top};mini.classList.add('dragging');handle.setPointerCapture?.(e.pointerId)});handle.addEventListener('pointermove',e=>{if(!drag)return;mini.style.left=Math.max(0,e.clientX-drag.x)+'px';mini.style.top=Math.max(0,e.clientY-drag.y)+'px';mini.style.right='auto';mini.style.bottom='auto'});function stop(){drag=null;mini.classList.remove('dragging')}handle.addEventListener('pointerup',stop);handle.addEventListener('pointercancel',stop);
+ const quote=document.getElementById('motivationMessage'),egg=document.getElementById('eduTakanakaEgg'),hint=document.getElementById('eduEggHint');if(quote&&egg){function tap(){eggClicks++;if(eggClicks>=5){egg.classList.add('show');if(hint)hint.textContent='¡Encontraste el easter egg! 🎸 OH! TENGO SUERTE';}}quote.style.cursor='pointer';quote.title='Pista: toca 5 veces';quote.addEventListener('click',tap);quote.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){tap()}});egg.addEventListener('click',()=>{window.open('https://www.youtube.com/watch?v=UGDQVZ4caR0','_blank','noopener,noreferrer')});egg.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){window.open('https://www.youtube.com/watch?v=UGDQVZ4caR0','_blank','noopener,noreferrer')}})}
+})();
+</script>
+
 </body>
 </html>
