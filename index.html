@@ -310,7 +310,23 @@ function addChat(role,text){
   div.innerHTML='<strong>'+(role==='user'?'Tú':'EduBot')+'</strong><span></span>';
   div.querySelector('span').textContent=text; box.appendChild(div); box.scrollTop=box.scrollHeight;
 }
-function askEduBot(text){addChat('user',text);setTimeout(()=>addChat('bot',botReply(text)),180);}
+// Pega aquí la URL de tu Cloudflare Worker cuando lo hayas desplegado. Nunca pongas aquí la API key.
+const EDUBOT_API_URL = '';
+async function askEduBot(text){
+  addChat('user',text);
+  if(!EDUBOT_API_URL){setTimeout(()=>addChat('bot',botReply(text)+'\n\nCuando conectemos el backend gratuito, podré buscar fuentes web y darte pistas con enlaces reales.'),180);return;}
+  const loading=addChat('bot','Estoy buscando fuentes y preparando pistas…');
+  try{
+    const response=await fetch(EDUBOT_API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question:text})});
+    const data=await response.json();
+    const span=loading.querySelector('span');
+    if(!response.ok||!data.answer) span.textContent=data.error||'No pude responder ahora. Intenta de nuevo.';
+    else {
+      span.textContent=data.answer+(data.sources?.length?'\n\nFuentes encontradas:\n'+data.sources.map(s=>s.title+' — '+s.url).join('\n'):'');
+    }
+  }catch(e){loading.querySelector('span').textContent='No pude conectar con EduBot. Comprueba que el backend esté desplegado y que la URL sea correcta.';}
+  const box=document.getElementById('chatMessages');box.scrollTop=box.scrollHeight;
+}
 function sendBotMessage(){const input=document.getElementById('botInput');const text=input.value.trim();if(!text)return;input.value='';askEduBot(text);}
 document.addEventListener('keydown',e=>{if(e.key==='Enter'&&document.activeElement?.id==='botInput')sendBotMessage(); if(e.key==='Enter'&&document.activeElement?.id==='newTask')addTask();});
 
