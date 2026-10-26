@@ -53,6 +53,8 @@ button{cursor:pointer;border:0}
 
 .motivation{font-size:16px;line-height:1.55;margin:12px 0 2px}.motivation-card{background:linear-gradient(135deg,#f7f8ff,#ffffff)}
 .edubot-card{max-width:850px;margin:0 auto}.edubot-head{display:flex;gap:14px;align-items:center}.edubot-head h2{margin:0 0 3px}.bot-avatar{width:54px;height:54px;border-radius:16px;background:#eef0ff;display:grid;place-items:center;font-size:28px}.chat-messages{height:360px;overflow:auto;margin:20px 0;padding:14px;background:#f7f8fc;border-radius:16px;display:flex;flex-direction:column;gap:12px}.chat{max-width:82%;padding:12px 14px;border-radius:14px;display:flex;flex-direction:column;gap:4px;line-height:1.45}.chat.bot{align-self:flex-start;background:white;border:1px solid var(--line)}.chat.user{align-self:flex-end;background:#eef0ff;color:#272a55}.quick-actions{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}.quick-actions button{background:#f0f1f8;border-radius:10px;padding:9px 12px}.chat-input{display:flex;gap:8px}.chat-input input{flex:1;border:1px solid var(--line);border-radius:11px;padding:11px}.chat-input button{background:var(--primary);color:white;border-radius:11px;padding:0 16px}.bot-note{font-size:12px;color:var(--muted);margin-top:10px}
+.page-intro{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:18px;flex-wrap:wrap}.page-intro h2{margin:0 0 6px}.page-intro p{margin:0;line-height:1.5}.mini-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:18px}.mini-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:17px}.mini-card .emoji{font-size:24px;margin-bottom:8px}.mini-card h3{font-size:15px;margin:0 0 7px}.mini-card p{font-size:13px;line-height:1.5;margin:0;color:var(--muted)}.empty-panel{padding:22px;border:1px dashed #cdd1e3;border-radius:16px;background:#fafbff;text-align:center;margin:12px 0}.empty-panel .big{font-size:32px;margin-bottom:8px}.empty-panel h3{margin:0 0 7px}.empty-panel p{margin:0 auto 14px;max-width:520px;color:var(--muted);line-height:1.5}.secondary-btn{background:#eef0ff;color:var(--primary);padding:10px 13px;border-radius:10px;font-weight:700}.calendar-help{margin-top:16px;padding:14px 16px;background:#f7f8ff;border-radius:13px;color:var(--muted);font-size:13px;line-height:1.5}.bot-suggestions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:12px 0}.bot-suggestions button{text-align:left;background:#f7f8ff;border:1px solid var(--line);padding:11px;border-radius:12px;color:var(--text)}.bot-suggestions button:hover{border-color:var(--primary);background:#eef0ff}.chat-messages{height:400px}.chat.bot span{white-space:pre-line}
+@media(max-width:700px){.mini-grid{grid-template-columns:1fr}.bot-suggestions{grid-template-columns:1fr}.chat{max-width:95%}}
 </style>
 </head>
 <body>
@@ -114,18 +116,31 @@ button{cursor:pointer;border:0}
     </section>
 
     <section id="calendario" class="section">
+      <div class="page-intro"><div><h2>📅 Tu calendario</h2><p class="muted">Visualiza las fechas de entrega y organiza tu semana con anticipación.</p></div><button class="secondary-btn" onclick="showPage('tareas')">＋ Agregar tarea</button></div>
       <div class="card">
         <div class="calendar-head"><button onclick="changeMonth(-1)">‹</button><h2 id="monthTitle2">Agosto 2026</h2><button onclick="changeMonth(1)">›</button></div>
         <div class="week"><span>Lunes</span><span>Martes</span><span>Miércoles</span><span>Jueves</span><span>Viernes</span><span>Sábado</span><span>Domingo</span></div>
         <div id="calendar2" class="days"></div>
+        <div id="calendarSummary" class="calendar-help">📌 Las tareas con fecha de entrega aparecerán dentro del día correspondiente. Agrega una tarea para empezar a llenar tu calendario.</div>
+      </div>
+      <div class="mini-grid">
+        <div class="mini-card"><div class="emoji">🗓️</div><h3>Planifica con tiempo</h3><p>Registra la fecha de entrega cuando agregues una tarea para evitar dejar todo al último minuto.</p></div>
+        <div class="mini-card"><div class="emoji">🎯</div><h3>Prioriza lo urgente</h3><p>Empieza por las tareas que vencen primero y divide las más grandes en pasos pequeños.</p></div>
+        <div class="mini-card"><div class="emoji">✨</div><h3>Hazlo sostenible</h3><p>Deja espacios para comer, descansar y repasar. Un horario realista es más fácil de mantener.</p></div>
       </div>
     </section>
 
     <section id="tareas" class="section">
+      <div class="page-intro"><div><h2>☑️ Organiza tus tareas</h2><p class="muted">Añade entregas, actualiza cuánto avanzaste y marca tus logros.</p></div><span class="badge">Un paso a la vez</span></div>
       <div class="card">
         <h2>Mis tareas</h2><p class="muted">Marca lo que ya terminaste y agrega nuevas tareas. Tus tareas se guardan solo en este navegador.</p>
         <div id="allTasks" class="tasks"></div>
-        <div class="add"><input id="newTask" placeholder="Ej. Estudiar para el examen de inglés"><input id="newTaskDate" type="date" title="Fecha de entrega"><button onclick="addTask()">Agregar</button></div>
+        <div class="add"><input id="newTask" placeholder="Ej. Estudiar para el examen de inglés"><input id="newTaskDate" type="date" title="Fecha de entrega"><button onclick="addTask()">Agregar tarea ＋</button></div>
+      </div>
+      <div class="mini-grid">
+        <div class="mini-card"><div class="emoji">🧩</div><h3>Divide una tarea grande</h3><p>En vez de “estudiar biología”, prueba con “leer el tema”, “hacer un resumen” y “resolver 10 preguntas”.</p></div>
+        <div class="mini-card"><div class="emoji">⏳</div><h3>Prueba 25 + 5</h3><p>Concéntrate durante 25 minutos y descansa 5. Repite el ciclo si te funciona.</p></div>
+        <div class="mini-card"><div class="emoji">📈</div><h3>Actualiza tu avance</h3><p>Mueve la barra de cada tarea para registrar tu avance real, incluso si todavía no la terminas.</p></div>
       </div>
     </section>
 
@@ -144,24 +159,32 @@ button{cursor:pointer;border:0}
           <div class="stat"><span class="muted">Progreso</span><strong id="progressKpi">0%</strong></div>
         </div>
       </div>
+      <div class="mini-grid">
+        <div class="mini-card"><div class="emoji">🌱</div><h3>Constancia</h3><p>Un avance pequeño y frecuente suele ser más útil que intentar hacerlo todo de golpe.</p></div>
+        <div class="mini-card"><div class="emoji">🔍</div><h3>Revisa lo pendiente</h3><p>Si una tarea se queda estancada, identifica qué parte te falta entender y pide ayuda concreta.</p></div>
+        <div class="mini-card"><div class="emoji">🏆</div><h3>Celebra los avances</h3><p>Completar una parte también cuenta. Actualiza el porcentaje para ver cómo progresas.</p></div>
+      </div>
     </section>
 
     <section id="edubot" class="section">
       <div class="card edubot-card">
         <div class="edubot-head">
           <div class="bot-avatar">🤖</div>
-          <div><h2>EduBot</h2><p class="muted">Tu asistente de estudio dentro de EduPlan.</p></div>
+          <div><h2>EduBot</h2><p class="muted">Tu compañero de estudio: organiza, explica y te ayuda a encontrar el siguiente paso.</p></div>
         </div>
         <div id="chatMessages" class="chat-messages">
-          <div class="chat bot"><strong>EduBot</strong><span>¡Hola! 👋 Puedo ayudarte a organizar tus tareas, revisar tu progreso y darte ideas para estudiar.</span></div>
+          <div class="chat bot"><strong>EduBot</strong><span>¡Holaaa! 👋 Soy EduBot, tu compañero de estudio. Puedo revisar tus tareas, ayudarte a planificar el día, explicarte técnicas de estudio y darte una mano con dudas escolares. Cuéntame qué necesitas y lo vemos paso a paso. 💜</span></div>
         </div>
-        <div class="quick-actions">
-          <button onclick="askEduBot('¿Qué debería hacer hoy?')">📚 ¿Qué hago hoy?</button>
-          <button onclick="askEduBot('¿Cómo voy con mis tareas?')">📊 ¿Cómo voy?</button>
-          <button onclick="askEduBot('Dame una motivación')">💪 Motívame</button>
+        <div class="bot-suggestions">
+          <button onclick="askEduBot('Ayúdame a organizar mis tareas para hoy')">📚 Organiza mi día</button>
+          <button onclick="askEduBot('Revisa mi progreso y dame un consejo')">📊 Revisa mi progreso</button>
+          <button onclick="askEduBot('Explícame la técnica Pomodoro y cómo usarla')">⏳ Técnicas para estudiar</button>
+          <button onclick="askEduBot('Me cuesta concentrarme, ¿qué puedo hacer?')">🧠 Me cuesta concentrarme</button>
+          <button onclick="askEduBot('Explícame cómo estudiar un tema difícil')">💡 Estudiar un tema difícil</button>
+          <button onclick="askEduBot('Dame una motivación')">💜 Necesito motivación</button>
         </div>
         <div class="chat-input"><input id="botInput" placeholder="Escribe algo como: ¿qué me falta hacer?"><button onclick="sendBotMessage()">Enviar</button></div>
-        <p class="bot-note">💡 EduBot está conectado a los datos de tus tareas guardados en este navegador.</p>
+        <p class="bot-note">💡 EduBot puede usar tus tareas guardadas en este navegador y ofrecer consejos de estudio. Esta versión funciona sin conexión a una IA externa; para conversar de forma tan abierta como ChatGPT necesitaría una API de IA conectada de manera segura a un servidor.</p>
       </div>
     </section>
   </main>
@@ -169,7 +192,7 @@ button{cursor:pointer;border:0}
 
 <script>
 let tasks=JSON.parse(localStorage.getItem('eduplan_tasks') || '[]');
-let current=new Date(2026,7,1);
+let current=new Date(); current.setDate(1);
 
 function normalizeTask(t){
   if(typeof t.progress!=='number') t.progress=t.done?100:0;
@@ -194,8 +217,8 @@ function taskCard(t,i){
 }
 function renderTasks(){
   tasks=tasks.map(normalizeTask);
-  document.getElementById('allTasks').innerHTML=tasks.length ? tasks.map(taskCard).join('') : '<p class="muted">Tu lista está vacía. Agrega una tarea para empezar a organizarte.</p>';
-  document.getElementById('taskPreview').innerHTML=tasks.length ? tasks.slice(0,3).map((t,i)=>taskCard(t,i)).join('') : '<p class="muted">No tienes tareas pendientes. Agrega una desde la sección “Tareas”.</p>';
+  document.getElementById('allTasks').innerHTML=tasks.length ? tasks.map(taskCard).join('') : '<div class="empty-panel"><div class="big">📝</div><h3>Tu lista está lista para empezar</h3><p>Aún no has agregado tareas. Escribe una actividad y, si tiene fecha de entrega, selecciónala para que aparezca en el calendario.</p><button class="secondary-btn" onclick="document.getElementById(&quot;newTask&quot;).focus()">＋ Crear mi primera tarea</button></div>';
+  document.getElementById('taskPreview').innerHTML=tasks.length ? tasks.slice(0,3).map((t,i)=>taskCard(t,i)).join('') : '<div class="empty-panel"><div class="big">🌱</div><h3>Tu espacio empieza aquí</h3><p>Cuando agregues tareas, aquí verás un resumen rápido de lo que tienes entre manos.</p><button class="secondary-btn" onclick="showPage(&quot;tareas&quot;)">Agregar una tarea</button></div>';
   const total=tasks.length, completed=tasks.filter(t=>t.progress===100).length, pending=total-completed;
   const percent=total?Math.round(tasks.reduce((sum,t)=>sum+t.progress,0)/total):0;
   document.getElementById('pending').textContent=pending; document.getElementById('pending2').textContent=pending; document.getElementById('completed').textContent=completed; document.getElementById('progressKpi').textContent=percent+'%';
@@ -222,18 +245,36 @@ function updateMotivation(percent,pending,total){
   else el.textContent=quotes[Math.floor(Date.now()/86400000)%quotes.length]+' Empieza con una tarea pequeña.';
 }
 function botReply(message){
-  const q=message.toLowerCase();
-  const total=tasks.length, completed=tasks.filter(t=>(t.progress||0)===100).length, pending=tasks.filter(t=>(t.progress||0)<100);
-  const percent=total?Math.round(tasks.reduce((sum,t)=>sum+(t.progress||0),0)/total):0;
-  if(q.includes('qué')&&q.includes('hoy') || q.includes('que')&&q.includes('hoy')){
-    if(!pending.length)return '🎉 No tienes tareas pendientes. ¡Aprovecha para repasar algo que quieras mejorar o descansar un poco!';
-    return '📚 Te recomiendo empezar por: “'+pending[0].text+'”. Después puedes continuar con '+(pending[1]? '“'+pending[1].text+'”.':'otra tarea que tengas pendiente.')+' Tú decides el ritmo.';
+  const raw=String(message||'').trim();
+  const q=raw.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  const total=tasks.length;
+  const completed=tasks.filter(t=>Number(t.progress||0)===100).length;
+  const pending=tasks.filter(t=>Number(t.progress||0)<100).sort((a,b)=>{
+    if(a.dueDate&&b.dueDate)return a.dueDate.localeCompare(b.dueDate);
+    if(a.dueDate)return -1;if(b.dueDate)return 1;return Number(a.progress||0)-Number(b.progress||0);
+  });
+  const percent=total?Math.round(tasks.reduce((sum,t)=>sum+Number(t.progress||0),0)/total):0;
+  const taskList=pending.length?pending.map((t,i)=>`${i+1}. ${t.text}${t.dueDate?' (entrega: '+formatDate(t.dueDate)+')':''} — ${t.progress||0}%`).join('\n'):'';
+  if(/\b(hola|holaa|buenas|buenos dias|buenas tardes|buenas noches)\b/.test(q))
+    return '¡Holaaa! 💜 Qué bueno tenerte por aquí. Puedo ayudarte a organizar tu día, dividir una tarea complicada, darte técnicas de estudio o revisar tu progreso.\n\n¿Qué tienes en mente? Si me cuentas la materia y qué parte te cuesta, te ayudo con pasos concretos.';
+  if((q.includes('hoy')||q.includes('dia'))&&(q.includes('hacer')||q.includes('organ')||q.includes('plan')||q.includes('deberia'))){
+    if(!pending.length)return '🎉 ¡Por ahora no tienes tareas pendientes registradas! Puedes aprovechar para repasar el tema que más te cuesta, preparar tus materiales para mañana o descansar si ya cumpliste tus objetivos.\n\nSi tienes tareas que aún no has anotado, agrégalas en la sección Tareas y te ayudo a priorizarlas.';
+    return 'Vamos a organizarlo sin abrumarte 💜. Te propongo este plan:\n\n1. Empieza por “'+pending[0].text+'”'+(pending[0].dueDate?' (fecha de entrega '+formatDate(pending[0].dueDate)+')':'')+'. Dedícale 25 minutos.\n'+(pending[1]?'2. Después avanza con “'+pending[1].text+'” durante otros 25 minutos.\n':'')+'3. Descansa 5 minutos y revisa qué lograste.\n4. Actualiza el porcentaje de avance en EduPlan.\n\nTus tareas pendientes son:\n'+taskList+'\n\nSi me dices cuánto tiempo tienes hoy, ajusto el plan.';
   }
-  if(q.includes('cómo voy')||q.includes('como voy')||q.includes('progreso'))return total?'📊 Tu avance promedio es '+percent+'%. Tienes '+completed+' tareas completadas y '+pending.length+' aún en proceso. Puedes ajustar el porcentaje de cada tarea desde la lista.':'📊 Todavía no tienes tareas registradas.';
-  if(q.includes('motiv')||q.includes('ánimo')||q.includes('animo'))return '💪 No necesitas terminar todo de una vez. Empieza por una sola tarea y deja que el progreso se acumule.';
-  if(q.includes('pendiente')||q.includes('falta')||q.includes('tarea'))return pending.length?'📝 Tienes pendientes: '+pending.map(t=>'“'+t.text+'”').join(', ')+'.':'✅ No tienes tareas pendientes.';
-  if(q.includes('hola'))return '¡Holaa! 👋 Soy EduBot. Pregúntame qué hacer hoy, cómo vas con tus tareas o píde una motivación.';
-  return '🤖 Puedo ayudarte con tus tareas y progreso. Prueba preguntando: “¿Qué debería hacer hoy?”, “¿Cómo voy?” o “Dame una motivación”.';
+  if(q.includes('progreso')||q.includes('como voy')||q.includes('avance'))
+    return total?`📊 Tu resumen actual:\n• Avance promedio: ${percent}%\n• Tareas completadas: ${completed} de ${total}\n• Tareas aún pendientes: ${pending.length}\n\n${percent===100?'¡Lo conseguiste todo! Date un respiro, te lo ganaste. 🏆':percent>=60?'Vas avanzando bien. Elige una tarea pendiente y llévala un poco más cerca del 100%.': 'No te preocupes por hacerlo todo de golpe. Elige una tarea y avánzala un 10–15%; una meta pequeña ayuda a arrancar.'}\n\nPuedes mover la barra de cada tarea para registrar el avance real.`:'Todavía no hay tareas registradas, así que no puedo calcular un progreso real. 💜\n\nVe a “Tareas”, escribe una actividad y agrega su fecha de entrega. Cuando actualices su porcentaje, aquí podremos revisar cómo vas.';
+  if(q.includes('pendiente')||q.includes('que me falta')||q.includes('mis tareas')||q.includes('lista de tareas'))
+    return pending.length?'📝 Estas son tus tareas por terminar:\n'+taskList+'\n\nMi sugerencia: comienza por la que tenga la entrega más cercana. Si una te parece enorme, dime cuál y la dividimos en pasos pequeños.':'✅ ¡No tienes tareas pendientes registradas! Si tienes algún trabajo por hacer que aún no aparece aquí, agrégalo para tenerlo presente.';
+  if(q.includes('pomodoro'))return '⏳ La técnica Pomodoro consiste en trabajar con atención durante 25 minutos y descansar 5. Después de cuatro rondas, toma un descanso más largo de 15–30 minutos.\n\nPrueba así:\n1. Elige una tarea concreta.\n2. Aleja las distracciones y pon un temporizador de 25 minutos.\n3. Trabaja solo en esa tarea.\n4. Descansa 5 minutos sin culparte.\n5. Repite o ajusta el tiempo si 25 minutos se te hacen demasiado largos.\n\nLo importante es adaptar la técnica a ti, no cumplirla perfectamente.';
+  if(q.includes('concentr')||q.includes('distra')||q.includes('enfoc'))return '🧠 Si te cuesta concentrarte, prueba algo pequeño en lugar de exigirte estudiar horas seguidas:\n\n• Deja el celular lejos o activa “No molestar”.\n• Escribe una meta concreta: por ejemplo, “resolver 3 ejercicios”, no solo “estudiar matemática”.\n• Prueba 15–25 minutos de trabajo y 5 de descanso.\n• Ten agua y materiales listos antes de empezar.\n• Si tu mente se va a otra cosa, anótalo y vuelve a la tarea sin insultarte.\n\n¿En qué momento te distraes más: al comenzar, mientras lees o al resolver ejercicios?';
+  if(q.includes('motiv')||q.includes('animo')||q.includes('cansad')||q.includes('no puedo')||q.includes('me cuesta'))return '💜 Oye, no tienes que resolver toda tu vida académica esta noche. Sentirte cansado o trabarte con algo no significa que seas incapaz.\n\nHagamos esto: elige una sola actividad, trabaja en ella durante 10 minutos y luego decide el siguiente paso. Si necesitas descansar, descansar también puede ser parte de un buen plan.\n\n¿Qué es lo que más te está pesando ahora mismo?';
+  if(q.includes('estudiar')&&(q.includes('tema')||q.includes('memor')||q.includes('aprender')||q.includes('dificil'))||q.includes('como estudio'))return '📚 Para aprender un tema difícil, intenta este método:\n\n1. **Comprende primero:** lee una sección corta y busca qué significa con tus propias palabras.\n2. **Cierra el material:** explica lo que recuerdas como si se lo enseñaras a un amigo.\n3. **Practica:** resuelve preguntas o ejercicios sin mirar la respuesta de inmediato.\n4. **Corrige:** anota por qué te equivocaste, no solo cuál era la respuesta correcta.\n5. **Repasa después:** vuelve al tema al día siguiente y unos días más tarde.\n\nDime qué curso y tema estás estudiando y te preparo una estrategia más específica.';
+  if(q.includes('horario')||q.includes('organizar mi tiempo')||q.includes('planificar'))return '🗓️ Para armar un horario que sí puedas cumplir, necesito considerar tres cosas: cuánto tiempo tienes, qué entregas son más urgentes y cuándo tienes más energía.\n\nComo punto de partida, reserva bloques de 25–40 minutos para tareas, pausas cortas entre ellos y un rato para preparar lo del día siguiente. Evita llenar cada minuto: deja un margen por si algo tarda más.\n\n¿Cuánto tiempo libre tienes hoy y qué necesitas terminar?';
+  if(q.includes('fecha')||q.includes('calendario'))return '📅 Las tareas con fecha de entrega aparecen en el calendario. Para añadir una, entra en “Tareas”, escribe el nombre, selecciona la fecha y pulsa “Agregar tarea”.\n\nConsejo: si el trabajo es grande, crea varias tareas pequeñas con fechas intermedias para no dejarlo todo al final.';
+  if(q.includes('gracias'))return '¡De nadaaa! 💜 Para eso estoy. Recuerda que avanzar poquito también cuenta. ¿Quieres que revisemos una tarea o una duda de clase?';
+  if(q.includes('matemat')||q.includes('ecuacion')||q.includes('fisica')||q.includes('quimica')||q.includes('biologia')||q.includes('historia')||q.includes('ingles')||q.includes('comunicacion'))return '📘 ¡Vamos a verlo! Puedo ayudarte a estudiar ese curso paso a paso. Para darte una explicación útil, dime el tema exacto o copia aquí el ejercicio.\n\nPor ejemplo: “Explícame las ecuaciones de segundo grado con un ejemplo” o “Hazme 5 preguntas de biología y luego corrige mis respuestas”.';
+  if(q.includes('que puedes')||q.includes('ayuda')||q.includes('que haces'))return 'Puedo ayudarte con varias cosas 😊:\n• Organizar tus tareas según su urgencia.\n• Consultar el progreso que llevas en EduPlan.\n• Proponerte técnicas para estudiar y concentrarte.\n• Explicarte cómo abordar un tema escolar.\n• Ayudarte a crear un plan realista para hoy.\n\nPara una explicación de una materia, dime el curso y el tema. Nota: esta versión usa respuestas y reglas locales; no genera respuestas ilimitadas como ChatGPT.';
+  return 'Te leo 💜. Para ayudarte mejor, cuéntame un poco más: ¿quieres organizar tus tareas, resolver una duda de clase, estudiar mejor o hablar de algo que te preocupa?\n\nSi es una pregunta escolar, escribe el curso y el tema (o pega el ejercicio) y te orientaré paso a paso. Soy una versión local de EduBot, así que no tengo la misma capacidad de respuesta abierta que una IA conectada como ChatGPT.';
 }
 function addChat(role,text){
   const box=document.getElementById('chatMessages');
@@ -293,6 +334,7 @@ function drawCalendar(id){
   }
   document.getElementById('monthTitle').textContent=`${months[m]} ${y}`;
   document.getElementById('monthTitle2').textContent=`${months[m]} ${y}`;
+  const summary=document.getElementById('calendarSummary'); if(summary){const monthTasks=tasks.filter(t=>t.dueDate&&t.dueDate.startsWith(`${y}-${String(m+1).padStart(2,'0')}`));summary.textContent=monthTasks.length?`📌 Este mes tienes ${monthTasks.length} tarea(s) con fecha de entrega. Revisa los días marcados para verlas. La más próxima es: ${monthTasks.slice().sort((a,b)=>a.dueDate.localeCompare(b.dueDate))[0].text} (${formatDate(monthTasks.slice().sort((a,b)=>a.dueDate.localeCompare(b.dueDate))[0].dueDate)}).`:'📌 No hay tareas con fecha de entrega en este mes. Agrega una tarea con fecha y aparecerá en el día correspondiente.';}
 }
 function escapeHtml(str){return String(str).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
 function changeMonth(n){current.setMonth(current.getMonth()+n);drawCalendar('calendar');drawCalendar('calendar2')}
