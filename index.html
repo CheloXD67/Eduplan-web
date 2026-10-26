@@ -42,10 +42,10 @@ button{cursor:pointer;border:0}
 .progress{height:12px;background:#eceef5;border-radius:99px;overflow:hidden}.bar{height:100%;width:0%;transition:width .45s ease;background:linear-gradient(90deg,var(--primary),var(--primary2));border-radius:99px}
 .progress-label{display:flex;justify-content:space-between;margin:8px 0 12px;font-weight:700}
 .tasks{display:flex;flex-direction:column;gap:10px}
-.task-row{display:flex;align-items:center;gap:12px;padding:12px;border:1px solid var(--line);border-radius:13px}
+.task-row{display:flex;align-items:flex-start;gap:12px;padding:14px;border:1px solid var(--line);border-radius:13px}.task-info{flex:1;min-width:0}.task-title{font-weight:700;display:block}.task-tools{display:flex;align-items:center;gap:10px;margin-top:9px;flex-wrap:wrap}.task-tools input[type=range]{flex:1;min-width:110px;accent-color:var(--primary)}.task-percent{font-size:13px;font-weight:800;color:var(--primary);min-width:38px}.task-status{font-size:12px;color:var(--muted)}
 .task-row input{width:18px;height:18px;accent-color:var(--primary)}
 .task-row.done span{text-decoration:line-through;color:#9aa1b1}
-.add{display:flex;gap:8px;margin-top:12px}.add input{flex:1;border:1px solid var(--line);border-radius:11px;padding:11px}.add button{background:var(--primary);color:white;border-radius:11px;padding:0 15px}
+.add{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}.add input{flex:1;min-width:180px;border:1px solid var(--line);border-radius:11px;padding:11px}.add button{background:var(--primary);color:white;border-radius:11px;padding:0 15px}
 .section{display:none}.section.active{display:block}
 .kpi{display:flex;align-items:center;justify-content:space-between}.badge{padding:6px 10px;background:#e9faf3;color:#208b61;border-radius:99px;font-size:12px;font-weight:700}
 @media(max-width:900px){.sidebar{display:none}.content{padding:18px}.grid{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr 1fr}}
@@ -83,9 +83,9 @@ button{cursor:pointer;border:0}
             <button class="cta" onclick="showPage('tareas')">Comienza ahora →</button>
           </div>
           <div class="stats">
-            <div class="stat"><span class="muted">Tareas pendientes</span><strong id="pending">3</strong></div>
-            <div class="stat"><span class="muted">Horas esta semana</span><strong>12 h</strong></div>
-            <div class="stat"><span class="muted">Progreso</span><strong>78%</strong></div>
+            <div class="stat"><span class="muted">Tareas pendientes</span><strong id="pending">0</strong></div>
+            <div class="stat"><span class="muted">Horas esta semana</span><strong id="weeklyHours">0 h</strong></div>
+            <div class="stat"><span class="muted">Progreso</span><strong id="homeProgress">0%</strong></div>
           </div>
           <div class="card" style="margin-top:18px">
             <div class="kpi"><h3>Mis tareas</h3><span class="badge">Hoy</span></div>
@@ -125,14 +125,14 @@ button{cursor:pointer;border:0}
       <div class="card">
         <h2>Mis tareas</h2><p class="muted">Marca lo que ya terminaste y agrega nuevas tareas. Tus tareas se guardan solo en este navegador.</p>
         <div id="allTasks" class="tasks"></div>
-        <div class="add"><input id="newTask" placeholder="Ej. Estudiar para el examen de inglés"><button onclick="addTask()">Agregar</button></div>
+        <div class="add"><input id="newTask" placeholder="Ej. Estudiar para el examen de inglés"><input id="newTaskDate" type="date" title="Fecha de entrega"><button onclick="addTask()">Agregar</button></div>
       </div>
     </section>
 
     <section id="progreso" class="section">
       <div class="card">
         <h2>Mi progreso</h2>
-        <p class="muted">Tu progreso se calcula automáticamente según las tareas que completes.</p>
+        <p class="muted">Actualiza el porcentaje de cada tarea según lo que hayas avanzado. Tu progreso general será el promedio de todas tus tareas, no solo un salto de 0% a 100%.</p>
         <div style="margin-top:25px">
           <div class="progress-label"><span id="progressText2">Sin tareas todavía</span><span id="progressPercent2">0%</span></div>
           <div class="progress"><div id="progressBar2" class="bar"></div></div>
@@ -171,37 +171,65 @@ button{cursor:pointer;border:0}
 let tasks=JSON.parse(localStorage.getItem('eduplan_tasks') || '[]');
 let current=new Date(2026,7,1);
 
+function normalizeTask(t){
+  if(typeof t.progress!=='number') t.progress=t.done?100:0;
+  t.progress=Math.max(0,Math.min(100,Math.round(t.progress)));
+  t.done=t.progress===100 || !!t.done;
+  if(t.done)t.progress=100;
+  return t;
+}
+tasks=tasks.map(normalizeTask);
 function saveTasks(){localStorage.setItem('eduplan_tasks', JSON.stringify(tasks))}
+function taskCard(t,i){
+  const progress=Number(t.progress)||0;
+  return `<div class="task-row ${progress===100?'done':''}">
+    <div class="task-info"><span class="task-title">${escapeHtml(t.text)} ${t.dueDate?`<small class="muted">· 📅 ${formatDate(t.dueDate)}</small>`:''}</span>
+      <div class="task-tools"><span class="task-status">${progress===100?'✅ Completada':progress===0?'⏳ Sin empezar':'🛠️ En progreso'}</span>
+        <input aria-label="Progreso de ${escapeHtml(t.text)}" type="range" min="0" max="100" step="5" value="${progress}" oninput="previewTaskProgress(${i},this.value)" onchange="updateTaskProgress(${i},this.value)">
+        <strong class="task-percent" id="taskPercent${i}">${progress}%</strong>
+      </div>
+    </div>
+    <label title="Marcar como completada"><input type="checkbox" ${progress===100?'checked':''} onchange="toggleTask(${i})"> <small>Listo</small></label>
+  </div>`;
+}
 function renderTasks(){
-  const taskHtml=tasks.map((t,i)=>`<label class="task-row ${t.done?'done':''}"><input type="checkbox" ${t.done?'checked':''} onchange="toggleTask(${i})"><span>${t.text}</span></label>`).join('');
-  document.getElementById('allTasks').innerHTML=tasks.length ? taskHtml : '<p class="muted">Tu lista está vacía. Agrega una tarea para empezar a organizarte.</p>';
-  document.getElementById('taskPreview').innerHTML=tasks.length ? tasks.slice(0,3).map((t,i)=>`<label class="task-row ${t.done?'done':''}"><input type="checkbox" ${t.done?'checked':''} onchange="toggleTask(${i})"><span>${t.text}</span></label>`).join('') : '<p class="muted">No tienes tareas pendientes. Agrega una desde la sección “Tareas”.</p>';
-  const pending=tasks.filter(t=>!t.done).length, completed=tasks.filter(t=>t.done).length, total=tasks.length, percent=total ? Math.round((completed/total)*100) : 0;
+  tasks=tasks.map(normalizeTask);
+  document.getElementById('allTasks').innerHTML=tasks.length ? tasks.map(taskCard).join('') : '<p class="muted">Tu lista está vacía. Agrega una tarea para empezar a organizarte.</p>';
+  document.getElementById('taskPreview').innerHTML=tasks.length ? tasks.slice(0,3).map((t,i)=>taskCard(t,i)).join('') : '<p class="muted">No tienes tareas pendientes. Agrega una desde la sección “Tareas”.</p>';
+  const total=tasks.length, completed=tasks.filter(t=>t.progress===100).length, pending=total-completed;
+  const percent=total?Math.round(tasks.reduce((sum,t)=>sum+t.progress,0)/total):0;
   document.getElementById('pending').textContent=pending; document.getElementById('pending2').textContent=pending; document.getElementById('completed').textContent=completed; document.getElementById('progressKpi').textContent=percent+'%';
+  // La pantalla inicial empieza en cero y se actualiza con las tareas reales del navegador.
+  // Las horas no se inventan: quedan en 0 h hasta que exista una función para registrar tiempo de estudio.
+  document.getElementById('homeProgress').textContent=percent+'%';
+  document.getElementById('weeklyHours').textContent='0 h';
   document.getElementById('progressBar').style.width=percent+'%'; document.getElementById('progressBar2').style.width=percent+'%'; document.getElementById('progressPercent').textContent=percent+'%'; document.getElementById('progressPercent2').textContent=percent+'%'; document.getElementById('progressBadge').textContent=percent+'%';
-  const text=total ? `${completed} de ${total} tareas completadas` : 'Sin tareas todavía';
-  const message=percent===100 && total ? '¡Excelente! Completaste todas tus tareas. 🎉' : total ? 'Sigue avanzando, cada tarea cuenta. 💪' : 'Agrega tus primeras tareas para comenzar a medir tu progreso.';
+  const text=total?`${percent}% de avance promedio · ${completed} de ${total} tareas completadas`:'Sin tareas todavía';
+  const message=!total?'Agrega tus primeras tareas para comenzar a medir tu progreso.':percent===100?'¡Excelente! Todas tus tareas están al 100%. 🎉':percent===0?'Empieza con un pequeño avance en cualquiera de tus tareas.':`Has avanzado un ${percent}% en promedio. Cada pequeño avance cuenta. 💪`;
   document.getElementById('progressText').textContent=text; document.getElementById('progressText2').textContent=text; document.getElementById('progressMessage').textContent=message; document.getElementById('progressMessage2').textContent=message;
   updateMotivation(percent,pending,total);
 }
+function previewTaskProgress(i,value){const el=document.getElementById('taskPercent'+i);if(el)el.textContent=value+'%';}
+function updateTaskProgress(i,value){tasks[i].progress=Math.max(0,Math.min(100,Number(value)));tasks[i].done=tasks[i].progress===100;saveTasks();renderTasks();}
 function updateMotivation(percent,pending,total){
-  const el=document.getElementById('motivationMessage');
-  if(!el)return;
+  const el=document.getElementById('motivationMessage'); if(!el)return;
+  const quotes=['🌱 No necesitas hacerlo perfecto; solo necesitas empezar.','✨ Un pequeño avance hoy puede convertirse en un gran logro mañana.','📚 Estudiar un poco cada día también es avanzar.','💜 Descansa si lo necesitas, pero no olvides tu meta.','🚀 Tu progreso no tiene que ser rápido, tiene que ser tuyo.'];
   if(!total){el.textContent='🌱 Cada gran meta empieza con una pequeña acción. Agrega tu primera tarea y comienza.';return;}
-  if(percent===100)el.textContent='🏆 ¡Lo lograste! Completaste todas tus tareas. Date un pequeño descanso y celebra tu avance.';
-  else if(percent>=80)el.textContent='🚀 ¡Estás a punto de terminar! Solo quedan '+pending+' tarea(s).';
-  else if(percent>=50)el.textContent='🔥 ¡Vas por muy buen camino! Ya superaste la mitad de tus tareas.';
-  else el.textContent='💪 Paso a paso. Tienes '+pending+' tarea(s) pendiente(s), y puedes empezar por una.';
+  if(percent===100)el.textContent='🏆 ¡Lo lograste! Completaste todo. Date un pequeño descanso y celebra tu esfuerzo.';
+  else if(percent>=75)el.textContent='🚀 ¡Estás muy cerca! Llevas '+percent+'% de avance. ¡Un paso más!';
+  else if(percent>=40)el.textContent='🔥 ¡Vas construyendo un buen ritmo! Ya llevas '+percent+'% de avance.';
+  else if(percent>0)el.textContent='💪 Todo avance cuenta: ya llevas '+percent+'%. Sigue a tu ritmo, una cosa a la vez.';
+  else el.textContent=quotes[Math.floor(Date.now()/86400000)%quotes.length]+' Empieza con una tarea pequeña.';
 }
 function botReply(message){
   const q=message.toLowerCase();
-  const total=tasks.length, completed=tasks.filter(t=>t.done).length, pending=tasks.filter(t=>!t.done);
-  const percent=total?Math.round(completed/total*100):0;
+  const total=tasks.length, completed=tasks.filter(t=>(t.progress||0)===100).length, pending=tasks.filter(t=>(t.progress||0)<100);
+  const percent=total?Math.round(tasks.reduce((sum,t)=>sum+(t.progress||0),0)/total):0;
   if(q.includes('qué')&&q.includes('hoy') || q.includes('que')&&q.includes('hoy')){
     if(!pending.length)return '🎉 No tienes tareas pendientes. ¡Aprovecha para repasar algo que quieras mejorar o descansar un poco!';
     return '📚 Te recomiendo empezar por: “'+pending[0].text+'”. Después puedes continuar con '+(pending[1]? '“'+pending[1].text+'”.':'otra tarea que tengas pendiente.')+' Tú decides el ritmo.';
   }
-  if(q.includes('cómo voy')||q.includes('como voy')||q.includes('progreso'))return total?'📊 Vas en '+percent+'%: completaste '+completed+' de '+total+' tareas y te quedan '+pending.length+'.':'📊 Todavía no tienes tareas registradas.';
+  if(q.includes('cómo voy')||q.includes('como voy')||q.includes('progreso'))return total?'📊 Tu avance promedio es '+percent+'%. Tienes '+completed+' tareas completadas y '+pending.length+' aún en proceso. Puedes ajustar el porcentaje de cada tarea desde la lista.':'📊 Todavía no tienes tareas registradas.';
   if(q.includes('motiv')||q.includes('ánimo')||q.includes('animo'))return '💪 No necesitas terminar todo de una vez. Empieza por una sola tarea y deja que el progreso se acumule.';
   if(q.includes('pendiente')||q.includes('falta')||q.includes('tarea'))return pending.length?'📝 Tienes pendientes: '+pending.map(t=>'“'+t.text+'”').join(', ')+'.':'✅ No tienes tareas pendientes.';
   if(q.includes('hola'))return '¡Holaa! 👋 Soy EduBot. Pregúntame qué hacer hoy, cómo vas con tus tareas o píde una motivación.';
@@ -215,16 +243,22 @@ function addChat(role,text){
 }
 function askEduBot(text){addChat('user',text);setTimeout(()=>addChat('bot',botReply(text)),180);}
 function sendBotMessage(){const input=document.getElementById('botInput');const text=input.value.trim();if(!text)return;input.value='';askEduBot(text);}
-document.addEventListener('keydown',e=>{if(e.key==='Enter'&&document.activeElement?.id==='botInput')sendBotMessage()});
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&document.activeElement?.id==='botInput')sendBotMessage(); if(e.key==='Enter'&&document.activeElement?.id==='newTask')addTask();});
 
 function toggleTask(i){
-  tasks[i].done=!tasks[i].done;
-  saveTasks();
-  renderTasks();
+  tasks[i].progress=tasks[i].progress===100?0:100; tasks[i].done=tasks[i].progress===100;
+  saveTasks(); renderTasks();
 }
 function addTask(){
-  const input=document.getElementById('newTask'); const text=input.value.trim();
-  if(!text)return; tasks.push({text,done:false}); input.value=''; saveTasks(); renderTasks();
+  const input=document.getElementById('newTask');
+  const dateInput=document.getElementById('newTaskDate');
+  const text=input.value.trim();
+  const dueDate=dateInput.value;
+  if(!text){input.focus();return;}
+  if(!dueDate){dateInput.focus();return;}
+  tasks.push({text,done:false,progress:0,dueDate});
+  input.value=''; dateInput.value='';
+  saveTasks(); renderTasks(); drawCalendar('calendar'); drawCalendar('calendar2');
 }
 function showPage(id){
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
@@ -234,22 +268,33 @@ function showPage(id){
 document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>showPage(b.dataset.page));
 
 const months=["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+function formatDate(dateStr){
+  if(!dateStr)return '';
+  const [y,m,d]=dateStr.split('-');
+  return `${d}/${m}/${y}`;
+}
+function dateKey(y,m,d){return `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;}
 function drawCalendar(id){
   const y=current.getFullYear(),m=current.getMonth();
-  const first=(new Date(y,m,1).getDay()+6)%7;
-  const total=new Date(y,m+1,0).getDate();
+  const first=(new Date(Date.UTC(y,m,1)).getUTCDay()+6)%7;
+  const total=new Date(Date.UTC(y,m+1,0)).getUTCDate();
   const el=document.getElementById(id); el.innerHTML='';
   for(let i=0;i<first;i++)el.innerHTML+='<div></div>';
   for(let d=1;d<=total;d++){
+    const key=dateKey(y,m,d);
+    const dayTasks=tasks.filter(t=>t.dueDate===key);
     const day=document.createElement('div'); day.className='day';
-    if(y===2026&&m===7&&d===24)day.classList.add('today');
-    if([5,12,18,24,27].includes(d))day.classList.add('task');
-    day.innerHTML=`${d}${[5,12,18,24,27].includes(d)?'<span class="dot"></span>':''}`;
+    const now=new Date();
+    if(y===now.getFullYear()&&m===now.getMonth()&&d===now.getDate())day.classList.add('today');
+    if(dayTasks.length)day.classList.add('task');
+    const labels=dayTasks.map(t=>`<div style="margin-top:5px;font-size:11px;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${escapeHtml(t.text)}">${escapeHtml(t.text)}</div>`).join('');
+    day.innerHTML=`<strong>${d}</strong>${dayTasks.length?'<span class="dot"></span>':''}${labels}`;
     el.appendChild(day);
   }
   document.getElementById('monthTitle').textContent=`${months[m]} ${y}`;
   document.getElementById('monthTitle2').textContent=`${months[m]} ${y}`;
 }
+function escapeHtml(str){return String(str).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
 function changeMonth(n){current.setMonth(current.getMonth()+n);drawCalendar('calendar');drawCalendar('calendar2')}
 renderTasks(); drawCalendar('calendar'); drawCalendar('calendar2');
 </script>
