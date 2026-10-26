@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EduPlan — Organiza tu tiempo</title>
+<style>
+:root{
+  --bg:#f5f7fb; --card:#fff; --text:#172033; --muted:#697386;
+  --primary:#5b63e8; --primary2:#7b61ff; --line:#e7e9f0;
+  --success:#35b779; --danger:#ef6b73; --shadow:0 12px 35px rgba(32,39,70,.09);
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;background:var(--bg);color:var(--text)}
+button,input{font:inherit}
+button{cursor:pointer;border:0}
+.app{min-height:100vh;display:flex}
+.sidebar{width:245px;background:#fff;border-right:1px solid var(--line);padding:24px 16px;position:sticky;top:0;height:100vh}
+.logo{display:flex;align-items:center;gap:10px;font-size:24px;font-weight:800;margin:0 10px 30px}
+.logo-icon{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--primary),var(--primary2));color:white;display:grid;place-items:center}
+.nav button{width:100%;padding:13px 14px;margin:3px 0;border-radius:12px;background:transparent;color:#5d6577;text-align:left}
+.nav button.active,.nav button:hover{background:#eef0ff;color:var(--primary);font-weight:700}
+.content{flex:1;padding:30px;max-width:1450px;margin:auto}
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:25px}
+.greeting h1{margin:0;font-size:30px}.greeting p{margin:5px 0;color:var(--muted)}
+.avatar{width:45px;height:45px;border-radius:50%;background:#dfe3ff;color:#4d55cf;display:grid;place-items:center;font-weight:800}
+.grid{display:grid;grid-template-columns:1.3fr .8fr;gap:20px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:22px;box-shadow:var(--shadow)}
+.card h2,.card h3{margin:0 0 15px}.muted{color:var(--muted)}
+.hero{background:linear-gradient(135deg,#5b63e8,#7b61ff);color:#fff;border:0}
+.hero p{color:#e9eaff;max-width:600px;line-height:1.6}
+.cta{background:#fff;color:#555ee5;padding:12px 18px;border-radius:12px;font-weight:800}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:17px;padding:17px}.stat strong{font-size:25px;display:block;margin-top:5px}
+.calendar-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.calendar-head button{background:#f0f1f8;width:34px;height:34px;border-radius:10px}
+.week{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;text-align:center;font-size:12px;color:var(--muted);margin-bottom:6px}
+.days{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.day{min-height:54px;border:1px solid var(--line);border-radius:10px;background:#fff;padding:7px;text-align:left;font-size:13px}
+.day.today{background:#eef0ff;border:2px solid var(--primary);color:var(--primary);font-weight:800}
+.day.task{position:relative}.dot{width:6px;height:6px;border-radius:50%;background:var(--primary);display:inline-block;margin-left:4px}
+.progress{height:12px;background:#eceef5;border-radius:99px;overflow:hidden}.bar{height:100%;width:0%;transition:width .45s ease;background:linear-gradient(90deg,var(--primary),var(--primary2));border-radius:99px}
+.progress-label{display:flex;justify-content:space-between;margin:8px 0 12px;font-weight:700}
+.tasks{display:flex;flex-direction:column;gap:10px}
+.task-row{display:flex;align-items:center;gap:12px;padding:12px;border:1px solid var(--line);border-radius:13px}
+.task-row input{width:18px;height:18px;accent-color:var(--primary)}
+.task-row.done span{text-decoration:line-through;color:#9aa1b1}
+.add{display:flex;gap:8px;margin-top:12px}.add input{flex:1;border:1px solid var(--line);border-radius:11px;padding:11px}.add button{background:var(--primary);color:white;border-radius:11px;padding:0 15px}
+.section{display:none}.section.active{display:block}
+.kpi{display:flex;align-items:center;justify-content:space-between}.badge{padding:6px 10px;background:#e9faf3;color:#208b61;border-radius:99px;font-size:12px;font-weight:700}
+@media(max-width:900px){.sidebar{display:none}.content{padding:18px}.grid{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr 1fr}}
+@media(max-width:560px){.stats{grid-template-columns:1fr}.topbar h1{font-size:25px}.card{padding:17px}}
+
+.motivation{font-size:16px;line-height:1.55;margin:12px 0 2px}.motivation-card{background:linear-gradient(135deg,#f7f8ff,#ffffff)}
+.edubot-card{max-width:850px;margin:0 auto}.edubot-head{display:flex;gap:14px;align-items:center}.edubot-head h2{margin:0 0 3px}.bot-avatar{width:54px;height:54px;border-radius:16px;background:#eef0ff;display:grid;place-items:center;font-size:28px}.chat-messages{height:360px;overflow:auto;margin:20px 0;padding:14px;background:#f7f8fc;border-radius:16px;display:flex;flex-direction:column;gap:12px}.chat{max-width:82%;padding:12px 14px;border-radius:14px;display:flex;flex-direction:column;gap:4px;line-height:1.45}.chat.bot{align-self:flex-start;background:white;border:1px solid var(--line)}.chat.user{align-self:flex-end;background:#eef0ff;color:#272a55}.quick-actions{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}.quick-actions button{background:#f0f1f8;border-radius:10px;padding:9px 12px}.chat-input{display:flex;gap:8px}.chat-input input{flex:1;border:1px solid var(--line);border-radius:11px;padding:11px}.chat-input button{background:var(--primary);color:white;border-radius:11px;padding:0 16px}.bot-note{font-size:12px;color:var(--muted);margin-top:10px}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="logo"><div class="logo-icon">✓</div>EduPlan</div>
+    <nav class="nav">
+      <button class="active" data-page="inicio">🏠 Inicio</button>
+      <button data-page="calendario">📅 Calendario</button>
+      <button data-page="tareas">☑️ Tareas</button>
+      <button data-page="progreso">📈 Progreso</button>
+      <button data-page="edubot">🤖 EduBot</button>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <div class="topbar">
+      <div class="greeting"><h1>Hola, estudiante 👋</h1><p>Organiza tu tiempo y trabaja por tu futuro.</p></div>
+      <div class="avatar">ES</div>
+    </div>
+
+    <section id="inicio" class="section active">
+      <div class="grid">
+        <div>
+          <div class="card hero">
+            <h2>Tu tiempo, tus metas.</h2>
+            <p>EduPlan te ayuda a organizar tus tareas, planificar tus horas de estudio y seguir tu progreso de una manera sencilla.</p>
+            <button class="cta" onclick="showPage('tareas')">Comienza ahora →</button>
+          </div>
+          <div class="stats">
+            <div class="stat"><span class="muted">Tareas pendientes</span><strong id="pending">3</strong></div>
+            <div class="stat"><span class="muted">Horas esta semana</span><strong>12 h</strong></div>
+            <div class="stat"><span class="muted">Progreso</span><strong>78%</strong></div>
+          </div>
+          <div class="card" style="margin-top:18px">
+            <div class="kpi"><h3>Mis tareas</h3><span class="badge">Hoy</span></div>
+            <div id="taskPreview" class="tasks"></div>
+          </div>
+        </div>
+
+        <div>
+          <div class="card">
+            <div class="calendar-head"><button onclick="changeMonth(-1)">‹</button><h3 id="monthTitle">Agosto 2026</h3><button onclick="changeMonth(1)">›</button></div>
+            <div class="week"><span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>S</span><span>D</span></div>
+            <div id="calendar" class="days"></div>
+          </div>
+          <div class="card" style="margin-top:18px">
+            <div class="kpi"><h3>Meta de estudio</h3><span id="progressBadge" class="badge">0%</span></div>
+            <div class="progress-label"><span id="progressText">Sin tareas todavía</span><span id="progressPercent">0%</span></div>
+            <div class="progress"><div id="progressBar" class="bar"></div></div>
+            <p id="progressMessage" class="muted">Agrega tus primeras tareas para comenzar a medir tu progreso.</p>
+          </div>
+          <div class="card motivation-card" style="margin-top:18px">
+            <div class="kpi"><h3>💬 Mensaje del día</h3><span class="badge">EduPlan</span></div>
+            <p id="motivationMessage" class="motivation">🌱 Cada tarea que completas es un paso más hacia tu meta. ¡Tú puedes!</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="calendario" class="section">
+      <div class="card">
+        <div class="calendar-head"><button onclick="changeMonth(-1)">‹</button><h2 id="monthTitle2">Agosto 2026</h2><button onclick="changeMonth(1)">›</button></div>
+        <div class="week"><span>Lunes</span><span>Martes</span><span>Miércoles</span><span>Jueves</span><span>Viernes</span><span>Sábado</span><span>Domingo</span></div>
+        <div id="calendar2" class="days"></div>
+      </div>
+    </section>
+
+    <section id="tareas" class="section">
+      <div class="card">
+        <h2>Mis tareas</h2><p class="muted">Marca lo que ya terminaste y agrega nuevas tareas. Tus tareas se guardan solo en este navegador.</p>
+        <div id="allTasks" class="tasks"></div>
+        <div class="add"><input id="newTask" placeholder="Ej. Estudiar para el examen de inglés"><button onclick="addTask()">Agregar</button></div>
+      </div>
+    </section>
+
+    <section id="progreso" class="section">
+      <div class="card">
+        <h2>Mi progreso</h2>
+        <p class="muted">Tu progreso se calcula automáticamente según las tareas que completes.</p>
+        <div style="margin-top:25px">
+          <div class="progress-label"><span id="progressText2">Sin tareas todavía</span><span id="progressPercent2">0%</span></div>
+          <div class="progress"><div id="progressBar2" class="bar"></div></div>
+          <p id="progressMessage2" class="muted">Agrega una tarea para empezar.</p>
+        </div>
+        <div class="stats">
+          <div class="stat"><span class="muted">Tareas pendientes</span><strong id="pending2">0</strong></div>
+          <div class="stat"><span class="muted">Tareas completadas</span><strong id="completed">0</strong></div>
+          <div class="stat"><span class="muted">Progreso</span><strong id="progressKpi">0%</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="edubot" class="section">
+      <div class="card edubot-card">
+        <div class="edubot-head">
+          <div class="bot-avatar">🤖</div>
+          <div><h2>EduBot</h2><p class="muted">Tu asistente de estudio dentro de EduPlan.</p></div>
+        </div>
+        <div id="chatMessages" class="chat-messages">
+          <div class="chat bot"><strong>EduBot</strong><span>¡Hola! 👋 Puedo ayudarte a organizar tus tareas, revisar tu progreso y darte ideas para estudiar.</span></div>
+        </div>
+        <div class="quick-actions">
+          <button onclick="askEduBot('¿Qué debería hacer hoy?')">📚 ¿Qué hago hoy?</button>
+          <button onclick="askEduBot('¿Cómo voy con mis tareas?')">📊 ¿Cómo voy?</button>
+          <button onclick="askEduBot('Dame una motivación')">💪 Motívame</button>
+        </div>
+        <div class="chat-input"><input id="botInput" placeholder="Escribe algo como: ¿qué me falta hacer?"><button onclick="sendBotMessage()">Enviar</button></div>
+        <p class="bot-note">💡 EduBot está conectado a los datos de tus tareas guardados en este navegador.</p>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+let tasks=JSON.parse(localStorage.getItem('eduplan_tasks') || '[]');
+let current=new Date(2026,7,1);
+
+function saveTasks(){localStorage.setItem('eduplan_tasks', JSON.stringify(tasks))}
+function renderTasks(){
+  const taskHtml=tasks.map((t,i)=>`<label class="task-row ${t.done?'done':''}"><input type="checkbox" ${t.done?'checked':''} onchange="toggleTask(${i})"><span>${t.text}</span></label>`).join('');
+  document.getElementById('allTasks').innerHTML=tasks.length ? taskHtml : '<p class="muted">Tu lista está vacía. Agrega una tarea para empezar a organizarte.</p>';
+  document.getElementById('taskPreview').innerHTML=tasks.length ? tasks.slice(0,3).map((t,i)=>`<label class="task-row ${t.done?'done':''}"><input type="checkbox" ${t.done?'checked':''} onchange="toggleTask(${i})"><span>${t.text}</span></label>`).join('') : '<p class="muted">No tienes tareas pendientes. Agrega una desde la sección “Tareas”.</p>';
+  const pending=tasks.filter(t=>!t.done).length, completed=tasks.filter(t=>t.done).length, total=tasks.length, percent=total ? Math.round((completed/total)*100) : 0;
+  document.getElementById('pending').textContent=pending; document.getElementById('pending2').textContent=pending; document.getElementById('completed').textContent=completed; document.getElementById('progressKpi').textContent=percent+'%';
+  document.getElementById('progressBar').style.width=percent+'%'; document.getElementById('progressBar2').style.width=percent+'%'; document.getElementById('progressPercent').textContent=percent+'%'; document.getElementById('progressPercent2').textContent=percent+'%'; document.getElementById('progressBadge').textContent=percent+'%';
+  const text=total ? `${completed} de ${total} tareas completadas` : 'Sin tareas todavía';
+  const message=percent===100 && total ? '¡Excelente! Completaste todas tus tareas. 🎉' : total ? 'Sigue avanzando, cada tarea cuenta. 💪' : 'Agrega tus primeras tareas para comenzar a medir tu progreso.';
+  document.getElementById('progressText').textContent=text; document.getElementById('progressText2').textContent=text; document.getElementById('progressMessage').textContent=message; document.getElementById('progressMessage2').textContent=message;
+  updateMotivation(percent,pending,total);
+}
+function updateMotivation(percent,pending,total){
+  const el=document.getElementById('motivationMessage');
+  if(!el)return;
+  if(!total){el.textContent='🌱 Cada gran meta empieza con una pequeña acción. Agrega tu primera tarea y comienza.';return;}
+  if(percent===100)el.textContent='🏆 ¡Lo lograste! Completaste todas tus tareas. Date un pequeño descanso y celebra tu avance.';
+  else if(percent>=80)el.textContent='🚀 ¡Estás a punto de terminar! Solo quedan '+pending+' tarea(s).';
+  else if(percent>=50)el.textContent='🔥 ¡Vas por muy buen camino! Ya superaste la mitad de tus tareas.';
+  else el.textContent='💪 Paso a paso. Tienes '+pending+' tarea(s) pendiente(s), y puedes empezar por una.';
+}
+function botReply(message){
+  const q=message.toLowerCase();
+  const total=tasks.length, completed=tasks.filter(t=>t.done).length, pending=tasks.filter(t=>!t.done);
+  const percent=total?Math.round(completed/total*100):0;
+  if(q.includes('qué')&&q.includes('hoy') || q.includes('que')&&q.includes('hoy')){
+    if(!pending.length)return '🎉 No tienes tareas pendientes. ¡Aprovecha para repasar algo que quieras mejorar o descansar un poco!';
+    return '📚 Te recomiendo empezar por: “'+pending[0].text+'”. Después puedes continuar con '+(pending[1]? '“'+pending[1].text+'”.':'otra tarea que tengas pendiente.')+' Tú decides el ritmo.';
+  }
+  if(q.includes('cómo voy')||q.includes('como voy')||q.includes('progreso'))return total?'📊 Vas en '+percent+'%: completaste '+completed+' de '+total+' tareas y te quedan '+pending.length+'.':'📊 Todavía no tienes tareas registradas.';
+  if(q.includes('motiv')||q.includes('ánimo')||q.includes('animo'))return '💪 No necesitas terminar todo de una vez. Empieza por una sola tarea y deja que el progreso se acumule.';
+  if(q.includes('pendiente')||q.includes('falta')||q.includes('tarea'))return pending.length?'📝 Tienes pendientes: '+pending.map(t=>'“'+t.text+'”').join(', ')+'.':'✅ No tienes tareas pendientes.';
+  if(q.includes('hola'))return '¡Holaa! 👋 Soy EduBot. Pregúntame qué hacer hoy, cómo vas con tus tareas o píde una motivación.';
+  return '🤖 Puedo ayudarte con tus tareas y progreso. Prueba preguntando: “¿Qué debería hacer hoy?”, “¿Cómo voy?” o “Dame una motivación”.';
+}
+function addChat(role,text){
+  const box=document.getElementById('chatMessages');
+  const div=document.createElement('div'); div.className='chat '+role;
+  div.innerHTML='<strong>'+(role==='user'?'Tú':'EduBot')+'</strong><span></span>';
+  div.querySelector('span').textContent=text; box.appendChild(div); box.scrollTop=box.scrollHeight;
+}
+function askEduBot(text){addChat('user',text);setTimeout(()=>addChat('bot',botReply(text)),180);}
+function sendBotMessage(){const input=document.getElementById('botInput');const text=input.value.trim();if(!text)return;input.value='';askEduBot(text);}
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&document.activeElement?.id==='botInput')sendBotMessage()});
+
+function toggleTask(i){
+  tasks[i].done=!tasks[i].done;
+  saveTasks();
+  renderTasks();
+}
+function addTask(){
+  const input=document.getElementById('newTask'); const text=input.value.trim();
+  if(!text)return; tasks.push({text,done:false}); input.value=''; saveTasks(); renderTasks();
+}
+function showPage(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===id));
+}
+document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>showPage(b.dataset.page));
+
+const months=["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+function drawCalendar(id){
+  const y=current.getFullYear(),m=current.getMonth();
+  const first=(new Date(y,m,1).getDay()+6)%7;
+  const total=new Date(y,m+1,0).getDate();
+  const el=document.getElementById(id); el.innerHTML='';
+  for(let i=0;i<first;i++)el.innerHTML+='<div></div>';
+  for(let d=1;d<=total;d++){
+    const day=document.createElement('div'); day.className='day';
+    if(y===2026&&m===7&&d===24)day.classList.add('today');
+    if([5,12,18,24,27].includes(d))day.classList.add('task');
+    day.innerHTML=`${d}${[5,12,18,24,27].includes(d)?'<span class="dot"></span>':''}`;
+    el.appendChild(day);
+  }
+  document.getElementById('monthTitle').textContent=`${months[m]} ${y}`;
+  document.getElementById('monthTitle2').textContent=`${months[m]} ${y}`;
+}
+function changeMonth(n){current.setMonth(current.getMonth()+n);drawCalendar('calendar');drawCalendar('calendar2')}
+renderTasks(); drawCalendar('calendar'); drawCalendar('calendar2');
+</script>
+</body>
+</html>
