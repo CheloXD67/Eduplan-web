@@ -70,6 +70,11 @@ button{cursor:pointer;border:0}
 .bot-avatar{display:grid;place-items:center}
 .bot-avatar svg{width:30px;height:30px}
 
+
+/* EduPlan Study Zone add-on */
+.study-grid{grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch}.timer-display{font-size:clamp(3.2rem,8vw,5.2rem);font-weight:850;letter-spacing:-3px;text-align:center;padding:24px 0;color:var(--primary,#6257d9);font-variant-numeric:tabular-nums}.timer-presets,.timer-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:12px}.timer-actions{margin-top:18px}.music-options{display:flex;flex-direction:column;gap:10px;margin-top:18px}.music-option{display:flex;align-items:center;gap:12px;text-align:left;padding:13px;border:1px solid var(--line,#e5e7eb);border-radius:14px;background:var(--card,#fff);color:inherit;cursor:pointer}.music-option>span:first-child{font-size:1.5rem}.music-option>span:last-child{margin-left:auto}.music-option div{display:flex;flex-direction:column;gap:4px}.music-option small,.music-footnote{font-size:.82rem;color:var(--muted,#73798b)}.music-footnote{margin-top:14px;line-height:1.5}.reward-hero{display:flex;align-items:center;justify-content:space-between;gap:20px;background:linear-gradient(135deg,#f0edff,#f9f7ff)}.eyebrow{font-size:.75rem;letter-spacing:.12em;font-weight:800;color:var(--primary,#6257d9)}.xp-total{display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:100px;height:100px;border-radius:50%;background:white;color:var(--primary,#6257d9);box-shadow:0 8px 24px #5545aa18}.xp-total strong{font-size:2rem}.xp-track{height:10px;border-radius:99px;background:#dedaf8;overflow:hidden;margin:14px 0 8px}.xp-fill{height:100%;width:0;background:linear-gradient(90deg,#7568ed,#b19cff);border-radius:99px;transition:width .3s}.badge-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px;margin-top:16px}.achievement{border:1px solid var(--line,#e5e7eb);border-radius:14px;padding:15px;text-align:center;opacity:.48;filter:grayscale(1)}.achievement.unlocked{opacity:1;filter:none;background:#faf9ff;border-color:#d8d1ff}.achievement .achievement-icon{font-size:2rem}.achievement strong{display:block;margin:7px 0 4px}.achievement small{color:var(--muted,#73798b)}.weekly-chart{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:10px;align-items:end;height:155px;margin-top:22px;padding-top:12px}.chart-day{display:flex;flex-direction:column;align-items:center;justify-content:end;height:100%;gap:7px;font-size:.75rem;color:var(--muted,#73798b)}.chart-bar-wrap{height:105px;width:100%;display:flex;align-items:end;justify-content:center}.chart-bar{width:min(28px,80%);min-height:4px;border-radius:7px 7px 2px 2px;background:linear-gradient(180deg,#a69aff,#6558d8)}.chart-minutes{font-size:.68rem;font-weight:700;color:var(--text,#303244)}
+@media(max-width:850px){.study-grid{grid-template-columns:1fr}.reward-hero{align-items:flex-start}.xp-total{min-width:78px;height:78px}.xp-total strong{font-size:1.5rem}}@media(max-width:500px){.timer-presets button{flex:1}.reward-stats{grid-template-columns:1fr}.weekly-chart{gap:5px}}
+
 </style>
 </head>
 <body>
@@ -81,6 +86,8 @@ button{cursor:pointer;border:0}
       <button data-page="calendario"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18M8 14h2m3 0h2m-7 3h2"/></svg></span><span>Calendario</span></button>
       <button data-page="tareas"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="m8 9 1.5 1.5L12 8m2 2h3m-9 5 1.5 1.5L12 14m2 2h3"/></svg></span><span>Tareas</span></button>
       <button data-page="progreso"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V11m6 9V5m6 15v-7m6 7H2"/><path d="m3 8 5-4 5 4 7-6"/></svg></span><span>Progreso</span></button>
+      <button data-page="estudio"><span class="nav-icon">🎧</span><span>Estudio + música</span></button>
+      <button data-page="recompensas"><span class="nav-icon">🏆</span><span>Recompensas</span></button>
       <button data-page="edubot"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="14" rx="4"/><path d="M12 3v4M8 13h.01M16 13h.01M8 17h8"/></svg></span><span>EduBot</span></button>
     </nav>
     <div class="sidebar-footer">
@@ -192,6 +199,39 @@ button{cursor:pointer;border:0}
       </div>
     </section>
 
+    <section id="estudio" class="section">
+      <div class="page-intro"><div><h2>🎧 Zona de concentración</h2><p class="muted">Pon música, estudia por bloques y registra tus sesiones.</p></div></div>
+      <div class="grid study-grid">
+        <div class="card">
+          <div class="kpi"><h3>⏱️ Temporizador Pomodoro</h3><span class="badge" id="timerModeLabel">Enfoque</span></div>
+          <p class="muted">Elige una duración, inicia el temporizador y concéntrate en una sola tarea.</p>
+          <div class="timer-display" id="timerDisplay">25:00</div>
+          <div class="timer-presets"><button class="secondary-btn" onclick="setTimerPreset(15)">15 min</button><button class="secondary-btn" onclick="setTimerPreset(25)">25 min</button><button class="secondary-btn" onclick="setTimerPreset(45)">45 min</button><button class="secondary-btn" onclick="setBreakMode()">Descanso 5 min</button></div>
+          <div class="timer-actions"><button class="cta" id="timerStartBtn" onclick="toggleTimer()">▶ Iniciar</button><button class="secondary-btn" onclick="resetTimer()">↺ Reiniciar</button></div>
+          <p id="timerStatus" class="muted" aria-live="polite">Cuando termines una sesión de enfoque, sumarás XP.</p>
+        </div>
+        <div class="card">
+          <div class="kpi"><h3>🎵 Música para estudiar</h3><span class="badge">Opcional</span></div>
+          <p class="muted">Abre una mezcla de música en YouTube. La música se reproduce en otra pestaña para que puedas volver a EduPlan fácilmente.</p>
+          <div class="music-options">
+            <button class="music-option" onclick="openStudyMusic('lofi hip hop radio study chill')"><span>🎧</span><div><strong>Lo-fi chill</strong><small>Ritmo suave para concentrarte</small></div><span>↗</span></button>
+            <button class="music-option" onclick="openStudyMusic('rain sounds for studying 1 hour')"><span>🌧️</span><div><strong>Lluvia y naturaleza</strong><small>Sonidos ambientales relajantes</small></div><span>↗</span></button>
+            <button class="music-option" onclick="openStudyMusic('classical piano study music')"><span>🎹</span><div><strong>Piano y clásica</strong><small>Música instrumental</small></div><span>↗</span></button>
+            <button class="music-option" onclick="openStudyMusic('video game soundtrack study playlist')"><span>🎮</span><div><strong>Soundtracks</strong><small>Música de videojuegos</small></div><span>↗</span></button>
+          </div>
+          <p class="music-footnote">La reproducción depende de YouTube y de tu conexión a internet.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="recompensas" class="section">
+      <div class="page-intro"><div><h2>🏆 Mis recompensas</h2><p class="muted">Cada avance cuenta. Gana puntos completando tareas y sesiones de estudio.</p></div></div>
+      <div class="reward-hero card"><div><p class="eyebrow">TU NIVEL ACTUAL</p><h2 id="levelName">🌱 Nivel 1 · Principiante</h2><p id="xpSummary">0 XP acumulados</p><div class="xp-track"><div id="xpBar" class="xp-fill"></div></div><small id="xpNext">0 / 100 XP para el siguiente nivel</small></div><div class="xp-total"><strong id="xpTotal">0</strong><span>XP</span></div></div>
+      <div class="stats reward-stats"><div class="stat"><span class="muted">Tareas completadas</span><strong id="rewardTasks">0</strong></div><div class="stat"><span class="muted">Sesiones Pomodoro</span><strong id="rewardSessions">0</strong></div><div class="stat"><span class="muted">Racha de estudio</span><strong id="rewardStreak">0 días</strong></div></div>
+      <div class="card" style="margin-top:18px"><h3>🎖️ Insignias</h3><p class="muted">Se desbloquean automáticamente cuando alcanzas cada objetivo.</p><div id="badgeGrid" class="badge-grid"></div></div>
+      <div class="card" style="margin-top:18px"><h3>📈 Tus estadísticas</h3><p class="muted">Resumen calculado en este navegador a partir de tus tareas y sesiones.</p><div class="stats"><div class="stat"><span class="muted">Tiempo estudiado</span><strong id="statStudyTime">0 min</strong></div><div class="stat"><span class="muted">Sesiones hoy</span><strong id="statToday">0</strong></div><div class="stat"><span class="muted">Completitud de tareas</span><strong id="statCompletion">0%</strong></div></div><div class="weekly-chart" id="weeklyChart"></div><p class="music-footnote">Tus datos se guardan localmente en este navegador; no se envían a un servidor.</p></div>
+    </section>
+
     <section id="edubot" class="section">
       <div class="card edubot-card">
         <div class="edubot-head">
@@ -210,13 +250,7 @@ button{cursor:pointer;border:0}
           <button onclick="askEduBot('Dame una motivación')">💜 Necesito motivación</button>
         </div>
         <div class="chat-input"><input id="botInput" placeholder="Escribe algo como: ¿qué me falta hacer?"><button onclick="sendBotMessage()">Enviar</button></div>
-        <details class="card" style="margin-top:14px;padding:14px;background:#fafaff;border:1px solid var(--line)">
-          <summary style="cursor:pointer;font-weight:750;color:var(--primary)">⚙️ Conectar EduBot con Cloudflare AI</summary>
-          <p class="muted" style="font-size:13px;line-height:1.5">Pega aquí la URL pública de tu Worker de Cloudflare (termina normalmente en <code>.workers.dev</code>). No pegues claves secretas.</p>
-          <div class="chat-input" style="margin-top:8px"><input id="edubotEndpointInput" type="url" placeholder="https://tu-worker.tu-cuenta.workers.dev" autocomplete="url"><button onclick="saveEduBotEndpoint()">Guardar URL</button></div>
-          <p id="edubotConnectionStatus" class="muted" style="font-size:12px;margin:8px 0 0">Todavía no hay un Worker conectado.</p>
-        </details>
-        <p class="bot-note">💡 EduBot puede usar tus tareas guardadas en este navegador y ofrecer consejos de estudio. Conecta la URL del Worker para activar respuestas de IA y referencias web. Las tareas se guardan localmente en este navegador.</p>
+        <p class="bot-note">💡 EduBot puede usar tus tareas guardadas en este navegador y ofrecer consejos de estudio. Esta versión funciona sin conexión a una IA externa; para conversar de forma tan abierta como ChatGPT necesitaría una API de IA conectada de manera segura a un servidor.</p>
       </div>
     </section>
   </main>
@@ -265,6 +299,7 @@ function renderTasks(){
   const message=!total?'Agrega tus primeras tareas para comenzar a medir tu progreso.':percent===100?'¡Excelente! Todas tus tareas están al 100%. 🎉':percent===0?'Empieza con un pequeño avance en cualquiera de tus tareas.':`Has avanzado un ${percent}% en promedio. Cada pequeño avance cuenta. 💪`;
   document.getElementById('progressText').textContent=text; document.getElementById('progressText2').textContent=text; document.getElementById('progressMessage').textContent=message; document.getElementById('progressMessage2').textContent=message;
   updateMotivation(percent,pending,total);
+  if(typeof updateStudyDashboard==='function')updateStudyDashboard();
 }
 function previewTaskProgress(i,value){const el=document.getElementById('taskPercent'+i);if(el)el.textContent=value+'%';}
 function updateTaskProgress(i,value){tasks[i].progress=Math.max(0,Math.min(100,Number(value)));tasks[i].done=tasks[i].progress===100;saveTasks();renderTasks();}
@@ -316,43 +351,7 @@ function addChat(role,text){
   div.innerHTML='<strong>'+(role==='user'?'Tú':'EduBot')+'</strong><span></span>';
   div.querySelector('span').textContent=text; box.appendChild(div); box.scrollTop=box.scrollHeight;
 }
-// La URL pública del Worker se puede configurar desde el panel de conexión de EduBot.
-// No pongas aquí claves secretas: solo la URL pública terminada normalmente en workers.dev.
-const EDUBOT_API_URL = '';
-function getEduBotEndpoint(){ return (localStorage.getItem('edubot_worker_url') || EDUBOT_API_URL || '').trim().replace(/\/$/, ''); }
-function updateEduBotConnectionStatus(){
-  const input=document.getElementById('edubotEndpointInput');
-  const status=document.getElementById('edubotConnectionStatus');
-  const url=getEduBotEndpoint();
-  if(input && input.value!==url) input.value=url;
-  if(status) status.textContent=url ? '✅ URL guardada. EduBot intentará conectarse al Worker.' : 'Todavía no hay un Worker conectado. Pega la URL que te dio Cloudflare.';
-}
-function saveEduBotEndpoint(){
-  const input=document.getElementById('edubotEndpointInput');
-  const value=(input?.value||'').trim().replace(/\/$/,'');
-  if(!value){localStorage.removeItem('edubot_worker_url');updateEduBotConnectionStatus();return;}
-  try { const u=new URL(value); if(u.protocol!=='https:' || !u.hostname.endsWith('.workers.dev')) throw new Error('url'); }
-  catch(e){ const status=document.getElementById('edubotConnectionStatus'); if(status) status.textContent='⚠️ Pega la URL HTTPS exacta de tu Worker de Cloudflare, normalmente termina en .workers.dev.'; return; }
-  localStorage.setItem('edubot_worker_url',value); updateEduBotConnectionStatus();
-  addChat('bot','¡Listo! Guardé la URL de Cloudflare en este navegador. Envíame una pregunta para probar la conexión.');
-}
-updateEduBotConnectionStatus();
-async function askEduBot(text){
-  addChat('user',text);
-  const endpoint=getEduBotEndpoint();
-  if(!endpoint){setTimeout(()=>addChat('bot',botReply(text)+'\n\nPara activar la IA real, abre “Conectar EduBot con Cloudflare AI” y pega la URL de tu Worker.'),180);return;}
-  const loading=addChat('bot','Estoy buscando fuentes y preparando pistas…');
-  try{
-    const response=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question:text})});
-    const data=await response.json();
-    const span=loading.querySelector('span');
-    if(!response.ok||!data.answer) span.textContent=data.error||'No pude responder ahora. Intenta de nuevo.';
-    else {
-      span.textContent=data.answer+(data.sources?.length?'\n\nFuentes encontradas:\n'+data.sources.map(s=>s.title+' — '+s.url).join('\n'):'');
-    }
-  }catch(e){loading.querySelector('span').textContent='No pude conectar con EduBot. Comprueba que el backend esté desplegado y que la URL sea correcta.';}
-  const box=document.getElementById('chatMessages');box.scrollTop=box.scrollHeight;
-}
+function askEduBot(text){addChat('user',text);setTimeout(()=>addChat('bot',botReply(text)),180);}
 function sendBotMessage(){const input=document.getElementById('botInput');const text=input.value.trim();if(!text)return;input.value='';askEduBot(text);}
 document.addEventListener('keydown',e=>{if(e.key==='Enter'&&document.activeElement?.id==='botInput')sendBotMessage(); if(e.key==='Enter'&&document.activeElement?.id==='newTask')addTask();});
 
@@ -377,6 +376,24 @@ function addTask(){
   tasks.push({text,done:false,progress:0,dueDate});
   input.value=''; dateInput.value='';
   saveTasks(); renderTasks(); drawCalendar('calendar'); drawCalendar('calendar2');
+
+// Study sessions, XP, badges and weekly statistics (saved per browser)
+const STUDY_KEY='eduplan_study_sessions_v1';
+let studySessions=JSON.parse(localStorage.getItem(STUDY_KEY)||'[]');
+let timerSeconds=25*60, timerInitial=25*60, timerInterval=null, timerIsBreak=false;
+function saveStudySessions(){localStorage.setItem(STUDY_KEY,JSON.stringify(studySessions));}
+function padTime(n){return String(n).padStart(2,'0');}
+function paintTimer(){const el=document.getElementById('timerDisplay');if(el)el.textContent=padTime(Math.floor(timerSeconds/60))+':'+padTime(timerSeconds%60);}
+function setTimerPreset(mins){pauseTimer();timerIsBreak=false;timerSeconds=mins*60;timerInitial=timerSeconds;document.getElementById('timerModeLabel').textContent='Enfoque';document.getElementById('timerStatus').textContent='Sesión de '+mins+' minutos preparada. ¡Tú puedes!';document.getElementById('timerStartBtn').textContent='▶ Iniciar';paintTimer();}
+function setBreakMode(){pauseTimer();timerIsBreak=true;timerSeconds=5*60;timerInitial=timerSeconds;document.getElementById('timerModeLabel').textContent='Descanso';document.getElementById('timerStatus').textContent='Tómate cinco minutos para estirarte y descansar.';document.getElementById('timerStartBtn').textContent='▶ Iniciar descanso';paintTimer();}
+function toggleTimer(){if(timerInterval){pauseTimer();return;}document.getElementById('timerStartBtn').textContent='⏸ Pausar';document.getElementById('timerStatus').textContent=timerIsBreak?'Descanso en curso…':'¡Enfócate! El tiempo de estudio se registrará al terminar.';timerInterval=setInterval(()=>{timerSeconds--;paintTimer();if(timerSeconds<=0){pauseTimer();if(!timerIsBreak){const now=new Date();studySessions.push({date:now.toISOString().slice(0,10),minutes:Math.round(timerInitial/60),finishedAt:now.toISOString()});saveStudySessions();document.getElementById('timerStatus').textContent='🎉 ¡Sesión completada! Ganaste 10 XP. ¡Buen trabajo!';}else document.getElementById('timerStatus').textContent='☀️ Descanso terminado. Cuando quieras, empieza otra sesión.';timerIsBreak=false;timerSeconds=timerInitial=25*60;document.getElementById('timerModeLabel').textContent='Enfoque';document.getElementById('timerStartBtn').textContent='▶ Iniciar';paintTimer();updateStudyDashboard();}},1000);}
+function pauseTimer(){if(timerInterval){clearInterval(timerInterval);timerInterval=null;}const b=document.getElementById('timerStartBtn');if(b)b.textContent='▶ Continuar';}
+function resetTimer(){pauseTimer();timerSeconds=timerInitial;paintTimer();document.getElementById('timerStatus').textContent='Temporizador reiniciado.';}
+function openStudyMusic(query){window.open('https://www.youtube.com/results?search_query='+encodeURIComponent(query),'_blank','noopener,noreferrer');}
+function getStudyStats(){const today=new Date();const key=d=>d.toISOString().slice(0,10);const todayKey=key(today);const weekStart=new Date(today);weekStart.setHours(0,0,0,0);weekStart.setDate(today.getDate()-((today.getDay()+6)%7));const week=[];for(let i=0;i<7;i++){const d=new Date(weekStart);d.setDate(weekStart.getDate()+i);const k=key(d);week.push({key:k,label:['L','M','X','J','V','S','D'][i],minutes:studySessions.filter(x=>x.date===k).reduce((a,x)=>a+(Number(x.minutes)||0),0)});}const todaySessions=studySessions.filter(x=>x.date===todayKey).length;let streak=0;const dates=new Set(studySessions.map(x=>x.date));let d=new Date(today);if(!dates.has(key(d)))d.setDate(d.getDate()-1);while(dates.has(key(d))&&streak<366){streak++;d.setDate(d.getDate()-1);}return {week,todaySessions,streak,totalMinutes:studySessions.reduce((a,x)=>a+(Number(x.minutes)||0),0)};}
+function updateStudyDashboard(){const stats=getStudyStats();const completed=tasks.filter(t=>Number(t.progress||0)>=100).length;const total=tasks.length;const xp=completed*20+studySessions.length*10;const level=Math.floor(xp/100)+1;const into=xp%100;const levels=['Principiante','Constante','En marcha','Imparable','Leyenda'];const name=levels[Math.min(level-1,levels.length-1)];const set=(id,val)=>{const el=document.getElementById(id);if(el)el.textContent=val;};set('weeklyHours',(stats.week.reduce((a,d)=>a+d.minutes,0)/60).toFixed(1)+' h');set('xpTotal',xp);set('levelName','🌱 Nivel '+level+' · '+name);set('xpSummary',xp+' XP acumulados');set('xpNext',into+' / 100 XP para el siguiente nivel');const bar=document.getElementById('xpBar');if(bar)bar.style.width=into+'%';set('rewardTasks',completed);set('rewardSessions',studySessions.length);set('rewardStreak',stats.streak+' días');set('statStudyTime',stats.totalMinutes+' min');set('statToday',stats.todaySessions);set('statCompletion',(total?Math.round(completed/total*100):0)+'%');const badges=[['🌱','Primer paso','Completa tu primera tarea',completed>=1],['📚','Organizado','Completa 5 tareas',completed>=5],['🏆','En racha','Completa 10 tareas',completed>=10],['⏳','Primera sesión','Termina un Pomodoro',studySessions.length>=1],['🔥','Concentración','Termina 5 sesiones',studySessions.length>=5],['💎','Dedicación','Acumula 10 sesiones',studySessions.length>=10],['☀️','Constancia','Estudia 3 días seguidos',stats.streak>=3],['🚀','Maratón','Acumula 5 horas de estudio',stats.totalMinutes>=300]];const grid=document.getElementById('badgeGrid');if(grid)grid.innerHTML=badges.map(b=>`<div class="achievement ${b[3]?'unlocked':''}"><div class="achievement-icon">${b[0]}</div><strong>${b[1]}</strong><small>${b[2]}${b[3]?' · Desbloqueada':' · Bloqueada'}</small></div>`).join('');const chart=document.getElementById('weeklyChart');if(chart){const max=Math.max(30,...stats.week.map(x=>x.minutes));chart.innerHTML=stats.week.map(x=>`<div class="chart-day"><span class="chart-minutes">${x.minutes}m</span><div class="chart-bar-wrap"><div class="chart-bar" style="height:${Math.max(4,x.minutes/max*100)}%" title="${x.minutes} minutos"></div></div><span>${x.label}</span></div>`).join('');}}
+
+updateStudyDashboard();
 }
 function showPage(id){
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
@@ -450,7 +467,9 @@ function addTaskFromCalendar(){
   document.getElementById('selectedDayTasks').textContent=`Ahora tienes ${dayTasks.length} tarea(s) ese día: ${dayTasks.map(t=>t.text).join(', ')}.`;
 }
 function changeMonth(n){current.setMonth(current.getMonth()+n);drawCalendar('calendar');drawCalendar('calendar2')}
+
 renderTasks(); drawCalendar('calendar'); drawCalendar('calendar2');
+updateStudyDashboard();
 </script>
 </body>
 </html>
