@@ -25,43 +25,71 @@ button{cursor:pointer;border:0}
 .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:25px}
 .greeting h1{margin:0;font-size:30px}.greeting p{margin:5px 0;color:var(--muted)}
 .avatar{width:45px;height:45px;border-radius:50%;background:#dfe3ff;color:#4d55cf;display:grid;place-items:center;font-weight:800}
-.grid{display:grid;grid-template-columns:1.3fr .8fr;gap:20px}
+
+/* Grid principal asegurando visibilidad completa de columnas */
+.grid{display:grid;grid-template-columns: 1.2fr 1fr;gap:20px;align-items:start;}
 .card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:22px;box-shadow:var(--shadow)}
 .card h2,.card h3{margin:0 0 15px}.muted{color:var(--muted)}
 .hero{background:linear-gradient(135deg,#5b63e8,#7b61ff);color:#fff;border:0}
 .hero p{color:#e9eaff;max-width:600px;line-height:1.6}
 .cta{background:#fff;color:#555ee5;padding:12px 18px;border-radius:12px;font-weight:800}
 
-/* Corrección clave para que las secciones se muestren correctamente y no desaparezcan */
+/* Secciones */
 .section{display:none;}
 .section.active{display:block;}
 
-.calendar-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-.calendar-head button{background:#f0f1f8;width:34px;height:34px;border-radius:10px}
-.week{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;text-align:center;font-size:12px;color:var(--muted);margin-bottom:6px}
+/* Calendario */
+.calendar-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.calendar-head button{background:#f0f1f8;width:34px;height:34px;border-radius:10px;font-weight:bold}
+.week{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;text-align:center;font-size:12px;color:var(--muted);margin-bottom:6px;font-weight:600}
 .days{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
-.day{min-height:54px;border:1px solid var(--line);border-radius:10px;background:#fff;padding:7px;text-align:left;font-size:13px;cursor:pointer;transition:transform .15s,border-color .15s,background .15s}.day:hover{border-color:var(--primary);background:#f7f7ff;transform:translateY(-1px)}.day.selected{outline:2px solid var(--primary);background:#eef0ff}
+.day{min-height:48px;border:1px solid var(--line);border-radius:10px;background:#fff;padding:6px;text-align:center;font-size:13px;cursor:pointer;transition:transform .15s,border-color .15s,background .15s}
+.day:hover{border-color:var(--primary);background:#f7f7ff;transform:translateY(-1px)}
+.day.selected{outline:2px solid var(--primary);background:#eef0ff}
 .day.today{background:#eef0ff;border:2px solid var(--primary);color:var(--primary);font-weight:800}
+
+/* Organizador de Tareas */
 .progress{height:12px;background:#eceef5;border-radius:99px;overflow:hidden}.bar{height:100%;width:0%;transition:width .45s ease;background:linear-gradient(90deg,var(--primary),var(--primary2));border-radius:99px}
 .progress-label{display:flex;justify-content:space-between;margin:8px 0 12px;font-weight:700}
 .tasks{display:flex;flex-direction:column;gap:10px}
-.task-row{display:flex;align-items:flex-start;gap:12px;padding:14px;border:1px solid var(--line);border-radius:13px}.task-info{flex:1;min-width:0}.task-title{font-weight:700;display:block}.task-tools{display:flex;align-items:center;gap:10px;margin-top:9px;flex-wrap:wrap}.task-tools input[type=range]{flex:1;min-width:110px;accent-color:var(--primary)}.task-percent{font-size:13px;font-weight:800;color:var(--primary);min-width:38px}.task-status{font-size:12px;color:var(--muted)}
-.task-row input[type=checkbox]{width:18px;height:18px;accent-color:var(--primary)}
-.task-delete{border:1px solid #f0b8bd;background:#fff5f5;color:#b42332;border-radius:9px;padding:7px 10px;font-weight:700;cursor:pointer;font-size:12px;white-space:nowrap}.task-delete:hover{background:#ffe4e6}
+.task-row{display:flex;align-items:flex-start;gap:12px;padding:14px;border:1px solid var(--line);border-radius:13px}
+.task-info{flex:1;min-width:0}.task-title{font-weight:700;display:block}
+.task-tools{display:flex;align-items:center;gap:10px;margin-top:9px;flex-wrap:wrap}
+.task-tools input[type=range]{flex:1;min-width:110px;accent-color:var(--primary)}
+.task-percent{font-size:13px;font-weight:800;color:var(--primary);min-width:38px}
+.task-status{font-size:12px;color:var(--muted)}
+.task-row input[type=checkbox]{width:18px;height:18px;accent-color:var(--primary);margin-top:2px}
+.task-delete{border:1px solid #f0b8bd;background:#fff5f5;color:#b42332;border-radius:9px;padding:7px 10px;font-weight:700;cursor:pointer;font-size:12px;white-space:nowrap}
+.task-delete:hover{background:#ffe4e6}
 .task-row.done span.task-title{text-decoration:line-through;color:#9aa1b1}
-.add{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}.add input{flex:1;min-width:180px;border:1px solid var(--line);border-radius:11px;padding:11px}.add button{background:var(--primary);color:white;border-radius:11px;padding:0 15px}
-.kpi{display:flex;align-items:center;justify-content:space-between}.badge{padding:6px 10px;background:#e9faf3;color:#208b61;border-radius:99px;font-size:12px;font-weight:700}
+.add{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.add input{flex:1;min-width:180px;border:1px solid var(--line);border-radius:11px;padding:11px}
+.add button{background:var(--primary);color:white;border-radius:11px;padding:0 15px;font-weight:700}
+.kpi{display:flex;align-items:center;justify-content:space-between}
+.badge{padding:6px 10px;background:#e9faf3;color:#208b61;border-radius:99px;font-size:12px;font-weight:700}
 
-.motivation{font-size:16px;line-height:1.55;margin:12px 0 2px}.motivation-card{background:linear-gradient(135deg,#f7f8ff,#ffffff)}
-.edubot-card{max-width:850px;margin:0 auto}.edubot-head{display:flex;gap:14px;align-items:center}.edubot-head h2{margin:0 0 3px}.bot-avatar{width:54px;height:54px;border-radius:16px;background:#eef0ff;display:grid;place-items:center}
+/* Motivación y EduBot */
+.motivation{font-size:16px;line-height:1.55;margin:12px 0 2px}
+.motivation-card{background:linear-gradient(135deg,#f7f8ff,#ffffff)}
+.edubot-card{max-width:850px;margin:0 auto}
+.edubot-head{display:flex;gap:14px;align-items:center}
+.edubot-head h2{margin:0 0 3px}
+.bot-avatar{width:54px;height:54px;border-radius:16px;background:#eef0ff;display:grid;place-items:center}
 .chat-messages{height:380px;overflow-y:auto;margin:20px 0;padding:14px;background:#f7f8fc;border-radius:16px;display:flex;flex-direction:column;gap:12px}
-.chat{max-width:82%;padding:12px 14px;border-radius:14px;display:flex;flex-direction:column;gap:4px;line-height:1.45}.chat.bot{align-self:flex-start;background:white;border:1px solid var(--line)}.chat.user{align-self:flex-end;background:#eef0ff;color:#272a55}
-.chat-input{display:flex;gap:8px}.chat-input input{flex:1;border:1px solid var(--line);border-radius:11px;padding:11px}.chat-input button{background:var(--primary);color:white;border-radius:11px;padding:0 16px}
-.bot-suggestions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:12px 0}.bot-suggestions button{text-align:left;background:#f7f8ff;border:1px solid var(--line);padding:11px;border-radius:12px;color:var(--text)}.bot-suggestions button:hover{border-color:var(--primary);background:#eef0ff}
-.calendar-help{margin-top:16px;padding:14px 16px;background:#f7f8ff;border-radius:13px;color:var(--muted);font-size:13px;line-height:1.5}
-.page-intro{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:18px;flex-wrap:wrap}.page-intro h2{margin:0 0 6px}.page-intro p{margin:0}
+.chat{max-width:82%;padding:12px 14px;border-radius:14px;display:flex;flex-direction:column;gap:4px;line-height:1.45}
+.chat.bot{align-self:flex-start;background:white;border:1px solid var(--line)}
+.chat.user{align-self:flex-end;background:#eef0ff;color:#272a55}
+.chat-input{display:flex;gap:8px}
+.chat-input input{flex:1;border:1px solid var(--line);border-radius:11px;padding:11px}
+.chat-input button{background:var(--primary);color:white;border-radius:11px;padding:0 16px;font-weight:700}
+.bot-suggestions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:12px 0}
+.bot-suggestions button{text-align:left;background:#f7f8ff;border:1px solid var(--line);padding:11px;border-radius:12px;color:var(--text)}
+.bot-suggestions button:hover{border-color:var(--primary);background:#eef0ff}
+.calendar-help{margin-top:16px;padding:12px 14px;background:#f7f8ff;border-radius:13px;color:var(--muted);font-size:13px;line-height:1.5}
+.page-intro{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:18px;flex-wrap:wrap}
+.page-intro h2{margin:0 0 6px}.page-intro p{margin:0}
 
-/* Estilos de iconos */
+/* Iconos barra lateral */
 .nav button{display:flex;align-items:center;gap:13px;min-height:54px}
 .nav-icon{width:32px;height:32px;flex:0 0 32px;display:grid;place-items:center;border-radius:10px;background:#f0f1ff;color:var(--primary)}
 .nav-icon svg,.heading-icon svg,.bot-avatar svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
@@ -69,8 +97,8 @@ button{cursor:pointer;border:0}
 .heading-icon{display:inline-flex;vertical-align:middle;color:var(--primary);margin-right:5px}
 .bot-avatar svg{width:28px;height:28px}
 
-@media(max-width:900px){.sidebar{width:220px;flex-basis:220px;padding:22px 12px}.content{padding:18px}.grid{grid-template-columns:1fr}}
-@media(max-width:560px){.sidebar{display:none}}
+@media(max-width:950px){.sidebar{width:220px;flex-basis:220px;padding:22px 12px}.content{padding:18px}.grid{grid-template-columns:1fr}}
+@media(max-width:600px){.sidebar{display:none}}
 </style>
 </head>
 <body>
@@ -114,9 +142,10 @@ button{cursor:pointer;border:0}
       <div class="avatar">EP</div>
     </div>
 
-    <!-- SECCIÓN: DASHBOARD -->
+    <!-- SECCIÓN: DASHBOARD (PANEL PRINCIPAL) -->
     <section id="dashboard" class="section active">
       <div class="grid">
+        <!-- Columna Izquierda: Bienvenida y Frase -->
         <div style="display:flex;flex-direction:column;gap:20px;">
           <div class="card hero">
             <h2>Bienvenido a EduPlan 🚀</h2>
@@ -126,15 +155,16 @@ button{cursor:pointer;border:0}
             </div>
           </div>
           <div class="card motivation-card">
-            <h3 style="display:flex;align-items:center;gap:8px;">
+            <h3>
               <span class="heading-icon"><svg viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.5 4 6.5 2 2 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.229 1.15-3.054.55.631 1.35 1.054 2.35 1.054Z"/></svg></span>
               Frase motivadora del día
             </h3>
-            <div class="motivation" id="daily-quote">"El éxito es la suma de pequeños esfuerzos repetidos día tras día."</div>
+            <div class="motivation">"El éxito es la suma de pequeños esfuerzos repetidos día tras día."</div>
           </div>
         </div>
         
-        <div style="display:flex;flex-direction:column;gap:20px;">
+        <!-- Columna Derecha: Calendario Interactivo -->
+        <div>
           <div class="card">
             <div class="calendar-head">
               <h3 id="calendar-month-year" style="margin:0;">Octubre 2026</h3>
@@ -147,7 +177,7 @@ button{cursor:pointer;border:0}
               <div>Lun</div><div>Mar</div><div>Mié</div><div>Jue</div><div>Vie</div><div>Sáb</div><div>Dom</div>
             </div>
             <div class="days" id="calendar-days"></div>
-            <div class="calendar-help">Selecciona un día para ver o planificar tareas específicas.</div>
+            <div class="calendar-help">Haz clic en un día del calendario para seleccionarlo.</div>
           </div>
         </div>
       </div>
@@ -176,213 +206,4 @@ button{cursor:pointer;border:0}
           </div>
           <div class="progress"><div class="bar" id="overall-bar"></div></div>
         </div>
-        <hr style="border:0;border-top:1px solid var(--line);margin:20px 0;">
-        <div class="tasks" id="tasks-container"></div>
-        <div class="add">
-          <input type="text" id="new-task-input" placeholder="Añade una nueva tarea o meta...">
-          <button onclick="addNewTask()">Agregar Tarea</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- SECCIÓN: CHATBOT / EDUBOT -->
-    <section id="bot" class="section">
-      <div class="card edubot-card">
-        <div class="edubot-head">
-          <div class="bot-avatar">
-            <svg viewBox="0 0 24 24"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M10 13v2"/><path d="M14 13v2"/></svg>
-          </div>
-          <div>
-            <h2>EduBot IA</h2>
-            <p class="muted" style="margin:0;">Tu asistente virtual para resolver dudas y organizar tus estudios.</p>
-          </div>
-        </div>
-        <div class="chat-messages" id="chat-messages">
-          <div class="chat bot">
-            <span>¡Hola! Soy EduBot. ¿En qué te puedo ayudar hoy con tus estudios? Puedes preguntarme sobre técnicas de estudio, matemáticas, redacción o planificación.</span>
-          </div>
-        </div>
-        <div class="bot-suggestions">
-          <button onclick="askBot('¿Cómo puedo organizarme mejor para un examen?')">💡 ¿Cómo organizarme para un examen?</button>
-          <button onclick="askBot('Dame consejos para concentrarme mejor')">🧠 Consejos para concentración</button>
-        </div>
-        <div class="chat-input">
-          <input type="text" id="chat-input-box" placeholder="Escribe tu consulta aquí..." onkeypress="handleChatKey(event)">
-          <button onclick="sendChatMessage()">Enviar</button>
-        </div>
-      </div>
-    </section>
-  </main>
-</div>
-
-<script>
-function switchSection(sectionId, btn) {
-  document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
-  document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
-  document.getElementById(sectionId).classList.add('active');
-  btn.classList.add('active');
-}
-
-let tasks = [
-  { title: 'Estudiar para el examen de admisión', percent: 60, done: false },
-  { title: 'Práctica semanal de ICPNA', percent: 40, done: false },
-  { title: 'Organizar apuntes de repaso', percent: 100, done: true }
-];
-
-function renderTasks() {
-  const container = document.getElementById('tasks-container');
-  container.innerHTML = '';
-  
-  let completedCount = 0;
-  tasks.forEach((task, index) => {
-    if (task.done) completedCount++;
-    
-    const row = document.createElement('div');
-    row.className = `task-row ${task.done ? 'done' : ''}`;
-    row.innerHTML = `
-      <input type="checkbox" ${task.done ? 'checked' : ''} onchange="toggleTask(${index})">
-      <div class="task-info">
-        <span class="task-title">${task.title}</span>
-        <div class="task-tools">
-          <input type="range" min="0" max="100" value="${task.percent}" oninput="updateTaskPercent(${index}, this.value)">
-          <span class="task-percent">${task.percent}%</span>
-          <span class="task-status">${task.done ? 'Completado' : 'En progreso'}</span>
-        </div>
-      </div>
-      <button class="task-delete" onclick="deleteTask(${index})">Eliminar</button>
-    `;
-    container.appendChild(row);
-  });
-
-  const total = tasks.length;
-  const percentage = total > 0 ? Math.round((completedCount / total) * 100) : 0;
-  
-  document.getElementById('tasks-counter').innerText = `${completedCount} de ${total} tareas completadas`;
-  document.getElementById('overall-percentage').innerText = `${percentage}%`;
-  document.getElementById('overall-bar').style.width = `${percentage}%`;
-  document.getElementById('sidebar-progress-text').innerText = `${percentage}%`;
-  document.getElementById('badge-status').innerText = percentage === 100 ? '¡Completado!' : 'En proceso';
-}
-
-function toggleTask(index) {
-  tasks[index].done = !tasks[index].done;
-  if (tasks[index].done) tasks[index].percent = 100;
-  renderTasks();
-}
-
-function updateTaskPercent(index, value) {
-  tasks[index].percent = parseInt(value);
-  tasks[index].done = (value == 100);
-  renderTasks();
-}
-
-function addNewTask() {
-  const input = document.getElementById('new-task-input');
-  const val = input.value.trim();
-  if (!val) return;
-  tasks.push({ title: val, percent: 0, done: false });
-  input.value = '';
-  renderTasks();
-}
-
-function deleteTask(index) {
-  tasks.splice(index, 1);
-  renderTasks();
-}
-
-let currentDate = new Date(2026, 9, 25);
-
-function renderCalendar() {
-  const year = currentDate.getFullYear();
-  const month = currentDate.getMonth();
-  const monthsNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-  document.getElementById('calendar-month-year').innerText = `${monthsNames[month]} ${year}`;
-
-  const daysContainer = document.getElementById('calendar-days');
-  daysContainer.innerHTML = '';
-
-  const firstDayIndex = new Date(year, month, 1).getDay();
-  const startingPoint = (firstDayIndex === 0) ? 6 : firstDayIndex - 1;
-  const totalDays = new Date(year, month + 1, 0).getDate();
-
-  for (let i = 0; i < startingPoint; i++) {
-    daysContainer.appendChild(document.createElement('div'));
-  }
-
-  for (let d = 1; d <= totalDays; d++) {
-    const dayBtn = document.createElement('button');
-    dayBtn.className = 'day';
-    dayBtn.innerText = d;
-    
-    if (d === 25 && month === 9 && year === 2026) {
-      dayBtn.classList.add('today');
-    }
-
-    dayBtn.onclick = () => {
-      document.querySelectorAll('.day').forEach(el => el.classList.remove('selected'));
-      dayBtn.classList.add('selected');
-    };
-
-    daysContainer.appendChild(dayBtn);
-  }
-}
-
-function changeMonth(direction) {
-  currentDate.setMonth(currentDate.getMonth() + direction);
-  renderCalendar();
-}
-
-// IA Inteligente mejorada para responder a cualquier pregunta o texto ingresado
-function sendChatMessage() {
-  const input = document.getElementById('chat-input-box');
-  const text = input.value.trim();
-  if (!text) return;
-
-  appendMessage(text, 'user');
-  input.value = '';
-
-  setTimeout(() => {
-    let reply = "¡Entiendo perfectamente! Para lograrlo, te sugiero desglosar tus metas en pequeños pasos diarios, mantener tus apuntes ordenados y tomar pequeños descansos para no saturarte.";
-    
-    const lower = text.toLowerCase();
-    if (lower.includes('examen') || lower.includes('prueba')) {
-      reply = "Para prepararte para un examen: 1. Repasa tus conceptos clave y fórmulas, 2. Haz simulacros de preguntas tipo examen, 3. Descansa bien la noche previa para fijar los conocimientos.";
-    } else if (lower.includes('concentr') || lower.includes('enfocar')) {
-      reply = "Para mejorar tu concentración: aleja el teléfono móvil de tu mesa de estudio, utiliza auriculares con música instrumental o ruido blanco, y aplica bloques de trabajo de 25 minutos con 5 de descanso.";
-    } else if (lower.includes('quien') || lower.includes('quién') || lower.includes('eres') || lower.includes('cual es yo') || lower.includes('cuál es yo')) {
-      reply = "¡Soy EduBot, tu asistente virtual personal dentro de EduPlan! Estoy aquí para ayudarte a organizar tus horarios, guiarte con tus estudios y responder tus consultas académicas.";
-    } else if (lower.includes('hola') || lower.includes('saludos')) {
-      reply = "¡Hola! Qué gusto saludarte. ¿En qué tema o tarea te gustaría que te apoye el día de hoy?";
-    }
-    
-    appendMessage(reply, 'bot');
-  }, 600);
-}
-
-function askBot(question) {
-  document.getElementById('chat-input-box').value = question;
-  sendChatMessage();
-}
-
-function appendMessage(text, sender) {
-  const messagesContainer = document.getElementById('chat-messages');
-  const msgDiv = document.createElement('div');
-  msgDiv.className = `chat ${sender}`;
-  msgDiv.innerHTML = `<span>${text}</span>`;
-  messagesContainer.appendChild(msgDiv);
-  messagesContainer.scrollTop = messagesContainer.scrollHeight;
-}
-
-function handleChatKey(e) {
-  if (e.key === 'Enter') {
-    sendChatMessage();
-  }
-}
-
-window.onload = () => {
-  renderTasks();
-  renderCalendar();
-};
-</script>
-</body>
-</html>
+        <hr style="border:0;border-top:1px solid var(--
