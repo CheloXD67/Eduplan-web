@@ -6,12 +6,15 @@
 <title>EduPlan — Organiza tu tiempo</title>
 <style>
 :root{
-  --bg:#f5f7fb; --card:#fff; --text:#172033; --muted:#697386;
-  --primary:#5b63e8; --primary2:#7b61ff; --line:#e7e9f0;
+  --bg:#34235f; --card:rgba(255,255,255,.94); --text:#21183e; --muted:#726887;
+  --primary:#7856e8; --primary2:#c084fc; --line:#e5dafa;
   --success:#35b779; --danger:#ef6b73; --shadow:0 12px 35px rgba(32,39,70,.09);
 }
 *{box-sizing:border-box}
-body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;background:var(--bg);color:var(--text)}
+body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;background:linear-gradient(180deg,#241944 0%,#4a347b 24%,#9663a5 49%,#d78baf 68%,#f2b8b7 82%,#42305f 100%);background-attachment:fixed;color:var(--text);min-height:100vh;position:relative}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;background:radial-gradient(ellipse at 72% 20%,rgba(255,194,219,.42),transparent 36%),radial-gradient(ellipse at 18% 62%,rgba(147,112,245,.32),transparent 42%),linear-gradient(180deg,rgba(30,21,62,.22),rgba(42,25,70,.16));}
+.sidebar{background:linear-gradient(180deg,rgba(36,26,69,.97),rgba(56,38,94,.96));border-right:1px solid rgba(255,255,255,.16);color:#f6edff}.nav button{color:#e0d4fa}.nav button.active,.nav button:hover{background:linear-gradient(110deg,#7954e8,#a16fe7);color:#fff;box-shadow:0 8px 22px #20113b44}.sidebar-footer{background:rgba(255,255,255,.1);border-color:#ffffff30}.sidebar-footer .footer-title,.sidebar-stat strong{color:#e2c9ff}.sidebar-footer p,.sidebar-stat{color:#e6dcf7}
+.content{position:relative}.card,.stat,.mini-card{background:rgba(255,255,255,.93);backdrop-filter:blur(10px)}.hero{background:linear-gradient(135deg,rgba(90,61,160,.96),rgba(169,99,190,.93))}.greeting h1{color:#fff;text-shadow:0 2px 14px #21133b66}.greeting p{color:#f5eaff}
 button,input{font:inherit}
 button{cursor:pointer;border:0}
 .app{min-height:100vh;display:flex}
@@ -48,6 +51,8 @@ button{cursor:pointer;border:0}
 .task-delete{border:1px solid #f0b8bd;background:#fff5f5;color:#b42332;border-radius:9px;padding:7px 10px;font-weight:700;cursor:pointer;font-size:12px;white-space:nowrap}.task-delete:hover{background:#ffe4e6}
 .task-row.done span{text-decoration:line-through;color:#9aa1b1}
 .add{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}.add input{flex:1;min-width:180px;border:1px solid var(--line);border-radius:11px;padding:11px}.add button{background:var(--primary);color:white;border-radius:11px;padding:0 15px}
+.add-task-form{display:grid;grid-template-columns:minmax(180px,2fr) repeat(3,minmax(130px,1fr));gap:9px;margin-top:14px;align-items:center}.add-task-form input,.add-task-form select{width:100%;min-width:0;border:1px solid #d9ccef;border-radius:12px;padding:12px;background:#fff;color:#33244f}.add-task-form button{grid-column:1/-1;justify-self:start;background:linear-gradient(100deg,#7755e8,#ad72e8);color:white;border-radius:12px;padding:12px 18px;font-weight:800;box-shadow:0 6px 16px #7653d533}.task-meta{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-top:8px}.task-chip{display:inline-flex;align-items:center;padding:4px 9px;border-radius:999px;font-size:11px;font-weight:800;line-height:1.35}.source-school{background:#dbeafe;color:#1d4ed8}.source-academia{background:#ffedd5;color:#c2410c}.source-icpna{background:#dcfce7;color:#15803d}.source-personal{background:#f3e8ff;color:#7e22ce}.source-other{background:#e5e7eb;color:#374151}.difficulty-easy{background:#d1fae5;color:#047857}.difficulty-medium{background:#fef3c7;color:#92400e}.difficulty-hard{background:#fee2e2;color:#b91c1c}.difficulty-expert{background:#ede9fe;color:#6d28d9}.task-xp{font-size:12px;font-weight:900;color:#7650d9;background:#f1eaff;border:1px solid #e0d2ff;border-radius:999px;padding:5px 9px;white-space:nowrap}.timer-ring-wrap{width:min(230px,70vw);aspect-ratio:1;margin:18px auto 22px;position:relative;display:grid;place-items:center}.timer-ring{width:100%;height:100%;transform:rotate(-90deg);overflow:visible}.timer-ring-track{fill:none;stroke:#e9ddff;stroke-width:9}.timer-ring-progress{fill:none;stroke:url(#timerGradient);stroke-width:9;stroke-linecap:round;stroke-dasharray:326.73;stroke-dashoffset:0;transition:stroke-dashoffset .35s linear}.timer-ring-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px}.timer-ring-center .timer-display{font-size:clamp(2.4rem,5vw,3.3rem);padding:0;letter-spacing:-2px}.timer-ring-center small{font-weight:700;color:#7865ad}.timer-ring-wrap.break-mode .timer-ring-progress{stroke:url(#breakGradient)}
+@media(max-width:900px){.add-task-form{grid-template-columns:1fr 1fr}.add-task-form input:first-child{grid-column:1/-1}.add-task-form button{grid-column:1/-1}}@media(max-width:560px){.add-task-form{grid-template-columns:1fr}.add-task-form input:first-child{grid-column:auto}.add-task-form button{width:100%}}
 .section{display:none}.section.active{display:block}
 .kpi{display:flex;align-items:center;justify-content:space-between}.badge{padding:6px 10px;background:#e9faf3;color:#208b61;border-radius:99px;font-size:12px;font-weight:700}
 @media(max-width:900px){.sidebar{width:220px;flex-basis:220px;padding:22px 12px}.logo{font-size:23px}.nav button{padding:13px 10px;font-size:14px}.content{padding:18px}.grid{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr 1fr}}
@@ -115,6 +120,16 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;opa
 .chat-messages{background:#eee8fa}.chat.bot{background:#fffaff}.chat.user{background:#e5dcff;color:#30205f}.bot-suggestions button{background:#f4efff;color:#35245f}.secondary-btn{background:#e8dfff;color:#6040c6}.empty-panel{background:#f7f2ff}.notification-trigger{color:#f5efff;background:#302452;border-color:#57467f}.notification-panel{background:#fbf8ff;color:#2b2057;border-color:#ddd2fa}
 button{transition:filter .18s,transform .18s}button:hover{filter:brightness(1.035)}
 @media(max-width:700px){.sidebar{background:linear-gradient(180deg,#1b1739,#211944)}}
+
+/* Overrides finales: ambiente atardecer-anochecer morado */
+body{background:linear-gradient(180deg,#241944 0%,#4a347b 24%,#9663a5 49%,#d78baf 68%,#f2b8b7 82%,#42305f 100%);background-attachment:fixed}
+.sidebar{background:linear-gradient(180deg,rgba(36,26,69,.97),rgba(56,38,94,.96));border-right:1px solid rgba(255,255,255,.16);color:#f6edff}
+.nav button{color:#e0d4fa}.nav button.active,.nav button:hover{background:linear-gradient(110deg,#7954e8,#a16fe7);color:#fff;box-shadow:0 8px 22px #20113b44}
+.sidebar-footer{background:rgba(255,255,255,.1);border-color:#ffffff30}.sidebar-footer .footer-title,.sidebar-stat strong{color:#e2c9ff}.sidebar-footer p,.sidebar-stat{color:#e6dcf7}
+.card,.stat,.mini-card{background:rgba(255,255,255,.94);backdrop-filter:blur(10px)}
+.hero{background:linear-gradient(135deg,rgba(90,61,160,.96),rgba(169,99,190,.93))}
+.greeting h1{color:#fff;text-shadow:0 2px 14px #21133b66}.greeting p{color:#f5eaff}
+
 </style>
 </head>
 <body>
@@ -219,7 +234,7 @@ button{transition:filter .18s,transform .18s}button:hover{filter:brightness(1.03
       <div class="card">
         <h2>Mis tareas</h2><p class="muted">Marca lo que ya terminaste y agrega nuevas tareas. Tus tareas se guardan solo en este navegador.</p>
         <div id="allTasks" class="tasks"></div>
-        <div class="add"><input id="newTask" placeholder="Ej. Estudiar para el examen de inglés"><input id="newTaskDate" type="date" title="Fecha de entrega"><button onclick="addTask()">Agregar tarea ＋</button></div>
+        <div class="add-task-form"><input id="newTask" placeholder="Ej. Estudiar para el examen de inglés" aria-label="Nombre de la tarea"><input id="newTaskDate" type="date" title="Fecha de entrega" aria-label="Fecha de entrega"><select id="newTaskSource" aria-label="Origen de la tarea"><option value="Escuela">🏫 Escuela</option><option value="Academia">📚 Academia</option><option value="ICPNA">🌎 ICPNA</option><option value="Personal">✨ Personal</option><option value="Otro">🗂️ Otro</option></select><select id="newTaskDifficulty" aria-label="Dificultad de la tarea" onchange="previewTaskXP()"><option value="easy">🟢 Fácil · 10 XP</option><option value="medium" selected>🟡 Media · 20 XP</option><option value="hard">🔴 Difícil · 35 XP</option><option value="expert">🟣 Muy difícil · 50 XP</option></select><button onclick="addTask()">＋ Agregar tarea · <span id="newTaskXpPreview">20 XP</span></button></div>
       </div>
       <div class="mini-grid">
         <div class="mini-card"><div class="emoji icon-tile"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h6a2 2 0 1 1 4 0h6v6a2 2 0 1 0 0 4v6h-6a2 2 0 1 1-4 0H4v-6a2 2 0 1 0 0-4z"/></svg></div><h3>Divide una tarea grande</h3><p>En vez de “estudiar biología”, prueba con “leer el tema”, “hacer un resumen” y “resolver 10 preguntas”.</p></div>
@@ -256,7 +271,7 @@ button{transition:filter .18s,transform .18s}button:hover{filter:brightness(1.03
         <div class="card">
           <div class="kpi"><h3>⏱️ Temporizador Pomodoro</h3><span class="badge" id="timerModeLabel">Enfoque</span></div>
           <p class="muted">Elige una duración, inicia el temporizador y concéntrate en una sola tarea.</p>
-          <div class="timer-display" id="timerDisplay">25:00</div>
+          <div class="timer-ring-wrap" id="timerRingWrap"><svg class="timer-ring" viewBox="0 0 120 120" aria-hidden="true"><defs><linearGradient id="timerGradient" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#7856e8"/><stop offset="100%" stop-color="#d08cf5"/></linearGradient><linearGradient id="breakGradient" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#f0a6b8"/><stop offset="100%" stop-color="#a78bfa"/></linearGradient></defs><circle class="timer-ring-track" cx="60" cy="60" r="52"/><circle class="timer-ring-progress" id="timerRingProgress" cx="60" cy="60" r="52"/></svg><div class="timer-ring-center"><div class="timer-display" id="timerDisplay">25:00</div><small id="timerRingCaption">MODO ESTUDIO</small></div></div>
           <div class="timer-presets"><button class="secondary-btn" onclick="setTimerPreset(15)">15 min</button><button class="secondary-btn" onclick="setTimerPreset(25)">25 min</button><button class="secondary-btn" onclick="setTimerPreset(45)">45 min</button><button class="secondary-btn" onclick="setBreakMode()">Descanso 5 min</button></div>
           <div class="timer-actions"><button class="cta" id="timerStartBtn" onclick="toggleTimer()">▶ Iniciar</button><button class="secondary-btn" onclick="resetTimer()">↺ Reiniciar</button></div>
           <p id="timerStatus" class="muted" aria-live="polite">Cuando termines una sesión de enfoque, sumarás XP.</p>
@@ -312,18 +327,27 @@ button{transition:filter .18s,transform .18s}button:hover{filter:brightness(1.03
 let tasks=JSON.parse(localStorage.getItem('eduplan_tasks') || '[]');
 let current=new Date(); current.setDate(1);
 let selectedCalendarDate='';
+const TASK_XP={easy:10,medium:20,hard:35,expert:50};
+function taskXP(task){return TASK_XP[task.difficulty]||20;}
+function sourceClass(source){return ({'Escuela':'source-school','Academia':'source-academia','ICPNA':'source-icpna','Personal':'source-personal','Otro':'source-other'})[source]||'source-other';}
+function difficultyLabel(level){return ({easy:'Fácil','medium':'Media',hard:'Difícil',expert:'Muy difícil'})[level]||'Media';}
 
 const COMPLETED_TASKS_KEY='eduplan_completed_task_history_v1';
 let completedTaskHistory=JSON.parse(localStorage.getItem(COMPLETED_TASKS_KEY)||'[]');
-function saveCompletedTaskHistory(){localStorage.setItem(COMPLETED_TASKS_KEY,JSON.stringify(completedTaskHistory));}
+const TASK_XP_HISTORY_KEY='eduplan_task_xp_history_v1';
+let completedTaskXP=JSON.parse(localStorage.getItem(TASK_XP_HISTORY_KEY)||'{}');
+function saveCompletedTaskHistory(){localStorage.setItem(COMPLETED_TASKS_KEY,JSON.stringify(completedTaskHistory));localStorage.setItem(TASK_XP_HISTORY_KEY,JSON.stringify(completedTaskXP));}
 function recordTaskCompletion(task){
   if(!task.id) task.id='task_'+Date.now()+'_'+Math.random().toString(36).slice(2,9);
   if(!completedTaskHistory.includes(task.id)){
     completedTaskHistory.push(task.id);
+    completedTaskXP[task.id]=taskXP(task);
     saveCompletedTaskHistory();
-  }
+  } else if(completedTaskXP[task.id]===undefined){completedTaskXP[task.id]=20;saveCompletedTaskHistory();}
 }
 function normalizeTask(t){
+  if(!t.source)t.source='Escuela';
+  if(!t.difficulty)t.difficulty='medium';
   if(typeof t.progress!=='number') t.progress=t.done?100:0;
   t.progress=Math.max(0,Math.min(100,Math.round(t.progress)));
   t.done=t.progress===100 || !!t.done;
@@ -336,8 +360,10 @@ tasks=tasks.map(normalizeTask);
 function saveTasks(){localStorage.setItem('eduplan_tasks', JSON.stringify(tasks))}
 function taskCard(t,i){
   const progress=Number(t.progress)||0;
+  const source=t.source||'Escuela',difficulty=t.difficulty||'medium';
   return `<div class="task-row ${progress===100?'done':''}">
     <div class="task-info"><span class="task-title">${escapeHtml(t.text)} ${t.dueDate?`<small class="muted">· 📅 ${formatDate(t.dueDate)}</small>`:''}</span>
+      <div class="task-meta"><span class="task-chip ${sourceClass(source)}">${source==='Escuela'?'🏫':source==='Academia'?'📚':source==='ICPNA'?'🌎':source==='Personal'?'✨':'🗂️'} ${escapeHtml(source)}</span><span class="task-chip difficulty-${difficulty}">${difficultyLabel(difficulty)}</span><span class="task-xp">⭐ ${taskXP(t)} XP</span></div>
       <div class="task-tools"><span class="task-status">${progress===100?'✅ Completada':progress===0?'⏳ Sin empezar':'🛠️ En progreso'}</span>
         <input aria-label="Progreso de ${escapeHtml(t.text)}" type="range" min="0" max="100" step="5" value="${progress}" oninput="previewTaskProgress(${i},this.value)" onchange="updateTaskProgress(${i},this.value)">
         <strong class="task-percent" id="taskPercent${i}">${progress}%</strong>
@@ -459,6 +485,7 @@ function toggleTask(i){
   if(tasks[i].done)recordTaskCompletion(tasks[i]);
   saveTasks(); renderTasks(); if(!wasDone)showCompletionMotivation(); updateStudyDashboard();
 }
+function previewTaskXP(){const level=document.getElementById('newTaskDifficulty')?.value||'medium';const preview=document.getElementById('newTaskXpPreview');if(preview)preview.textContent=(TASK_XP[level]||20)+' XP';}
 function addTask(){
   const input=document.getElementById('newTask');
   const dateInput=document.getElementById('newTaskDate');
@@ -466,9 +493,11 @@ function addTask(){
   const dueDate=dateInput.value;
   if(!text){input.focus();return;}
   if(!dueDate){dateInput.focus();return;}
-  tasks.push({text,done:false,progress:0,dueDate});
+  const source=document.getElementById('newTaskSource')?.value||'Escuela';
+  const difficulty=document.getElementById('newTaskDifficulty')?.value||'medium';
+  tasks.push({text,done:false,progress:0,dueDate,source,difficulty,id:'task_'+Date.now()+'_'+Math.random().toString(36).slice(2,9)});
   input.value=''; dateInput.value='';
-  saveTasks(); renderTasks(); drawCalendar('calendar'); drawCalendar('calendar2');
+  saveTasks(); renderTasks(); drawCalendar('calendar'); drawCalendar('calendar2'); previewTaskXP();
 }
 
 // Study sessions, XP, badges and weekly statistics (saved per browser)
@@ -496,7 +525,7 @@ function playPomodoroAlarm(){
   }catch(e){/* Si el navegador bloquea audio, el aviso visual sigue funcionando. */}
 }
 function padTime(n){return String(n).padStart(2,'0');}
-function paintTimer(){const el=document.getElementById('timerDisplay');if(el)el.textContent=padTime(Math.floor(timerSeconds/60))+':'+padTime(timerSeconds%60);}
+function paintTimer(){const el=document.getElementById('timerDisplay');if(el)el.textContent=padTime(Math.floor(timerSeconds/60))+':'+padTime(timerSeconds%60);const ring=document.getElementById('timerRingProgress');if(ring){const circumference=2*Math.PI*52;const ratio=timerInitial>0?Math.max(0,Math.min(1,timerSeconds/timerInitial)):0;ring.style.strokeDasharray=String(circumference);ring.style.strokeDashoffset=String(circumference*(1-ratio));}const wrap=document.getElementById('timerRingWrap');if(wrap)wrap.classList.toggle('break-mode',timerIsBreak);const caption=document.getElementById('timerRingCaption');if(caption)caption.textContent=timerIsBreak?'MODO DESCANSO':'MODO ESTUDIO';}
 function setTimerPreset(mins){pauseTimer();timerIsBreak=false;timerSeconds=mins*60;timerInitial=timerSeconds;document.getElementById('timerModeLabel').textContent='Enfoque';document.getElementById('timerStatus').textContent='Sesión de '+mins+' minutos preparada. ¡Tú puedes!';document.getElementById('timerStartBtn').textContent='▶ Iniciar';paintTimer();}
 function setBreakMode(){pauseTimer();timerIsBreak=true;timerSeconds=5*60;timerInitial=timerSeconds;document.getElementById('timerModeLabel').textContent='Descanso';document.getElementById('timerStatus').textContent='Tómate cinco minutos para estirarte y descansar.';document.getElementById('timerStartBtn').textContent='▶ Iniciar descanso';paintTimer();}
 function toggleTimer(){if(timerInterval){pauseTimer();return;}document.getElementById('timerStartBtn').textContent='⏸ Pausar';document.getElementById('timerStatus').textContent=timerIsBreak?'Descanso en curso…':'¡Enfócate! El tiempo de estudio se registrará al terminar.';timerInterval=setInterval(()=>{timerSeconds--;paintTimer();if(timerSeconds<=0){pauseTimer();playPomodoroAlarm();if(!timerIsBreak){const now=new Date();studySessions.push({date:now.toISOString().slice(0,10),minutes:Math.round(timerInitial/60),finishedAt:now.toISOString()});saveStudySessions();document.getElementById('timerStatus').textContent=randomEduPlanPhrase()+' 🎉 ¡Sesión Pomodoro completada! Ganaste 10 XP. ¡Buen trabajo!';}else document.getElementById('timerStatus').textContent='🔔 '+randomEduPlanPhrase()+' Tu descanso terminó; cuando quieras, empieza otra sesión.';timerIsBreak=false;timerSeconds=timerInitial=25*60;document.getElementById('timerModeLabel').textContent='Enfoque';document.getElementById('timerStartBtn').textContent='▶ Iniciar';paintTimer();updateStudyDashboard();}},1000);}
@@ -510,7 +539,7 @@ function toggleNotifications(){const panel=document.getElementById('notification
 function claimWelcomeXP(){const status=document.getElementById('welcomeXpStatus');const button=document.getElementById('claimWelcomeXp');if(localStorage.getItem(WELCOME_XP_KEY)==='yes'){status.textContent='Ya reclamaste esta recompensa en este navegador. 💜';button.disabled=true;button.textContent='✅ Recompensa reclamada';return;}localStorage.setItem(WELCOME_XP_KEY,'yes');localStorage.setItem('eduplan_welcome_xp_bonus','100');status.textContent='¡Listo! Se añadieron 100 XP a tu progreso. 🎉';button.disabled=true;button.textContent='✅ ¡100 XP reclamados!';const dot=document.getElementById('notificationDot');if(dot)dot.style.display='none';updateStudyDashboard();}
 function initWelcomeNotification(){const claimed=localStorage.getItem(WELCOME_XP_KEY)==='yes';const button=document.getElementById('claimWelcomeXp');const status=document.getElementById('welcomeXpStatus');const dot=document.getElementById('notificationDot');if(claimed){button.disabled=true;button.textContent='✅ Recompensa reclamada';status.textContent='Ya reclamaste los 100 XP de bienvenida en este navegador. 💜';if(dot)dot.style.display='none';}}
 document.addEventListener('click',function(event){const area=document.querySelector('.notification-area');if(area&&!area.contains(event.target)){const panel=document.getElementById('notificationPanel');panel.classList.remove('open');document.getElementById('notificationToggle').setAttribute('aria-expanded','false');}});
-function updateStudyDashboard(){const stats=getStudyStats();const completed=tasks.filter(t=>Number(t.progress||0)>=100).length;const total=tasks.length;const lifetimeCompleted=Math.max(completed,completedTaskHistory.length);const xp=lifetimeCompleted*20+studySessions.length*10+(Number(localStorage.getItem('eduplan_welcome_xp_bonus')||0));const level=Math.floor(xp/100)+1;const into=xp%100;const levels=['Principiante','Constante','En marcha','Imparable','Leyenda'];const name=levels[Math.min(level-1,levels.length-1)];const set=(id,val)=>{const el=document.getElementById(id);if(el)el.textContent=val;};set('weeklyHours',(stats.week.reduce((a,d)=>a+d.minutes,0)/60).toFixed(1)+' h');set('xpTotal',xp);set('levelName','🌱 Nivel '+level+' · '+name);set('xpSummary',xp+' XP acumulados');set('xpNext',into+' / 100 XP para el siguiente nivel');const bar=document.getElementById('xpBar');if(bar)bar.style.width=into+'%';set('rewardTasks',completed);set('rewardSessions',studySessions.length);set('rewardStreak',stats.streak+' días');set('statStudyTime',stats.totalMinutes+' min');set('statToday',stats.todaySessions);set('statCompletion',(total?Math.round(completed/total*100):0)+'%');const badges=[['🌱','Primer paso','Completa tu primera tarea',lifetimeCompleted>=1],['📚','Organizado','Completa 5 tareas',lifetimeCompleted>=5],['🏆','En racha','Completa 10 tareas',lifetimeCompleted>=10],['⏳','Primera sesión','Termina un Pomodoro',studySessions.length>=1],['🔥','Concentración','Termina 5 sesiones',studySessions.length>=5],['💎','Dedicación','Acumula 10 sesiones',studySessions.length>=10],['☀️','Constancia','Estudia 3 días seguidos',stats.streak>=3],['🚀','Maratón','Acumula 5 horas de estudio',stats.totalMinutes>=300]];const grid=document.getElementById('badgeGrid');if(grid)grid.innerHTML=badges.map(b=>`<div class="achievement ${b[3]?'unlocked':''}"><div class="achievement-icon">${b[0]}</div><strong>${b[1]}</strong><small>${b[2]}${b[3]?' · Desbloqueada':' · Bloqueada'}</small></div>`).join('');const chart=document.getElementById('weeklyChart');if(chart){const max=Math.max(30,...stats.week.map(x=>x.minutes));chart.innerHTML=stats.week.map(x=>`<div class="chart-day"><span class="chart-minutes">${x.minutes}m</span><div class="chart-bar-wrap"><div class="chart-bar" style="height:${Math.max(4,x.minutes/max*100)}%" title="${x.minutes} minutos"></div></div><span>${x.label}</span></div>`).join('');}}
+function updateStudyDashboard(){const stats=getStudyStats();const completed=tasks.filter(t=>Number(t.progress||0)>=100).length;const total=tasks.length;const lifetimeCompleted=Math.max(completed,completedTaskHistory.length);const xp=completedTaskHistory.reduce((sum,id)=>sum+(Number(completedTaskXP[id])||20),0)+studySessions.length*10+(Number(localStorage.getItem('eduplan_welcome_xp_bonus')||0));const level=Math.floor(xp/100)+1;const into=xp%100;const levels=['Principiante','Constante','En marcha','Imparable','Leyenda'];const name=levels[Math.min(level-1,levels.length-1)];const set=(id,val)=>{const el=document.getElementById(id);if(el)el.textContent=val;};set('weeklyHours',(stats.week.reduce((a,d)=>a+d.minutes,0)/60).toFixed(1)+' h');set('xpTotal',xp);set('levelName','🌱 Nivel '+level+' · '+name);set('xpSummary',xp+' XP acumulados');set('xpNext',into+' / 100 XP para el siguiente nivel');const bar=document.getElementById('xpBar');if(bar)bar.style.width=into+'%';set('rewardTasks',completed);set('rewardSessions',studySessions.length);set('rewardStreak',stats.streak+' días');set('statStudyTime',stats.totalMinutes+' min');set('statToday',stats.todaySessions);set('statCompletion',(total?Math.round(completed/total*100):0)+'%');const badges=[['🌱','Primer paso','Completa tu primera tarea',lifetimeCompleted>=1],['📚','Organizado','Completa 5 tareas',lifetimeCompleted>=5],['🏆','En racha','Completa 10 tareas',lifetimeCompleted>=10],['⏳','Primera sesión','Termina un Pomodoro',studySessions.length>=1],['🔥','Concentración','Termina 5 sesiones',studySessions.length>=5],['💎','Dedicación','Acumula 10 sesiones',studySessions.length>=10],['☀️','Constancia','Estudia 3 días seguidos',stats.streak>=3],['🚀','Maratón','Acumula 5 horas de estudio',stats.totalMinutes>=300]];const grid=document.getElementById('badgeGrid');if(grid)grid.innerHTML=badges.map(b=>`<div class="achievement ${b[3]?'unlocked':''}"><div class="achievement-icon">${b[0]}</div><strong>${b[1]}</strong><small>${b[2]}${b[3]?' · Desbloqueada':' · Bloqueada'}</small></div>`).join('');const chart=document.getElementById('weeklyChart');if(chart){const max=Math.max(30,...stats.week.map(x=>x.minutes));chart.innerHTML=stats.week.map(x=>`<div class="chart-day"><span class="chart-minutes">${x.minutes}m</span><div class="chart-bar-wrap"><div class="chart-bar" style="height:${Math.max(4,x.minutes/max*100)}%" title="${x.minutes} minutos"></div></div><span>${x.label}</span></div>`).join('');}}
 
 updateStudyDashboard();
 initWelcomeNotification();
@@ -576,7 +605,7 @@ function addTaskFromCalendar(){
   const text=input.value.trim(), dueDate=dateInput.value;
   if(!text){input.focus();return;}
   if(!dueDate){dateInput.focus();return;}
-  tasks.push({text,done:false,progress:0,dueDate});
+  tasks.push({text,done:false,progress:0,dueDate,source:'Escuela',difficulty:'medium'});
   selectedCalendarDate=dueDate;
   input.value='';
   saveTasks(); renderTasks(); drawCalendar('calendar'); drawCalendar('calendar2');
