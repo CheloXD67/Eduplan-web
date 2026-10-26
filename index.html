@@ -56,6 +56,19 @@ button{cursor:pointer;border:0}
 .edubot-card{max-width:850px;margin:0 auto}.edubot-head{display:flex;gap:14px;align-items:center}.edubot-head h2{margin:0 0 3px}.bot-avatar{width:54px;height:54px;border-radius:16px;background:#eef0ff;display:grid;place-items:center;font-size:28px}.chat-messages{height:360px;overflow:auto;margin:20px 0;padding:14px;background:#f7f8fc;border-radius:16px;display:flex;flex-direction:column;gap:12px}.chat{max-width:82%;padding:12px 14px;border-radius:14px;display:flex;flex-direction:column;gap:4px;line-height:1.45}.chat.bot{align-self:flex-start;background:white;border:1px solid var(--line)}.chat.user{align-self:flex-end;background:#eef0ff;color:#272a55}.quick-actions{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}.quick-actions button{background:#f0f1f8;border-radius:10px;padding:9px 12px}.chat-input{display:flex;gap:8px}.chat-input input{flex:1;border:1px solid var(--line);border-radius:11px;padding:11px}.chat-input button{background:var(--primary);color:white;border-radius:11px;padding:0 16px}.bot-note{font-size:12px;color:var(--muted);margin-top:10px}
 .page-intro{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:18px;flex-wrap:wrap}.page-intro h2{margin:0 0 6px}.page-intro p{margin:0;line-height:1.5}.mini-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:18px}.mini-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:17px}.mini-card .emoji{font-size:24px;margin-bottom:8px}.mini-card h3{font-size:15px;margin:0 0 7px}.mini-card p{font-size:13px;line-height:1.5;margin:0;color:var(--muted)}.empty-panel{padding:22px;border:1px dashed #cdd1e3;border-radius:16px;background:#fafbff;text-align:center;margin:12px 0}.empty-panel .big{font-size:32px;margin-bottom:8px}.empty-panel h3{margin:0 0 7px}.empty-panel p{margin:0 auto 14px;max-width:520px;color:var(--muted);line-height:1.5}.secondary-btn{background:#eef0ff;color:var(--primary);padding:10px 13px;border-radius:10px;font-weight:700}.calendar-help{margin-top:16px;padding:14px 16px;background:#f7f8ff;border-radius:13px;color:var(--muted);font-size:13px;line-height:1.5}.bot-suggestions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:12px 0}.bot-suggestions button{text-align:left;background:#f7f8ff;border:1px solid var(--line);padding:11px;border-radius:12px;color:var(--text)}.bot-suggestions button:hover{border-color:var(--primary);background:#eef0ff}.chat-messages{height:400px}.chat.bot span{white-space:pre-line}
 @media(max-width:700px){.mini-grid{grid-template-columns:1fr}.bot-suggestions{grid-template-columns:1fr}.chat{max-width:95%}}
+
+/* Iconos SVG consistentes en lugar de emojis decorativos */
+.nav button{display:flex;align-items:center;gap:13px;min-height:54px}
+.nav-icon{width:32px;height:32px;flex:0 0 32px;display:grid;place-items:center;border-radius:10px;background:#f0f1ff;color:var(--primary)}
+.nav-icon svg,.inline-icon svg,.heading-icon svg,.emoji svg,.bot-avatar svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.nav button.active .nav-icon{background:var(--primary);color:#fff}
+.inline-icon{display:inline-flex;vertical-align:middle;color:var(--primary);margin-right:5px}
+.heading-icon{display:inline-flex;vertical-align:middle;color:var(--primary);margin-right:5px}
+.icon-tile{display:grid;place-items:center;width:44px;height:44px;border-radius:14px;background:#eef0ff;color:var(--primary);font-size:0}
+.icon-tile svg{width:25px;height:25px}
+.bot-avatar{display:grid;place-items:center}
+.bot-avatar svg{width:30px;height:30px}
+
 </style>
 </head>
 <body>
@@ -63,14 +76,14 @@ button{cursor:pointer;border:0}
   <aside class="sidebar">
     <div class="logo"><div class="logo-icon">✓</div>EduPlan</div>
     <nav class="nav">
-      <button class="active" data-page="inicio">🏠 Inicio</button>
-      <button data-page="calendario">📅 Calendario</button>
-      <button data-page="tareas">☑️ Tareas</button>
-      <button data-page="progreso">📈 Progreso</button>
-      <button data-page="edubot">🤖 EduBot</button>
+      <button class="active" data-page="inicio"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg></span><span>Inicio</span></button>
+      <button data-page="calendario"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18M8 14h2m3 0h2m-7 3h2"/></svg></span><span>Calendario</span></button>
+      <button data-page="tareas"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="m8 9 1.5 1.5L12 8m2 2h3m-9 5 1.5 1.5L12 14m2 2h3"/></svg></span><span>Tareas</span></button>
+      <button data-page="progreso"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V11m6 9V5m6 15v-7m6 7H2"/><path d="m3 8 5-4 5 4 7-6"/></svg></span><span>Progreso</span></button>
+      <button data-page="edubot"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="14" rx="4"/><path d="M12 3v4M8 13h.01M16 13h.01M8 17h8"/></svg></span><span>EduBot</span></button>
     </nav>
     <div class="sidebar-footer">
-      <div class="footer-title">✨ Tu espacio de estudio</div>
+      <div class="footer-title"><span class="inline-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18h6m-5 3h4m-2-19a7 7 0 0 0-4 12.7c.7.5 1 1.1 1 2.3h6c0-1.2.3-1.8 1-2.3A7 7 0 0 0 12 2z"/></svg></span> Tu espacio de estudio</div>
       <p>Pequeños avances cada día construyen grandes metas. Organiza, avanza y celebra lo que logras.</p>
       <div class="sidebar-stat"><span>Mis tareas activas</span><strong id="sidebarTaskCount">0</strong></div>
     </div>
@@ -122,7 +135,7 @@ button{cursor:pointer;border:0}
     </section>
 
     <section id="calendario" class="section">
-      <div class="page-intro"><div><h2>📅 Tu calendario</h2><p class="muted">Visualiza las fechas de entrega y organiza tu semana con anticipación.</p></div><button class="secondary-btn" onclick="showPage('tareas')">＋ Agregar tarea</button></div>
+      <div class="page-intro"><div><h2><span class="heading-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18M8 14h2m3 0h2m-7 3h2"/></svg></span> Tu calendario</h2><p class="muted">Visualiza las fechas de entrega y organiza tu semana con anticipación.</p></div><button class="secondary-btn" onclick="showPage('tareas')">＋ Agregar tarea</button></div>
       <div class="card">
         <div class="calendar-head"><button onclick="changeMonth(-1)">‹</button><h2 id="monthTitle2">Agosto 2026</h2><button onclick="changeMonth(1)">›</button></div>
         <div class="week"><span>Lunes</span><span>Martes</span><span>Miércoles</span><span>Jueves</span><span>Viernes</span><span>Sábado</span><span>Domingo</span></div>
@@ -133,12 +146,12 @@ button{cursor:pointer;border:0}
           <div class="add"><input id="calendarTaskName" placeholder="Ej. Terminar la tarea de Comunicación"><input id="calendarTaskDate" type="date" aria-label="Fecha de la tarea"><button onclick="addTaskFromCalendar()">Guardar tarea ＋</button></div>
           <small style="display:block;margin-top:8px">La tarea quedará guardada en este navegador y aparecerá en el calendario.</small>
         </div>
-        <div id="calendarSummary" class="calendar-help">📌 Las tareas con fecha de entrega aparecerán dentro del día correspondiente. Agrega una tarea para empezar a llenar tu calendario.</div>
+        <div id="calendarSummary" class="calendar-help"><span class="inline-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg></span> Las tareas con fecha de entrega aparecerán dentro del día correspondiente. Agrega una tarea para empezar a llenar tu calendario.</div>
       </div>
       <div class="mini-grid">
-        <div class="mini-card"><div class="emoji">🗓️</div><h3>Planifica con tiempo</h3><p>Registra la fecha de entrega cuando agregues una tarea para evitar dejar todo al último minuto.</p></div>
-        <div class="mini-card"><div class="emoji">🎯</div><h3>Prioriza lo urgente</h3><p>Empieza por las tareas que vencen primero y divide las más grandes en pasos pequeños.</p></div>
-        <div class="mini-card"><div class="emoji">✨</div><h3>Hazlo sostenible</h3><p>Deja espacios para comer, descansar y repasar. Un horario realista es más fácil de mantener.</p></div>
+        <div class="mini-card"><div class="emoji icon-tile"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M7 2v4m10-4v4M3 9h18M7 13h3m-3 4h6"/></svg></div><h3>Planifica con tiempo</h3><p>Registra la fecha de entrega cuando agregues una tarea para evitar dejar todo al último minuto.</p></div>
+        <div class="mini-card"><div class="emoji icon-tile"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/><path d="m13 11 7-7m-4 0h4v4"/></svg></div><h3>Prioriza lo urgente</h3><p>Empieza por las tareas que vencen primero y divide las más grandes en pasos pequeños.</p></div>
+        <div class="mini-card"><div class="emoji icon-tile"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2 2.2 6.8L21 11l-6.8 2.2L12 20l-2.2-6.8L3 11l6.8-2.2zM19 16l1 2 2 1-2 1-1 2-1-2-2-1 2-1z"/></svg></div><h3>Hazlo sostenible</h3><p>Deja espacios para comer, descansar y repasar. Un horario realista es más fácil de mantener.</p></div>
       </div>
     </section>
 
@@ -150,9 +163,9 @@ button{cursor:pointer;border:0}
         <div class="add"><input id="newTask" placeholder="Ej. Estudiar para el examen de inglés"><input id="newTaskDate" type="date" title="Fecha de entrega"><button onclick="addTask()">Agregar tarea ＋</button></div>
       </div>
       <div class="mini-grid">
-        <div class="mini-card"><div class="emoji">🧩</div><h3>Divide una tarea grande</h3><p>En vez de “estudiar biología”, prueba con “leer el tema”, “hacer un resumen” y “resolver 10 preguntas”.</p></div>
-        <div class="mini-card"><div class="emoji">⏳</div><h3>Prueba 25 + 5</h3><p>Concéntrate durante 25 minutos y descansa 5. Repite el ciclo si te funciona.</p></div>
-        <div class="mini-card"><div class="emoji">📈</div><h3>Actualiza tu avance</h3><p>Mueve la barra de cada tarea para registrar tu avance real, incluso si todavía no la terminas.</p></div>
+        <div class="mini-card"><div class="emoji icon-tile"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h6a2 2 0 1 1 4 0h6v6a2 2 0 1 0 0 4v6h-6a2 2 0 1 1-4 0H4v-6a2 2 0 1 0 0-4z"/></svg></div><h3>Divide una tarea grande</h3><p>En vez de “estudiar biología”, prueba con “leer el tema”, “hacer un resumen” y “resolver 10 preguntas”.</p></div>
+        <div class="mini-card"><div class="emoji icon-tile"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div><h3>Prueba 25 + 5</h3><p>Concéntrate durante 25 minutos y descansa 5. Repite el ciclo si te funciona.</p></div>
+        <div class="mini-card"><div class="emoji icon-tile"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V11m6 9V5m6 15v-7m6 7H2"/><path d="m3 8 5-4 5 4 7-6"/></svg></div><h3>Actualiza tu avance</h3><p>Mueve la barra de cada tarea para registrar tu avance real, incluso si todavía no la terminas.</p></div>
       </div>
     </section>
 
@@ -172,16 +185,16 @@ button{cursor:pointer;border:0}
         </div>
       </div>
       <div class="mini-grid">
-        <div class="mini-card"><div class="emoji">🌱</div><h3>Constancia</h3><p>Un avance pequeño y frecuente suele ser más útil que intentar hacerlo todo de golpe.</p></div>
-        <div class="mini-card"><div class="emoji">🔍</div><h3>Revisa lo pendiente</h3><p>Si una tarea se queda estancada, identifica qué parte te falta entender y pide ayuda concreta.</p></div>
-        <div class="mini-card"><div class="emoji">🏆</div><h3>Celebra los avances</h3><p>Completar una parte también cuenta. Actualiza el porcentaje para ver cómo progresas.</p></div>
+        <div class="mini-card"><div class="emoji icon-tile"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4C10 4 4 8 4 15a5 5 0 0 0 5 5c7 0 11-8 11-16Z"/><path d="M4 21c3-5 7-8 12-11"/></svg></div><h3>Constancia</h3><p>Un avance pequeño y frecuente suele ser más útil que intentar hacerlo todo de golpe.</p></div>
+        <div class="mini-card"><div class="emoji icon-tile"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg></div><h3>Revisa lo pendiente</h3><p>Si una tarea se queda estancada, identifica qué parte te falta entender y pide ayuda concreta.</p></div>
+        <div class="mini-card"><div class="emoji icon-tile"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="6"/><path d="m8 13-2 9 6-3 6 3-2-9"/></svg></div><h3>Celebra los avances</h3><p>Completar una parte también cuenta. Actualiza el porcentaje para ver cómo progresas.</p></div>
       </div>
     </section>
 
     <section id="edubot" class="section">
       <div class="card edubot-card">
         <div class="edubot-head">
-          <div class="bot-avatar">🤖</div>
+          <div class="bot-avatar"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="14" rx="4"/><path d="M12 3v4M8 13h.01M16 13h.01M8 17h8"/></svg></div>
           <div><h2>EduBot</h2><p class="muted">Tu compañero de estudio: organiza, explica y te ayuda a encontrar el siguiente paso.</p></div>
         </div>
         <div id="chatMessages" class="chat-messages">
