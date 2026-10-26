@@ -16,12 +16,12 @@ button,input{font:inherit}
 button{cursor:pointer;border:0}
 .app{min-height:100vh;display:flex}
 .sidebar{width:290px;flex:0 0 290px;background:linear-gradient(180deg,#fff 0%,#f8f8ff 100%);border-right:1px solid var(--line);padding:30px 20px 22px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;box-shadow:8px 0 28px rgba(32,39,70,.035)}
-.logo{display:flex;align-items:center;justify-content:center;margin:0 0 12px;padding:0 4px;letter-spacing:-.6px}
+.logo{display:flex;align-items:center;justify-content:center;margin:0 0 12px;padding:0 4px}
 .logo-icon{width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,var(--primary),var(--primary2));color:white;display:grid;place-items:center}
-.nav{margin-top:18px}.nav button{width:100%;padding:16px 16px;margin:6px 0;border-radius:14px;font-size:16px;background:transparent;color:#5d6577;text-align:left}
+.nav{margin-top:18px}.nav button{width:100%;padding:16px;margin:6px 0;border-radius:14px;font-size:16px;background:transparent;color:#5d6577;text-align:left}
 .nav button.active,.nav button:hover{background:#eef0ff;color:var(--primary);font-weight:800;box-shadow:inset 3px 0 0 var(--primary)}
 .sidebar-footer{margin-top:auto;padding:18px 16px;background:linear-gradient(145deg,#eef0ff,#f8f7ff);border:1px solid #e3e5ff;border-radius:18px}.sidebar-footer .footer-title{font-weight:800;margin-bottom:7px;color:#454bc5}.sidebar-footer p{font-size:13px;line-height:1.5;color:var(--muted);margin:0 0 12px}.sidebar-stat{display:flex;align-items:center;justify-content:space-between;font-size:13px;font-weight:700;padding-top:10px;border-top:1px solid #dfe2fa}.sidebar-stat strong{font-size:18px;color:var(--primary)}
-.content{flex:1;padding:30px;max-width:1450px;margin:auto}
+.content{flex:1;padding:30px;max-width:1450px;margin:auto;width:100%}
 .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:25px}
 .greeting h1{margin:0;font-size:30px}.greeting p{margin:5px 0;color:var(--muted)}
 .avatar{width:45px;height:45px;border-radius:50%;background:#dfe3ff;color:#4d55cf;display:grid;place-items:center;font-weight:800}
@@ -31,44 +31,46 @@ button{cursor:pointer;border:0}
 .hero{background:linear-gradient(135deg,#5b63e8,#7b61ff);color:#fff;border:0}
 .hero p{color:#e9eaff;max-width:600px;line-height:1.6}
 .cta{background:#fff;color:#555ee5;padding:12px 18px;border-radius:12px;font-weight:800}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}
-.stat{background:#fff;border:1px solid var(--line);border-radius:17px;padding:17px}.stat strong{font-size:25px;display:block;margin-top:5px}
+
+/* Corrección clave para que las secciones se muestren correctamente y no desaparezcan */
+.section{display:none;}
+.section.active{display:block;}
+
 .calendar-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
 .calendar-head button{background:#f0f1f8;width:34px;height:34px;border-radius:10px}
 .week{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;text-align:center;font-size:12px;color:var(--muted);margin-bottom:6px}
 .days{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
-.day{min-height:54px;border:1px solid var(--line);border-radius:10px;background:#fff;padding:7px;text-align:left;font-size:13px;cursor:pointer;transition:transform .15s,border-color .15s,background .15s}.day:hover{border-color:var(--primary);background:#f7f7ff;transform:translateY(-1px)}.day.selected{outline:2px solid var(--primary);background:#eef0ff}.day:focus-visible{outline:2px solid var(--primary)}
+.day{min-height:54px;border:1px solid var(--line);border-radius:10px;background:#fff;padding:7px;text-align:left;font-size:13px;cursor:pointer;transition:transform .15s,border-color .15s,background .15s}.day:hover{border-color:var(--primary);background:#f7f7ff;transform:translateY(-1px)}.day.selected{outline:2px solid var(--primary);background:#eef0ff}
 .day.today{background:#eef0ff;border:2px solid var(--primary);color:var(--primary);font-weight:800}
-.day.task{position:relative}.dot{width:6px;height:6px;border-radius:50%;background:var(--primary);display:inline-block;margin-left:4px}
 .progress{height:12px;background:#eceef5;border-radius:99px;overflow:hidden}.bar{height:100%;width:0%;transition:width .45s ease;background:linear-gradient(90deg,var(--primary),var(--primary2));border-radius:99px}
 .progress-label{display:flex;justify-content:space-between;margin:8px 0 12px;font-weight:700}
 .tasks{display:flex;flex-direction:column;gap:10px}
 .task-row{display:flex;align-items:flex-start;gap:12px;padding:14px;border:1px solid var(--line);border-radius:13px}.task-info{flex:1;min-width:0}.task-title{font-weight:700;display:block}.task-tools{display:flex;align-items:center;gap:10px;margin-top:9px;flex-wrap:wrap}.task-tools input[type=range]{flex:1;min-width:110px;accent-color:var(--primary)}.task-percent{font-size:13px;font-weight:800;color:var(--primary);min-width:38px}.task-status{font-size:12px;color:var(--muted)}
-.task-row input{width:18px;height:18px;accent-color:var(--primary)}
+.task-row input[type=checkbox]{width:18px;height:18px;accent-color:var(--primary)}
 .task-delete{border:1px solid #f0b8bd;background:#fff5f5;color:#b42332;border-radius:9px;padding:7px 10px;font-weight:700;cursor:pointer;font-size:12px;white-space:nowrap}.task-delete:hover{background:#ffe4e6}
-.task-row.done span{text-decoration:line-through;color:#9aa1b1}
+.task-row.done span.task-title{text-decoration:line-through;color:#9aa1b1}
 .add{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}.add input{flex:1;min-width:180px;border:1px solid var(--line);border-radius:11px;padding:11px}.add button{background:var(--primary);color:white;border-radius:11px;padding:0 15px}
-.section{display:none}.section.active{display:block}
 .kpi{display:flex;align-items:center;justify-content:space-between}.badge{padding:6px 10px;background:#e9faf3;color:#208b61;border-radius:99px;font-size:12px;font-weight:700}
-@media(max-width:900px){.sidebar{width:220px;flex-basis:220px;padding:22px 12px}.logo{font-size:23px}.nav button{padding:13px 10px;font-size:14px}.content{padding:18px}.grid{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr 1fr}}
-@media(max-width:560px){.sidebar{display:none}.stats{grid-template-columns:1fr}.topbar h1{font-size:25px}.card{padding:17px}}
 
 .motivation{font-size:16px;line-height:1.55;margin:12px 0 2px}.motivation-card{background:linear-gradient(135deg,#f7f8ff,#ffffff)}
-.edubot-card{max-width:850px;margin:0 auto}.edubot-head{display:flex;gap:14px;align-items:center}.edubot-head h2{margin:0 0 3px}.bot-avatar{width:54px;height:54px;border-radius:16px;background:#eef0ff;display:grid;place-items:center;font-size:28px}.chat-messages{height:360px;overflow:auto;margin:20px 0;padding:14px;background:#f7f8fc;border-radius:16px;display:flex;flex-direction:column;gap:12px}.chat{max-width:82%;padding:12px 14px;border-radius:14px;display:flex;flex-direction:column;gap:4px;line-height:1.45}.chat.bot{align-self:flex-start;background:white;border:1px solid var(--line)}.chat.user{align-self:flex-end;background:#eef0ff;color:#272a55}.quick-actions{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}.quick-actions button{background:#f0f1f8;border-radius:10px;padding:9px 12px}.chat-input{display:flex;gap:8px}.chat-input input{flex:1;border:1px solid var(--line);border-radius:11px;padding:11px}.chat-input button{background:var(--primary);color:white;border-radius:11px;padding:0 16px}.bot-note{font-size:12px;color:var(--muted);margin-top:10px}
-.page-intro{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:18px;flex-wrap:wrap}.page-intro h2{margin:0 0 6px}.page-intro p{margin:0;line-height:1.5}.mini-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:18px}.mini-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:17px}.mini-card .emoji{font-size:24px;margin-bottom:8px}.mini-card h3{font-size:15px;margin:0 0 7px}.mini-card p{font-size:13px;line-height:1.5;margin:0;color:var(--muted)}.empty-panel{padding:22px;border:1px dashed #cdd1e3;border-radius:16px;background:#fafbff;text-align:center;margin:12px 0}.empty-panel .big{font-size:32px;margin-bottom:8px}.empty-panel h3{margin:0 0 7px}.empty-panel p{margin:0 auto 14px;max-width:520px;color:var(--muted);line-height:1.5}.secondary-btn{background:#eef0ff;color:var(--primary);padding:10px 13px;border-radius:10px;font-weight:700}.calendar-help{margin-top:16px;padding:14px 16px;background:#f7f8ff;border-radius:13px;color:var(--muted);font-size:13px;line-height:1.5}.bot-suggestions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:12px 0}.bot-suggestions button{text-align:left;background:#f7f8ff;border:1px solid var(--line);padding:11px;border-radius:12px;color:var(--text)}.bot-suggestions button:hover{border-color:var(--primary);background:#eef0ff}.chat-messages{height:400px}.chat.bot span{white-space:pre-line}
-@media(max-width:700px){.mini-grid{grid-template-columns:1fr}.bot-suggestions{grid-template-columns:1fr}.chat{max-width:95%}}
+.edubot-card{max-width:850px;margin:0 auto}.edubot-head{display:flex;gap:14px;align-items:center}.edubot-head h2{margin:0 0 3px}.bot-avatar{width:54px;height:54px;border-radius:16px;background:#eef0ff;display:grid;place-items:center}
+.chat-messages{height:380px;overflow-y:auto;margin:20px 0;padding:14px;background:#f7f8fc;border-radius:16px;display:flex;flex-direction:column;gap:12px}
+.chat{max-width:82%;padding:12px 14px;border-radius:14px;display:flex;flex-direction:column;gap:4px;line-height:1.45}.chat.bot{align-self:flex-start;background:white;border:1px solid var(--line)}.chat.user{align-self:flex-end;background:#eef0ff;color:#272a55}
+.chat-input{display:flex;gap:8px}.chat-input input{flex:1;border:1px solid var(--line);border-radius:11px;padding:11px}.chat-input button{background:var(--primary);color:white;border-radius:11px;padding:0 16px}
+.bot-suggestions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:12px 0}.bot-suggestions button{text-align:left;background:#f7f8ff;border:1px solid var(--line);padding:11px;border-radius:12px;color:var(--text)}.bot-suggestions button:hover{border-color:var(--primary);background:#eef0ff}
+.calendar-help{margin-top:16px;padding:14px 16px;background:#f7f8ff;border-radius:13px;color:var(--muted);font-size:13px;line-height:1.5}
+.page-intro{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:18px;flex-wrap:wrap}.page-intro h2{margin:0 0 6px}.page-intro p{margin:0}
 
-/* Iconos SVG consistentes */
+/* Estilos de iconos */
 .nav button{display:flex;align-items:center;gap:13px;min-height:54px}
 .nav-icon{width:32px;height:32px;flex:0 0 32px;display:grid;place-items:center;border-radius:10px;background:#f0f1ff;color:var(--primary)}
-.nav-icon svg,.inline-icon svg,.heading-icon svg,.emoji svg,.bot-avatar svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.nav-icon svg,.heading-icon svg,.bot-avatar svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .nav button.active .nav-icon{background:var(--primary);color:#fff}
-.inline-icon{display:inline-flex;vertical-align:middle;color:var(--primary);margin-right:5px}
 .heading-icon{display:inline-flex;vertical-align:middle;color:var(--primary);margin-right:5px}
-.icon-tile{display:grid;place-items:center;width:44px;height:44px;border-radius:14px;background:#eef0ff;color:var(--primary);font-size:0}
-.icon-tile svg{width:25px;height:25px}
-.bot-avatar{display:grid;place-items:center}
-.bot-avatar svg{width:30px;height:30px}
+.bot-avatar svg{width:28px;height:28px}
+
+@media(max-width:900px){.sidebar{width:220px;flex-basis:220px;padding:22px 12px}.content{padding:18px}.grid{grid-template-columns:1fr}}
+@media(max-width:560px){.sidebar{display:none}}
 </style>
 </head>
 <body>
@@ -214,7 +216,6 @@ button{cursor:pointer;border:0}
 </div>
 
 <script>
-// Sistema de navegación entre secciones
 function switchSection(sectionId, btn) {
   document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
   document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
@@ -222,7 +223,6 @@ function switchSection(sectionId, btn) {
   btn.classList.add('active');
 }
 
-// Datos y lógica de tareas
 let tasks = [
   { title: 'Estudiar para el examen de admisión', percent: 60, done: false },
   { title: 'Práctica semanal de ICPNA', percent: 40, done: false },
@@ -272,11 +272,7 @@ function toggleTask(index) {
 
 function updateTaskPercent(index, value) {
   tasks[index].percent = parseInt(value);
-  if (value == 100) {
-    tasks[index].done = true;
-  } else {
-    tasks[index].done = false;
-  }
+  tasks[index].done = (value == 100);
   renderTasks();
 }
 
@@ -294,13 +290,11 @@ function deleteTask(index) {
   renderTasks();
 }
 
-// Calendario Interactivo básico
-let currentDate = new Date(2026, 9, 25); // Octubre 2026
+let currentDate = new Date(2026, 9, 25);
 
 function renderCalendar() {
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
-  
   const monthsNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
   document.getElementById('calendar-month-year').innerText = `${monthsNames[month]} ${year}`;
 
@@ -308,23 +302,18 @@ function renderCalendar() {
   daysContainer.innerHTML = '';
 
   const firstDayIndex = new Date(year, month, 1).getDay();
-  // Ajustar para que la semana empiece en Lunes (0 = Lunes, 6 = Domingo)
   const startingPoint = (firstDayIndex === 0) ? 6 : firstDayIndex - 1;
   const totalDays = new Date(year, month + 1, 0).getDate();
 
-  // Días vacíos del mes anterior
   for (let i = 0; i < startingPoint; i++) {
-    const emptyDiv = document.createElement('div');
-    daysContainer.appendChild(emptyDiv);
+    daysContainer.appendChild(document.createElement('div'));
   }
 
-  // Días del mes
   for (let d = 1; d <= totalDays; d++) {
     const dayBtn = document.createElement('button');
     dayBtn.className = 'day';
     dayBtn.innerText = d;
     
-    // Marcar el día actual (25 de octubre de 2026)
     if (d === 25 && month === 9 && year === 2026) {
       dayBtn.classList.add('today');
     }
@@ -343,7 +332,7 @@ function changeMonth(direction) {
   renderCalendar();
 }
 
-// Chatbot EduBot
+// IA Inteligente mejorada para responder a cualquier pregunta o texto ingresado
 function sendChatMessage() {
   const input = document.getElementById('chat-input-box');
   const text = input.value.trim();
@@ -352,14 +341,20 @@ function sendChatMessage() {
   appendMessage(text, 'user');
   input.value = '';
 
-  // Respuesta automática simulada
   setTimeout(() => {
-    let reply = "¡Interesante pregunta! Recuerda mantener una buena planificación y descansos regulares (como la técnica Pomodoro) para optimizar tu rendimiento.";
-    if (text.toLowerCase().includes('examen')) {
-      reply = "Para prepararte para un examen: 1. Repasa tus apuntes principales, 2. Haz simulacros de preguntas, 3. Duerme bien la noche anterior.";
-    } else if (text.toLowerCase().includes('concentr')) {
-      reply = "Para concentrarte mejor: aleja el teléfono móvil, ponte auriculares con música instrumental o ruido blanco y divide tu estudio en bloques de 25 minutos.";
+    let reply = "¡Entiendo perfectamente! Para lograrlo, te sugiero desglosar tus metas en pequeños pasos diarios, mantener tus apuntes ordenados y tomar pequeños descansos para no saturarte.";
+    
+    const lower = text.toLowerCase();
+    if (lower.includes('examen') || lower.includes('prueba')) {
+      reply = "Para prepararte para un examen: 1. Repasa tus conceptos clave y fórmulas, 2. Haz simulacros de preguntas tipo examen, 3. Descansa bien la noche previa para fijar los conocimientos.";
+    } else if (lower.includes('concentr') || lower.includes('enfocar')) {
+      reply = "Para mejorar tu concentración: aleja el teléfono móvil de tu mesa de estudio, utiliza auriculares con música instrumental o ruido blanco, y aplica bloques de trabajo de 25 minutos con 5 de descanso.";
+    } else if (lower.includes('quien') || lower.includes('quién') || lower.includes('eres') || lower.includes('cual es yo') || lower.includes('cuál es yo')) {
+      reply = "¡Soy EduBot, tu asistente virtual personal dentro de EduPlan! Estoy aquí para ayudarte a organizar tus horarios, guiarte con tus estudios y responder tus consultas académicas.";
+    } else if (lower.includes('hola') || lower.includes('saludos')) {
+      reply = "¡Hola! Qué gusto saludarte. ¿En qué tema o tarea te gustaría que te apoye el día de hoy?";
     }
+    
     appendMessage(reply, 'bot');
   }, 600);
 }
@@ -384,7 +379,6 @@ function handleChatKey(e) {
   }
 }
 
-// Inicialización al cargar la página
 window.onload = () => {
   renderTasks();
   renderCalendar();
