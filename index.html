@@ -45,6 +45,7 @@ button{cursor:pointer;border:0}
 .tasks{display:flex;flex-direction:column;gap:10px}
 .task-row{display:flex;align-items:flex-start;gap:12px;padding:14px;border:1px solid var(--line);border-radius:13px}.task-info{flex:1;min-width:0}.task-title{font-weight:700;display:block}.task-tools{display:flex;align-items:center;gap:10px;margin-top:9px;flex-wrap:wrap}.task-tools input[type=range]{flex:1;min-width:110px;accent-color:var(--primary)}.task-percent{font-size:13px;font-weight:800;color:var(--primary);min-width:38px}.task-status{font-size:12px;color:var(--muted)}
 .task-row input{width:18px;height:18px;accent-color:var(--primary)}
+.task-delete{border:1px solid #f0b8bd;background:#fff5f5;color:#b42332;border-radius:9px;padding:7px 10px;font-weight:700;cursor:pointer;font-size:12px;white-space:nowrap}.task-delete:hover{background:#ffe4e6}
 .task-row.done span{text-decoration:line-through;color:#9aa1b1}
 .add{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}.add input{flex:1;min-width:180px;border:1px solid var(--line);border-radius:11px;padding:11px}.add button{background:var(--primary);color:white;border-radius:11px;padding:0 15px}
 .section{display:none}.section.active{display:block}
@@ -91,7 +92,7 @@ button{cursor:pointer;border:0}
 
   <main class="content">
     <div class="topbar">
-      <div class="greeting"><h1>Hola, estudiante 👋</h1><p>Organiza tu tiempo y trabaja por tu futuro.</p></div>
+      <div class="greeting"><h1>Hola, estudiante</h1><p>Organiza tu tiempo y trabaja por tu futuro.</p></div>
       <div class="avatar">ES</div>
     </div>
 
@@ -238,7 +239,7 @@ function taskCard(t,i){
         <strong class="task-percent" id="taskPercent${i}">${progress}%</strong>
       </div>
     </div>
-    <label title="Marcar como completada"><input type="checkbox" ${progress===100?'checked':''} onchange="toggleTask(${i})"> <small>Listo</small></label>
+    <div class="task-actions"><label title="Marcar como completada"><input type="checkbox" ${progress===100?'checked':''} onchange="toggleTask(${i})"> <small>Listo</small></label>${progress===100?`<button class="task-delete" onclick="deleteTask(${i})" aria-label="Eliminar tarea ${escapeHtml(t.text)}">Eliminar</button>`:''}</div>
   </div>`;
 }
 function renderTasks(){
@@ -313,6 +314,13 @@ function askEduBot(text){addChat('user',text);setTimeout(()=>addChat('bot',botRe
 function sendBotMessage(){const input=document.getElementById('botInput');const text=input.value.trim();if(!text)return;input.value='';askEduBot(text);}
 document.addEventListener('keydown',e=>{if(e.key==='Enter'&&document.activeElement?.id==='botInput')sendBotMessage(); if(e.key==='Enter'&&document.activeElement?.id==='newTask')addTask();});
 
+function deleteTask(i){
+  if(i<0||i>=tasks.length)return;
+  if(Number(tasks[i].progress)!==100)return;
+  tasks.splice(i,1);
+  saveTasks();
+  renderTasks();
+}
 function toggleTask(i){
   tasks[i].progress=tasks[i].progress===100?0:100; tasks[i].done=tasks[i].progress===100;
   saveTasks(); renderTasks();
