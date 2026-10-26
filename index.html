@@ -271,11 +271,23 @@ let tasks=JSON.parse(localStorage.getItem('eduplan_tasks') || '[]');
 let current=new Date(); current.setDate(1);
 let selectedCalendarDate='';
 
+const COMPLETED_TASKS_KEY='eduplan_completed_task_history_v1';
+let completedTaskHistory=JSON.parse(localStorage.getItem(COMPLETED_TASKS_KEY)||'[]');
+function saveCompletedTaskHistory(){localStorage.setItem(COMPLETED_TASKS_KEY,JSON.stringify(completedTaskHistory));}
+function recordTaskCompletion(task){
+  if(!task.id) task.id='task_'+Date.now()+'_'+Math.random().toString(36).slice(2,9);
+  if(!completedTaskHistory.includes(task.id)){
+    completedTaskHistory.push(task.id);
+    saveCompletedTaskHistory();
+  }
+}
 function normalizeTask(t){
   if(typeof t.progress!=='number') t.progress=t.done?100:0;
   t.progress=Math.max(0,Math.min(100,Math.round(t.progress)));
   t.done=t.progress===100 || !!t.done;
   if(t.done)t.progress=100;
+  if(!t.id) t.id='task_'+Date.now()+'_'+Math.random().toString(36).slice(2,9);
+  if(t.progress===100) recordTaskCompletion(t);
   return t;
 }
 tasks=tasks.map(normalizeTask);
@@ -312,7 +324,7 @@ function renderTasks(){
   if(typeof updateStudyDashboard==='function')updateStudyDashboard();
 }
 function previewTaskProgress(i,value){const el=document.getElementById('taskPercent'+i);if(el)el.textContent=value+'%';}
-function updateTaskProgress(i,value){tasks[i].progress=Math.max(0,Math.min(100,Number(value)));tasks[i].done=tasks[i].progress===100;saveTasks();renderTasks();}
+function updateTaskProgress(i,value){tasks[i].progress=Math.max(0,Math.min(100,Number(value)));tasks[i].done=tasks[i].progress===100;if(tasks[i].done)recordTaskCompletion(tasks[i]);saveTasks();renderTasks();updateStudyDashboard();}
 function updateMotivation(percent,pending,total){
   const el=document.getElementById('motivationMessage'); if(!el)return;
   const quotes=['🌱 No necesitas hacerlo perfecto; solo necesitas empezar.','✨ Un pequeño avance hoy puede convertirse en un gran logro mañana.','📚 Estudiar un poco cada día también es avanzar.','💜 Descansa si lo necesitas, pero no olvides tu meta.','🚀 Tu progreso no tiene que ser rápido, tiene que ser tuyo.'];
@@ -374,7 +386,8 @@ function deleteTask(i){
 }
 function toggleTask(i){
   tasks[i].progress=tasks[i].progress===100?0:100; tasks[i].done=tasks[i].progress===100;
-  saveTasks(); renderTasks();
+  if(tasks[i].done)recordTaskCompletion(tasks[i]);
+  saveTasks(); renderTasks(); updateStudyDashboard();
 }
 function addTask(){
   const input=document.getElementById('newTask');
@@ -408,7 +421,7 @@ function toggleNotifications(){const panel=document.getElementById('notification
 function claimWelcomeXP(){const status=document.getElementById('welcomeXpStatus');const button=document.getElementById('claimWelcomeXp');if(localStorage.getItem(WELCOME_XP_KEY)==='yes'){status.textContent='Ya reclamaste esta recompensa en este navegador. 💜';button.disabled=true;button.textContent='✅ Recompensa reclamada';return;}localStorage.setItem(WELCOME_XP_KEY,'yes');localStorage.setItem('eduplan_welcome_xp_bonus','100');status.textContent='¡Listo! Se añadieron 100 XP a tu progreso. 🎉';button.disabled=true;button.textContent='✅ ¡100 XP reclamados!';const dot=document.getElementById('notificationDot');if(dot)dot.style.display='none';updateStudyDashboard();}
 function initWelcomeNotification(){const claimed=localStorage.getItem(WELCOME_XP_KEY)==='yes';const button=document.getElementById('claimWelcomeXp');const status=document.getElementById('welcomeXpStatus');const dot=document.getElementById('notificationDot');if(claimed){button.disabled=true;button.textContent='✅ Recompensa reclamada';status.textContent='Ya reclamaste los 100 XP de bienvenida en este navegador. 💜';if(dot)dot.style.display='none';}}
 document.addEventListener('click',function(event){const area=document.querySelector('.notification-area');if(area&&!area.contains(event.target)){const panel=document.getElementById('notificationPanel');panel.classList.remove('open');document.getElementById('notificationToggle').setAttribute('aria-expanded','false');}});
-function updateStudyDashboard(){const stats=getStudyStats();const completed=tasks.filter(t=>Number(t.progress||0)>=100).length;const total=tasks.length;const xp=completed*20+studySessions.length*10+(Number(localStorage.getItem('eduplan_welcome_xp_bonus')||0));const level=Math.floor(xp/100)+1;const into=xp%100;const levels=['Principiante','Constante','En marcha','Imparable','Leyenda'];const name=levels[Math.min(level-1,levels.length-1)];const set=(id,val)=>{const el=document.getElementById(id);if(el)el.textContent=val;};set('weeklyHours',(stats.week.reduce((a,d)=>a+d.minutes,0)/60).toFixed(1)+' h');set('xpTotal',xp);set('levelName','🌱 Nivel '+level+' · '+name);set('xpSummary',xp+' XP acumulados');set('xpNext',into+' / 100 XP para el siguiente nivel');const bar=document.getElementById('xpBar');if(bar)bar.style.width=into+'%';set('rewardTasks',completed);set('rewardSessions',studySessions.length);set('rewardStreak',stats.streak+' días');set('statStudyTime',stats.totalMinutes+' min');set('statToday',stats.todaySessions);set('statCompletion',(total?Math.round(completed/total*100):0)+'%');const badges=[['🌱','Primer paso','Completa tu primera tarea',completed>=1],['📚','Organizado','Completa 5 tareas',completed>=5],['🏆','En racha','Completa 10 tareas',completed>=10],['⏳','Primera sesión','Termina un Pomodoro',studySessions.length>=1],['🔥','Concentración','Termina 5 sesiones',studySessions.length>=5],['💎','Dedicación','Acumula 10 sesiones',studySessions.length>=10],['☀️','Constancia','Estudia 3 días seguidos',stats.streak>=3],['🚀','Maratón','Acumula 5 horas de estudio',stats.totalMinutes>=300]];const grid=document.getElementById('badgeGrid');if(grid)grid.innerHTML=badges.map(b=>`<div class="achievement ${b[3]?'unlocked':''}"><div class="achievement-icon">${b[0]}</div><strong>${b[1]}</strong><small>${b[2]}${b[3]?' · Desbloqueada':' · Bloqueada'}</small></div>`).join('');const chart=document.getElementById('weeklyChart');if(chart){const max=Math.max(30,...stats.week.map(x=>x.minutes));chart.innerHTML=stats.week.map(x=>`<div class="chart-day"><span class="chart-minutes">${x.minutes}m</span><div class="chart-bar-wrap"><div class="chart-bar" style="height:${Math.max(4,x.minutes/max*100)}%" title="${x.minutes} minutos"></div></div><span>${x.label}</span></div>`).join('');}}
+function updateStudyDashboard(){const stats=getStudyStats();const completed=tasks.filter(t=>Number(t.progress||0)>=100).length;const total=tasks.length;const lifetimeCompleted=Math.max(completed,completedTaskHistory.length);const xp=lifetimeCompleted*20+studySessions.length*10+(Number(localStorage.getItem('eduplan_welcome_xp_bonus')||0));const level=Math.floor(xp/100)+1;const into=xp%100;const levels=['Principiante','Constante','En marcha','Imparable','Leyenda'];const name=levels[Math.min(level-1,levels.length-1)];const set=(id,val)=>{const el=document.getElementById(id);if(el)el.textContent=val;};set('weeklyHours',(stats.week.reduce((a,d)=>a+d.minutes,0)/60).toFixed(1)+' h');set('xpTotal',xp);set('levelName','🌱 Nivel '+level+' · '+name);set('xpSummary',xp+' XP acumulados');set('xpNext',into+' / 100 XP para el siguiente nivel');const bar=document.getElementById('xpBar');if(bar)bar.style.width=into+'%';set('rewardTasks',completed);set('rewardSessions',studySessions.length);set('rewardStreak',stats.streak+' días');set('statStudyTime',stats.totalMinutes+' min');set('statToday',stats.todaySessions);set('statCompletion',(total?Math.round(completed/total*100):0)+'%');const badges=[['🌱','Primer paso','Completa tu primera tarea',lifetimeCompleted>=1],['📚','Organizado','Completa 5 tareas',lifetimeCompleted>=5],['🏆','En racha','Completa 10 tareas',lifetimeCompleted>=10],['⏳','Primera sesión','Termina un Pomodoro',studySessions.length>=1],['🔥','Concentración','Termina 5 sesiones',studySessions.length>=5],['💎','Dedicación','Acumula 10 sesiones',studySessions.length>=10],['☀️','Constancia','Estudia 3 días seguidos',stats.streak>=3],['🚀','Maratón','Acumula 5 horas de estudio',stats.totalMinutes>=300]];const grid=document.getElementById('badgeGrid');if(grid)grid.innerHTML=badges.map(b=>`<div class="achievement ${b[3]?'unlocked':''}"><div class="achievement-icon">${b[0]}</div><strong>${b[1]}</strong><small>${b[2]}${b[3]?' · Desbloqueada':' · Bloqueada'}</small></div>`).join('');const chart=document.getElementById('weeklyChart');if(chart){const max=Math.max(30,...stats.week.map(x=>x.minutes));chart.innerHTML=stats.week.map(x=>`<div class="chart-day"><span class="chart-minutes">${x.minutes}m</span><div class="chart-bar-wrap"><div class="chart-bar" style="height:${Math.max(4,x.minutes/max*100)}%" title="${x.minutes} minutos"></div></div><span>${x.label}</span></div>`).join('');}}
 
 updateStudyDashboard();
 initWelcomeNotification();
