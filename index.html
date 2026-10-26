@@ -75,6 +75,22 @@ button{cursor:pointer;border:0}
 .study-grid{grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch}.timer-display{font-size:clamp(3.2rem,8vw,5.2rem);font-weight:850;letter-spacing:-3px;text-align:center;padding:24px 0;color:var(--primary,#6257d9);font-variant-numeric:tabular-nums}.timer-presets,.timer-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:12px}.timer-actions{margin-top:18px}.music-player-wrap{margin-top:14px;overflow:hidden;border-radius:14px}.music-options{display:flex;flex-direction:column;gap:10px;margin-top:18px}.music-option{display:flex;align-items:center;gap:12px;text-align:left;padding:13px;border:1px solid var(--line,#e5e7eb);border-radius:14px;background:var(--card,#fff);color:inherit;cursor:pointer}.music-option>span:first-child{font-size:1.5rem}.music-option>span:last-child{margin-left:auto}.music-option div{display:flex;flex-direction:column;gap:4px}.music-option small,.music-footnote{font-size:.82rem;color:var(--muted,#73798b)}.music-footnote{margin-top:14px;line-height:1.5}.reward-hero{display:flex;align-items:center;justify-content:space-between;gap:20px;background:linear-gradient(135deg,#f0edff,#f9f7ff)}.eyebrow{font-size:.75rem;letter-spacing:.12em;font-weight:800;color:var(--primary,#6257d9)}.xp-total{display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:100px;height:100px;border-radius:50%;background:white;color:var(--primary,#6257d9);box-shadow:0 8px 24px #5545aa18}.xp-total strong{font-size:2rem}.xp-track{height:10px;border-radius:99px;background:#dedaf8;overflow:hidden;margin:14px 0 8px}.xp-fill{height:100%;width:0;background:linear-gradient(90deg,#7568ed,#b19cff);border-radius:99px;transition:width .3s}.badge-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px;margin-top:16px}.achievement{border:1px solid var(--line,#e5e7eb);border-radius:14px;padding:15px;text-align:center;opacity:.48;filter:grayscale(1)}.achievement.unlocked{opacity:1;filter:none;background:#faf9ff;border-color:#d8d1ff}.achievement .achievement-icon{font-size:2rem}.achievement strong{display:block;margin:7px 0 4px}.achievement small{color:var(--muted,#73798b)}.weekly-chart{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:10px;align-items:end;height:155px;margin-top:22px;padding-top:12px}.chart-day{display:flex;flex-direction:column;align-items:center;justify-content:end;height:100%;gap:7px;font-size:.75rem;color:var(--muted,#73798b)}.chart-bar-wrap{height:105px;width:100%;display:flex;align-items:end;justify-content:center}.chart-bar{width:min(28px,80%);min-height:4px;border-radius:7px 7px 2px 2px;background:linear-gradient(180deg,#a69aff,#6558d8)}.chart-minutes{font-size:.68rem;font-weight:700;color:var(--text,#303244)}
 @media(max-width:850px){.study-grid{grid-template-columns:1fr}.reward-hero{align-items:flex-start}.xp-total{min-width:78px;height:78px}.xp-total strong{font-size:1.5rem}}@media(max-width:500px){.timer-presets button{flex:1}.reward-stats{grid-template-columns:1fr}.weekly-chart{gap:5px}}
 
+
+/* Animaciones suaves para seleccionar tareas */
+.task-row{transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease,background .22s ease;transform-origin:center}
+.task-row:hover{transform:translateY(-2px);box-shadow:0 8px 22px #302a6512;border-color:var(--primary)}
+.task-row:has(input[type="checkbox"]:checked){animation:taskCelebrate .38s ease both;background:#f8f7ff}
+.task-actions label{display:inline-flex;align-items:center;gap:7px;cursor:pointer;padding:5px 7px;border-radius:10px;transition:background .2s,transform .2s}
+.task-actions label:hover{background:#f0edff;transform:scale(1.035)}
+.task-actions input[type="checkbox"]{appearance:none;width:21px;height:21px;border:2px solid #b8b5d4;border-radius:7px;background:white;cursor:pointer;display:inline-grid;place-content:center;transition:background .2s,border-color .2s,transform .2s;flex-shrink:0}
+.task-actions input[type="checkbox"]::before{content:"✓";font-size:14px;font-weight:900;color:white;transform:scale(0) rotate(-25deg);transition:transform .18s ease}
+.task-actions input[type="checkbox"]:checked{background:var(--primary);border-color:var(--primary);animation:checkBounce .32s ease}
+.task-actions input[type="checkbox"]:checked::before{transform:scale(1) rotate(0)}
+.task-actions input[type="checkbox"]:focus-visible{outline:3px solid #b8adff;outline-offset:3px}
+@keyframes checkBounce{0%{transform:scale(.75)}65%{transform:scale(1.18)}100%{transform:scale(1)}}
+@keyframes taskCelebrate{0%{transform:scale(.985)}65%{transform:scale(1.012)}100%{transform:scale(1)}}
+@media(prefers-reduced-motion:reduce){.task-row,.task-actions label,.task-actions input[type="checkbox"]{transition:none;animation:none}}
+
 </style>
 </head>
 <body>
@@ -324,16 +340,43 @@ function renderTasks(){
   if(typeof updateStudyDashboard==='function')updateStudyDashboard();
 }
 function previewTaskProgress(i,value){const el=document.getElementById('taskPercent'+i);if(el)el.textContent=value+'%';}
-function updateTaskProgress(i,value){tasks[i].progress=Math.max(0,Math.min(100,Number(value)));tasks[i].done=tasks[i].progress===100;if(tasks[i].done)recordTaskCompletion(tasks[i]);saveTasks();renderTasks();updateStudyDashboard();}
+function updateTaskProgress(i,value){const wasDone=Number(tasks[i].progress||0)===100;tasks[i].progress=Math.max(0,Math.min(100,Number(value)));tasks[i].done=tasks[i].progress===100;if(tasks[i].done)recordTaskCompletion(tasks[i]);saveTasks();renderTasks();if(tasks[i]&&tasks[i].progress===100&&!wasDone)showCompletionMotivation();updateStudyDashboard();}
+function randomEduPlanPhrase(){
+  const phrases=[
+    '🌟 ¡Un ejercicio menos y un paso más cerca de tu meta!',
+    '🧠 Cada problema que intentas fortalece tu manera de pensar.',
+    '🚀 ¡Bien hecho! La constancia de hoy construye tus resultados de mañana.',
+    '💜 No necesitas ser perfecto: necesitas seguir aprendiendo.',
+    '📚 ¡Progreso desbloqueado! Tu esfuerzo sí cuenta.',
+    '🔥 Mira ese avance: estás demostrando que puedes con más de lo que crees.',
+    '🌱 Aprender toma tiempo. Hoy ya hiciste algo importante por tu futuro.',
+    '🏆 ¡Pequeña victoria conseguida! Date un segundo para reconocerla.',
+    '✨ Sigue así: incluso los pasos pequeños te llevan lejos.',
+    '🎯 Concéntrate en el siguiente paso, no en hacerlo todo de golpe.',
+    '☀️ Respira, toma agua si lo necesitas y continúa a tu ritmo.',
+    '💪 Cada intento te enseña algo, incluso cuando una respuesta no sale.',
+    '🌈 ¡Vas construyendo tu propio camino, ejercicio por ejercicio!',
+    '📝 ¡Buen trabajo! Lo que practicas hoy será más fácil mañana.',
+    '⚡ ¡Racha de esfuerzo activada! Vamos con el siguiente cuando estés listo.'
+  ];
+  let next=phrases[Math.floor(Math.random()*phrases.length)];
+  if(phrases.length>1 && next===window.eduPlanLastPhrase) next=phrases[(phrases.indexOf(next)+1)%phrases.length];
+  window.eduPlanLastPhrase=next;
+  return next;
+}
+function showCompletionMotivation(){
+  const el=document.getElementById('motivationMessage');
+  if(el){el.textContent=randomEduPlanPhrase();el.style.animation='none';void el.offsetWidth;el.style.animation='taskCelebrate .45s ease';}
+}
 function updateMotivation(percent,pending,total){
   const el=document.getElementById('motivationMessage'); if(!el)return;
-  const quotes=['🌱 No necesitas hacerlo perfecto; solo necesitas empezar.','✨ Un pequeño avance hoy puede convertirse en un gran logro mañana.','📚 Estudiar un poco cada día también es avanzar.','💜 Descansa si lo necesitas, pero no olvides tu meta.','🚀 Tu progreso no tiene que ser rápido, tiene que ser tuyo.'];
+  const quotes=['🌱 No necesitas hacerlo perfecto; solo necesitas empezar.','✨ Un pequeño avance hoy puede convertirse en un gran logro mañana.','📚 Estudiar un poco cada día también es avanzar.','💜 Descansa si lo necesitas, pero no olvides tu meta.','🚀 Tu progreso no tiene que ser rápido, tiene que ser tuyo.','🧠 La práctica convierte lo difícil en algo cada vez más familiar.','🎯 Divide tu meta en pasos pequeños y ve uno por uno.','🌟 Tu esfuerzo de hoy es un regalo para tu yo del futuro.','💪 No compares tu ritmo: enfócate en tu siguiente paso.','☀️ Una pausa también puede ser parte de un buen plan.'];
   if(!total){el.textContent='🌱 Cada gran meta empieza con una pequeña acción. Agrega tu primera tarea y comienza.';return;}
   if(percent===100)el.textContent='🏆 ¡Lo lograste! Completaste todo. Date un pequeño descanso y celebra tu esfuerzo.';
   else if(percent>=75)el.textContent='🚀 ¡Estás muy cerca! Llevas '+percent+'% de avance. ¡Un paso más!';
-  else if(percent>=40)el.textContent='🔥 ¡Vas construyendo un buen ritmo! Ya llevas '+percent+'% de avance.';
+  else if(percent>=40)el.textContent='🔥 ¡Estás construyendo un buen ritmo! Ya llevas '+percent+'% de avance.';
   else if(percent>0)el.textContent='💪 Todo avance cuenta: ya llevas '+percent+'%. Sigue a tu ritmo, una cosa a la vez.';
-  else el.textContent=quotes[Math.floor(Date.now()/86400000)%quotes.length]+' Empieza con una tarea pequeña.';
+  else el.textContent=quotes[Math.floor(Math.random()*quotes.length)]+' Empieza con una tarea pequeña.';
 }
 function botReply(message){
   const raw=String(message||'').trim();
@@ -385,9 +428,10 @@ function deleteTask(i){
   renderTasks();
 }
 function toggleTask(i){
-  tasks[i].progress=tasks[i].progress===100?0:100; tasks[i].done=tasks[i].progress===100;
+  const wasDone=tasks[i].progress===100;
+  tasks[i].progress=wasDone?0:100; tasks[i].done=tasks[i].progress===100;
   if(tasks[i].done)recordTaskCompletion(tasks[i]);
-  saveTasks(); renderTasks(); updateStudyDashboard();
+  saveTasks(); renderTasks(); if(!wasDone)showCompletionMotivation(); updateStudyDashboard();
 }
 function addTask(){
   const input=document.getElementById('newTask');
@@ -406,11 +450,30 @@ const STUDY_KEY='eduplan_study_sessions_v1';
 let studySessions=JSON.parse(localStorage.getItem(STUDY_KEY)||'[]');
 let timerSeconds=25*60, timerInitial=25*60, timerInterval=null, timerIsBreak=false;
 function saveStudySessions(){localStorage.setItem(STUDY_KEY,JSON.stringify(studySessions));}
+function playPomodoroAlarm(){
+  // Beeps generados localmente; no requiere descargar un archivo de sonido.
+  try{
+    const AudioCtx=window.AudioContext||window.webkitAudioContext;
+    if(!AudioCtx)return;
+    const ctx=new AudioCtx();
+    if(ctx.state==='suspended')ctx.resume();
+    const pattern=[0,0.28,0.56,1.05];
+    pattern.forEach((delay,index)=>{
+      const osc=ctx.createOscillator();const gain=ctx.createGain();
+      osc.type='sine';osc.frequency.value=index===3?1046:880;
+      gain.gain.setValueAtTime(0.0001,ctx.currentTime+delay);
+      gain.gain.exponentialRampToValueAtTime(0.22,ctx.currentTime+delay+0.025);
+      gain.gain.exponentialRampToValueAtTime(0.0001,ctx.currentTime+delay+0.2);
+      osc.connect(gain);gain.connect(ctx.destination);osc.start(ctx.currentTime+delay);osc.stop(ctx.currentTime+delay+0.22);
+    });
+    setTimeout(()=>ctx.close().catch(()=>{}),1800);
+  }catch(e){/* Si el navegador bloquea audio, el aviso visual sigue funcionando. */}
+}
 function padTime(n){return String(n).padStart(2,'0');}
 function paintTimer(){const el=document.getElementById('timerDisplay');if(el)el.textContent=padTime(Math.floor(timerSeconds/60))+':'+padTime(timerSeconds%60);}
 function setTimerPreset(mins){pauseTimer();timerIsBreak=false;timerSeconds=mins*60;timerInitial=timerSeconds;document.getElementById('timerModeLabel').textContent='Enfoque';document.getElementById('timerStatus').textContent='Sesión de '+mins+' minutos preparada. ¡Tú puedes!';document.getElementById('timerStartBtn').textContent='▶ Iniciar';paintTimer();}
 function setBreakMode(){pauseTimer();timerIsBreak=true;timerSeconds=5*60;timerInitial=timerSeconds;document.getElementById('timerModeLabel').textContent='Descanso';document.getElementById('timerStatus').textContent='Tómate cinco minutos para estirarte y descansar.';document.getElementById('timerStartBtn').textContent='▶ Iniciar descanso';paintTimer();}
-function toggleTimer(){if(timerInterval){pauseTimer();return;}document.getElementById('timerStartBtn').textContent='⏸ Pausar';document.getElementById('timerStatus').textContent=timerIsBreak?'Descanso en curso…':'¡Enfócate! El tiempo de estudio se registrará al terminar.';timerInterval=setInterval(()=>{timerSeconds--;paintTimer();if(timerSeconds<=0){pauseTimer();if(!timerIsBreak){const now=new Date();studySessions.push({date:now.toISOString().slice(0,10),minutes:Math.round(timerInitial/60),finishedAt:now.toISOString()});saveStudySessions();document.getElementById('timerStatus').textContent='🎉 ¡Sesión completada! Ganaste 10 XP. ¡Buen trabajo!';}else document.getElementById('timerStatus').textContent='☀️ Descanso terminado. Cuando quieras, empieza otra sesión.';timerIsBreak=false;timerSeconds=timerInitial=25*60;document.getElementById('timerModeLabel').textContent='Enfoque';document.getElementById('timerStartBtn').textContent='▶ Iniciar';paintTimer();updateStudyDashboard();}},1000);}
+function toggleTimer(){if(timerInterval){pauseTimer();return;}document.getElementById('timerStartBtn').textContent='⏸ Pausar';document.getElementById('timerStatus').textContent=timerIsBreak?'Descanso en curso…':'¡Enfócate! El tiempo de estudio se registrará al terminar.';timerInterval=setInterval(()=>{timerSeconds--;paintTimer();if(timerSeconds<=0){pauseTimer();playPomodoroAlarm();if(!timerIsBreak){const now=new Date();studySessions.push({date:now.toISOString().slice(0,10),minutes:Math.round(timerInitial/60),finishedAt:now.toISOString()});saveStudySessions();document.getElementById('timerStatus').textContent=randomEduPlanPhrase()+' 🎉 ¡Sesión Pomodoro completada! Ganaste 10 XP. ¡Buen trabajo!';}else document.getElementById('timerStatus').textContent='🔔 '+randomEduPlanPhrase()+' Tu descanso terminó; cuando quieras, empieza otra sesión.';timerIsBreak=false;timerSeconds=timerInitial=25*60;document.getElementById('timerModeLabel').textContent='Enfoque';document.getElementById('timerStartBtn').textContent='▶ Iniciar';paintTimer();updateStudyDashboard();}},1000);}
 function pauseTimer(){if(timerInterval){clearInterval(timerInterval);timerInterval=null;}const b=document.getElementById('timerStartBtn');if(b)b.textContent='▶ Continuar';}
 function resetTimer(){pauseTimer();timerSeconds=timerInitial;paintTimer();document.getElementById('timerStatus').textContent='Temporizador reiniciado.';}
 function setStudyMusic(videoId,label){const player=document.getElementById('studyMusicPlayer');if(player){player.src='https://www.youtube.com/embed/'+videoId+'?rel=0';player.title=label+' para estudiar en EduPlan';}}
