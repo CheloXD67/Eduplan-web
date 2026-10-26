@@ -122,7 +122,9 @@ button{transition:filter .18s,transform .18s}button:hover{filter:brightness(1.03
 @media(max-width:700px){.sidebar{background:linear-gradient(180deg,#1b1739,#211944)}}
 
 /* Overrides finales: ambiente atardecer-anochecer morado */
-body{background:linear-gradient(180deg,#241944 0%,#4a347b 24%,#9663a5 49%,#d78baf 68%,#f2b8b7 82%,#42305f 100%);background-attachment:fixed}
+body{background:radial-gradient(ellipse at 12% 18%,rgba(157,112,239,.35),transparent 34%),radial-gradient(ellipse at 85% 62%,rgba(174,111,216,.28),transparent 38%),linear-gradient(180deg,#241944 0%,#493276 28%,#65428c 52%,#80549c 72%,#62427f 88%,#30234f 100%);background-attachment:fixed;background-size:100% 100%;min-height:100vh}
+html{min-height:100%;background:#30234f}
+.app{min-height:100vh;background:transparent}
 .sidebar{background:linear-gradient(180deg,rgba(36,26,69,.97),rgba(56,38,94,.96));border-right:1px solid rgba(255,255,255,.16);color:#f6edff}
 .nav button{color:#e0d4fa}.nav button.active,.nav button:hover{background:linear-gradient(110deg,#7954e8,#a16fe7);color:#fff;box-shadow:0 8px 22px #20113b44}
 .sidebar-footer{background:rgba(255,255,255,.1);border-color:#ffffff30}.sidebar-footer .footer-title,.sidebar-stat strong{color:#e2c9ff}.sidebar-footer p,.sidebar-stat{color:#e6dcf7}
@@ -133,6 +135,80 @@ body{background:linear-gradient(180deg,#241944 0%,#4a347b 24%,#9663a5 49%,#d78ba
 
 /* Frases de hoy y perfil personalizable */
 .quote-hero{background:linear-gradient(135deg,rgba(89,61,145,.96),rgba(143,98,185,.92),rgba(221,151,187,.88));color:#fff;text-align:center;padding:38px 26px;border:1px solid #ffffff55;box-shadow:0 18px 42px #35204b30}.quote-sparkle{font-size:24px;color:#f7ddff}.daily-quote{font-size:clamp(22px,3vw,34px);line-height:1.45;font-weight:750;max-width:780px;margin:24px auto}.quote-hero .muted{color:#f3eafa}.quote-hero .secondary-btn{background:#fff;color:#6949a8;border:0}.quote-tile{min-height:145px;background:linear-gradient(145deg,#ffffffef,#f4eaffee);border:1px solid #ffffffaa;border-radius:18px;padding:20px;box-shadow:0 8px 24px #35204b12}.quote-tile p{line-height:1.55;margin:8px 0}.profile-card{max-width:760px}.profile-preview{display:flex;align-items:center;gap:18px;padding:18px;border-radius:18px;background:linear-gradient(120deg,#f3eaff,#fff1f7);margin-bottom:24px}.profile-avatar{width:76px;height:76px;display:grid;place-items:center;border-radius:24px;background:#fff;font-size:38px;box-shadow:0 8px 24px #4a286322}.profile-preview h2{margin:0 0 5px}.profile-form{display:grid;gap:9px}.profile-form label{font-weight:700;margin-top:8px}.profile-form input,.profile-form select{width:100%;padding:12px 13px;border:1px solid #d9cdef;border-radius:12px;background:#fff;color:#35274c;font:inherit}.profile-form button{margin-top:14px;padding:13px;border:0;border-radius:12px;background:linear-gradient(100deg,var(--profile-accent,#8b6bea),#b28be9);color:white;font-weight:800;cursor:pointer}.profile-form button:hover{filter:brightness(1.05)}
+
+/* Perfil ampliado: mantener el morado visible y extender el diseño */
+#perfil{position:relative;isolation:isolate;padding:24px;border-radius:28px;background:linear-gradient(145deg,rgba(48,31,91,.92) 0%,rgba(92,59,145,.88) 42%,rgba(143,91,174,.82) 72%,rgba(192,119,177,.72) 100%);border:1px solid rgba(255,255,255,.3);box-shadow:0 18px 48px rgba(28,14,58,.24);overflow:hidden}
+#perfil:before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(circle at 90% 8%,rgba(255,219,249,.24),transparent 28%),radial-gradient(circle at 0% 100%,rgba(169,130,255,.24),transparent 36%)}
+#perfil .page-intro h2{color:#fff;text-shadow:0 2px 14px #26134266}
+#perfil .page-intro p{color:#f0e5ff!important}
+#perfil .profile-card{width:100%;max-width:100%;padding:clamp(20px,3vw,34px);border-radius:24px;background:linear-gradient(145deg,rgba(255,255,255,.97),rgba(247,238,255,.96));border:1px solid rgba(255,255,255,.75);box-shadow:0 14px 38px rgba(36,18,68,.2)}
+#perfil .profile-preview{min-height:132px;padding:24px;border:1px solid #d9c6ff;background:linear-gradient(115deg,#4b2d83 0%,#7954b8 52%,#b17ac8 100%);color:#fff;box-shadow:inset 0 1px 0 #ffffff30,0 10px 24px #49307120}
+#perfil .profile-preview h2{color:#fff;font-size:clamp(22px,3vw,30px)}
+#perfil .profile-preview .muted{color:#f2e7ff!important}
+#perfil #profileLevelPreview{background:#f3e8ff;color:#603b91;border:1px solid #e0caff}
+#perfil .profile-avatar{width:88px;height:88px;flex:0 0 88px;border-radius:26px;background:linear-gradient(145deg,#fff,#eadbff);border:2px solid #fff;color:#6c48a8;box-shadow:0 8px 24px #24123c45}
+#perfil .profile-form{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:20px;row-gap:10px}
+#perfil .profile-form label{color:#583783;margin-top:12px}
+#perfil .profile-form input,#perfil .profile-form select{border:1.5px solid #d4c0f0;background:#fff;color:#35234e;box-shadow:0 2px 8px #4b2d8310;transition:border-color .2s,box-shadow .2s}
+#perfil .profile-form input:focus,#perfil .profile-form select:focus{outline:none;border-color:#8b63d5;box-shadow:0 0 0 4px #8b63d526}
+#perfil .profile-form button{grid-column:1/-1;min-height:48px;background:linear-gradient(100deg,#6840a8,#9165d3 55%,#b27ac9);box-shadow:0 8px 20px #6e47a833}
+#perfil #profileSaveStatus{grid-column:1/-1;color:#6840a8;font-weight:700}
+@media(max-width:650px){#perfil{padding:14px;border-radius:20px}#perfil .profile-form{grid-template-columns:1fr}#perfil .profile-form button,#perfil #profileSaveStatus{grid-column:auto}#perfil .profile-preview{padding:16px;gap:13px}#perfil .profile-avatar{width:68px;height:68px;flex-basis:68px;border-radius:20px}}
+
+
+/* Navegación rápida persistente para saltar entre las secciones */
+.quick-nav{position:sticky;top:10px;z-index:80;display:flex;align-items:center;gap:8px;flex-wrap:nowrap;overflow-x:auto;margin:0 0 24px;padding:10px 12px;border:1px solid rgba(236,218,255,.38);border-radius:18px;background:rgba(39,26,70,.86);box-shadow:0 10px 28px rgba(18,8,42,.24);backdrop-filter:blur(16px);scrollbar-width:thin;scrollbar-color:#b99ae8 transparent}
+.quick-nav-label{flex:0 0 auto;padding:0 5px;color:#d9c5ff;font-size:10px;font-weight:900;letter-spacing:.12em}
+.quick-nav-btn{flex:0 0 auto;border:1px solid rgba(235,220,255,.18);border-radius:12px;padding:9px 12px;background:rgba(255,255,255,.08);color:#f4eaff;font-size:12px;font-weight:750;white-space:nowrap;cursor:pointer;transition:background .18s,transform .18s,border-color .18s}
+.quick-nav-btn:hover{background:rgba(170,126,239,.3);transform:translateY(-1px)}
+.quick-nav-btn.active{background:linear-gradient(110deg,#8056e8,#b078e4);border-color:#e0c5ff;color:#fff;box-shadow:0 4px 13px #180d3645}
+@media(max-width:700px){.quick-nav{top:6px;margin:0 -3px 18px;padding:8px;border-radius:14px;gap:6px}.quick-nav-btn{padding:9px 11px;font-size:12px}.quick-nav-label{display:none}}
+
+
+/* Barra vertical independiente, separada del contenido como la barra horizontal */
+.app{gap:18px;padding:18px;align-items:flex-start}
+.sidebar{margin:0;top:18px;height:calc(100vh - 36px);border:1px solid rgba(236,218,255,.32);border-right:1px solid rgba(236,218,255,.32);border-radius:24px;overflow-y:auto;box-shadow:0 14px 38px rgba(15,7,38,.28);scrollbar-width:thin;scrollbar-color:#a78be0 transparent}
+.content{min-width:0;padding:22px 12px 30px;max-width:none;margin:0;flex:1}
+@media(max-width:900px){.app{gap:12px;padding:12px}.sidebar{top:12px;height:calc(100vh - 24px);border-radius:20px}.content{padding:18px 8px 26px}}
+@media(max-width:560px){.app{padding:10px;gap:0}.content{padding:14px 4px 24px}}
+
+
+/* Animaciones suaves por función y temas de fondo personalizables */
+:root{--motion:1}
+@keyframes sectionEnter{from{opacity:0;transform:translateY(12px) scale(.995)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes softPop{0%{transform:scale(.97)}65%{transform:scale(1.015)}100%{transform:scale(1)}}
+.section.active{animation:sectionEnter .38s ease both}
+.card,.stat,.mini-card,.achievement,.quote-tile,.task-item,.calendar-help,.profile-preview,.nav button,.quick-nav-btn{transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease,background .25s ease}
+.card:hover,.mini-card:hover,.achievement:hover,.quote-tile:hover{transform:translateY(-3px);box-shadow:0 16px 36px rgba(18,9,45,.18)}
+.stat:hover{transform:translateY(-3px) scale(1.015);box-shadow:0 12px 25px rgba(74,45,128,.15)}
+button{transition:transform .18s ease,filter .18s ease,box-shadow .18s ease}
+button:hover{filter:brightness(1.06)}button:active{transform:scale(.97)}
+.nav button:hover,.quick-nav-btn:hover{transform:translateX(2px)}
+.progress .bar{transition:width .65s cubic-bezier(.22,.8,.3,1)}
+.profile-avatar{transition:transform .35s ease,filter .35s ease}.profile-avatar:hover{transform:rotate(-8deg) scale(1.08);filter:drop-shadow(0 6px 10px #8b6bea55)}
+.theme-help{grid-column:1/-1;margin-top:-4px;font-size:12px}
+/* Estadísticas generales centradas y fáciles de leer */
+#progreso>.card:first-child{text-align:center;max-width:1100px;margin:0 auto 20px}
+#progreso>.card:first-child>div[style*="margin-top:25px"]{max-width:760px;margin:25px auto 0!important;text-align:left}
+#progreso>.card:first-child>.stats{max-width:820px;margin:26px auto 0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+#progreso>.card:first-child>.stats .stat{min-height:100px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border:1px solid var(--line);border-radius:18px}
+#progreso>.mini-grid{max-width:1100px;margin:0 auto}
+/* Temas alternativos: seleccionables desde Mi perfil */
+body[data-theme="ocean"]{--primary:#3986d7;--primary2:#70c6e9;--line:#cfe8f7;--text:#142b43;--muted:#5e7890;background:linear-gradient(180deg,#102d50 0%,#2677a8 38%,#8ed5e8 72%,#e5f8ff 100%)}
+body[data-theme="forest"]{--primary:#31866c;--primary2:#8dcc83;--line:#d2ead7;--text:#193729;--muted:#658071;background:linear-gradient(180deg,#142f2b 0%,#2d715c 38%,#a9d5a2 72%,#edf8df 100%)}
+body[data-theme="sunset"]{--primary:#d16b45;--primary2:#f3b65e;--line:#f3ddca;--text:#492b34;--muted:#8a6670;background:linear-gradient(180deg,#45234e 0%,#a74f70 35%,#f29a73 68%,#ffe0a7 100%)}
+body[data-theme="rose"]{--primary:#c45d9b;--primary2:#f0a8ca;--line:#f4d8e8;--text:#4a2942;--muted:#8b6b83;background:linear-gradient(180deg,#4d2855 0%,#a95f9d 38%,#edb7d6 72%,#fff0f7 100%)}
+body[data-theme="midnight"]{--primary:#8c8be8;--primary2:#b7b8ff;--line:#393854;--text:#f2f0ff;--muted:#c2bfd9;--card:rgba(31,30,54,.94);--shadow:0 12px 35px rgba(0,0,0,.25);background:linear-gradient(180deg,#10111d 0%,#20223b 48%,#383052 100%);color:var(--text)}
+body[data-theme="midnight"] .card,body[data-theme="midnight"] .stat,body[data-theme="midnight"] .mini-card{background:rgba(31,30,54,.94);color:var(--text);border-color:#454260}
+body[data-theme="midnight"] .muted{color:var(--muted)}
+body[data-theme="midnight"] input,body[data-theme="midnight"] select,body[data-theme="midnight"] textarea{background:#25243d;color:#f2f0ff;border-color:#514e73}
+body[data-theme="ocean"] .sidebar,body[data-theme="forest"] .sidebar,body[data-theme="sunset"] .sidebar,body[data-theme="rose"] .sidebar,body[data-theme="midnight"] .sidebar{background:rgba(24,23,48,.94);border-color:#ffffff30}
+body[data-theme="ocean"] .nav button,body[data-theme="forest"] .nav button,body[data-theme="sunset"] .nav button,body[data-theme="rose"] .nav button,body[data-theme="midnight"] .nav button{color:#f1eaff}
+body[data-theme="ocean"] .sidebar-footer,body[data-theme="forest"] .sidebar-footer,body[data-theme="sunset"] .sidebar-footer,body[data-theme="rose"] .sidebar-footer,body[data-theme="midnight"] .sidebar-footer{background:#ffffff12;border-color:#ffffff2b}
+body[data-theme="midnight"] .quick-nav{background:rgba(20,19,38,.9)}
+@media(max-width:700px){#progreso>.card:first-child>.stats{grid-template-columns:1fr}#progreso>.card:first-child{text-align:left}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
+
 </style>
 </head>
 <body>
@@ -171,6 +247,19 @@ body{background:linear-gradient(180deg,#241944 0%,#4a347b 24%,#9663a5 49%,#d78ba
       </div>
       <div class="avatar">ES</div>
     </div>
+
+    <nav class="quick-nav" aria-label="Navegación rápida entre secciones">
+      <span class="quick-nav-label">IR A</span>
+      <button class="quick-nav-btn active" data-quick-page="inicio" onclick="showPage('inicio')">⌂ Inicio</button>
+      <button class="quick-nav-btn" data-quick-page="calendario" onclick="showPage('calendario')">▦ Calendario</button>
+      <button class="quick-nav-btn" data-quick-page="tareas" onclick="showPage('tareas')">✓ Tareas</button>
+      <button class="quick-nav-btn" data-quick-page="progreso" onclick="showPage('progreso')">↗ Progreso</button>
+      <button class="quick-nav-btn" data-quick-page="estudio" onclick="showPage('estudio')">♫ Estudio + música</button>
+      <button class="quick-nav-btn" data-quick-page="recompensas" onclick="showPage('recompensas')">✧ Recompensas</button>
+      <button class="quick-nav-btn" data-quick-page="edubot" onclick="showPage('edubot')">🤖 EduBot</button>
+      <button class="quick-nav-btn" data-quick-page="frases" onclick="showPage('frases')">❝ Frases</button>
+      <button class="quick-nav-btn" data-quick-page="perfil" onclick="showPage('perfil')">☾ Perfil</button>
+    </nav>
 
     <section id="inicio" class="section active">
       <div class="grid">
@@ -226,6 +315,7 @@ body{background:linear-gradient(180deg,#241944 0%,#4a347b 24%,#9663a5 49%,#d78ba
       <label for="profileAvatar">Elige tu avatar</label><select id="profileAvatar" onchange="updateProfilePreview()"><option>🌙</option><option>🐈</option><option>🐸</option><option>🦊</option><option>🐼</option><option>⭐</option><option>🪻</option><option>🎧</option><option>🦋</option><option>🐇</option></select>
       <label for="profileMotto">Frase personal</label><input id="profileMotto" maxlength="90" placeholder="Ej. Estoy construyendo mi futuro" oninput="updateProfilePreview()">
       <label for="profileAccent">Color de acento</label><select id="profileAccent" onchange="applyProfileAccent()"><option value="#8b6bea">Lavanda</option><option value="#d16ba5">Rosa</option><option value="#5d8de8">Azul noche</option><option value="#4fae9b">Menta</option><option value="#b78a48">Dorado</option></select>
+      <label for="siteTheme">Fondo de EduPlan</label><select id="siteTheme" onchange="applySiteTheme()"><option value="lofi">🌌 Lo-fi morado</option><option value="ocean">🌊 Océano azul</option><option value="forest">🌿 Bosque verde</option><option value="sunset">🌇 Atardecer cálido</option><option value="rose">🌸 Rosa pastel</option><option value="midnight">🌑 Noche minimalista</option></select><p class="muted theme-help">Elige el ambiente que más te guste. Se guarda en este navegador.</p>
       <button onclick="saveProfile()">Guardar mi perfil 💜</button><p class="muted" id="profileSaveStatus" aria-live="polite">Tu perfil se guarda en este navegador.</p></div></div>
     </section>
 
@@ -566,6 +656,9 @@ const DAILY_QUOTES=[
 'No tienes que hacerlo todo hoy; solo dar el siguiente paso.','Tu futuro se construye con lo que haces un poquito cada día.','Descansar también forma parte de avanzar.','No compares tu capítulo uno con el capítulo veinte de otra persona.','Equivocarte no te hace incapaz; te está enseñando.','Aunque avances lento, sigues avanzando.','La disciplina es volver a intentarlo, incluso sin ganas.','Hazlo por la persona en la que te estás convirtiendo.','Un mal día no significa una mala vida.','Tu esfuerzo de hoy es un regalo para tu yo del futuro.','No necesitas sentirte preparado para comenzar.','Pequeños pasos también te llevan lejos.','Pide ayuda cuando la necesites; no tienes que poder con todo.','La constancia vence a la perfección que nunca empieza.','Cada página que estudias te acerca un poco más a tu meta.','Sé paciente contigo: estás aprendiendo.','Tu valor no depende de una nota.','Respira. Ordena tus ideas. Empieza por una cosa.','Las pausas no borran tu progreso.','Puedes cambiar de estrategia sin renunciar a tu sueño.','No eres tus errores; eres lo que aprendes de ellos.','Hoy es una nueva oportunidad para intentarlo de otra manera.','Celebra también las victorias pequeñas.','La confianza crece cada vez que cumples una promesa contigo.','No todo florece al mismo tiempo.','Haz lo posible con lo que tienes hoy.','Tu camino no tiene que parecerse al de nadie más.','Estudiar un poco con calma vale más que rendirse por agobio.','Sé firme con tus metas y amable contigo.','El progreso real a veces es silencioso.','Tu sueño merece paciencia, práctica y descanso.','No necesitas ser perfecto para estar orgulloso de ti.','Lo que hoy parece difícil puede volverse familiar con práctica.','Date crédito por seguir aquí y seguir intentándolo.','Una tarea a la vez; un día a la vez.','La valentía también es comenzar de nuevo.','No te rindas en un día en que necesitas descansar.','Puedes sentir miedo y aun así dar el siguiente paso.','Tu ritmo también es un ritmo válido.','Cada esfuerzo cuenta, incluso cuando nadie lo ve.'
 ];
 function newDailyQuote(){let q=DAILY_QUOTES[Math.floor(Math.random()*DAILY_QUOTES.length)];const el=document.getElementById('dailyQuote');if(el&&DAILY_QUOTES.length>1&&el.textContent.replace(/[“”]/g,'')===q){q=DAILY_QUOTES[(DAILY_QUOTES.indexOf(q)+1)%DAILY_QUOTES.length];}if(el)el.textContent='“'+q+'”';const a=document.getElementById('dailyQuoteAuthor');if(a)a.textContent='— Un recordatorio para ti';}
+const EDU_THEMES=['lofi','ocean','forest','sunset','rose','midnight'];
+function applySiteTheme(){const sel=document.getElementById('siteTheme');const theme=EDU_THEMES.includes(sel?.value)?sel.value:'lofi';document.body.dataset.theme=theme;localStorage.setItem('eduplan_theme',theme);}
+function loadSiteTheme(){const saved=localStorage.getItem('eduplan_theme')||'lofi';const sel=document.getElementById('siteTheme');if(sel)sel.value=EDU_THEMES.includes(saved)?saved:'lofi';document.body.dataset.theme=EDU_THEMES.includes(saved)?saved:'lofi';}
 function renderQuoteGrid(){const grid=document.getElementById('quoteGrid');if(!grid)return;const chosen=[...DAILY_QUOTES].sort(()=>Math.random()-.5).slice(0,6);grid.innerHTML=chosen.map((q,i)=>`<article class="quote-tile"><span class="badge">${['🌱 Crecimiento','📚 Estudio','💜 Autocuidado','✨ Constancia','🌙 Calma','🚀 Metas'][i]}</span><p>“${q}”</p></article>`).join('');}
 async function copyDailyQuote(){const q=document.getElementById('dailyQuote')?.textContent||'';try{await navigator.clipboard.writeText(q);const a=document.getElementById('dailyQuoteAuthor');if(a)a.textContent='¡Frase copiada! 💜';}catch(e){window.prompt('Copia tu frase:',q);}}
 function getProfile(){try{return JSON.parse(localStorage.getItem('eduplan_profile')||'{}')}catch(e){return {}}}
@@ -573,14 +666,16 @@ function updateProfilePreview(){const name=document.getElementById('profileName'
 function applyProfileAccent(){const c=document.getElementById('profileAccent')?.value||'#8b6bea';document.documentElement.style.setProperty('--profile-accent',c);}
 function saveProfile(){const profile={name:document.getElementById('profileName').value.trim(),avatar:document.getElementById('profileAvatar').value,motto:document.getElementById('profileMotto').value.trim(),accent:document.getElementById('profileAccent').value};localStorage.setItem('eduplan_profile',JSON.stringify(profile));updateProfilePreview();applyProfileAccent();const st=document.getElementById('profileSaveStatus');if(st)st.textContent='¡Perfil guardado en este navegador! 💜';}
 function loadProfile(){const p=getProfile();const name=document.getElementById('profileName');const avatar=document.getElementById('profileAvatar');const motto=document.getElementById('profileMotto');const accent=document.getElementById('profileAccent');if(name)name.value=p.name||'';if(avatar)avatar.value=p.avatar||'🌙';if(motto)motto.value=p.motto||'';if(accent)accent.value=p.accent||'#8b6bea';updateProfilePreview();applyProfileAccent();}
-renderQuoteGrid();newDailyQuote();loadProfile();
+renderQuoteGrid();newDailyQuote();loadProfile();loadSiteTheme();
 
 updateStudyDashboard();
 initWelcomeNotification();
 function showPage(id){
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
+  document.querySelector('.quick-nav')?.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'nearest'});
   document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===id));
+  document.querySelectorAll('.quick-nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.quickPage===id));
 }
 document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>showPage(b.dataset.page));
 
