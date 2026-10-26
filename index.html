@@ -209,6 +209,14 @@ body[data-theme="midnight"] .quick-nav{background:rgba(20,19,38,.9)}
 @media(max-width:700px){#progreso>.card:first-child>.stats{grid-template-columns:1fr}#progreso>.card:first-child{text-align:left}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
 
+
+/* Reproductor flotante EduPlan */
+.floating-music{position:fixed;right:22px;bottom:22px;width:310px;max-width:calc(100vw - 24px);z-index:9999;background:linear-gradient(145deg,#24163f,#49306f);color:#fff;border:1px solid #ffffff3b;border-radius:20px;box-shadow:0 18px 55px #10082180;overflow:hidden;backdrop-filter:blur(18px);transition:width .25s,transform .25s,box-shadow .25s;animation:musicFloatIn .45s cubic-bezier(.2,.8,.2,1) both}
+.floating-music:hover{box-shadow:0 22px 60px #10082199}.floating-music.minimized{width:235px}.floating-music.hidden-player{display:none}.fm-head{display:flex;align-items:center;gap:10px;padding:12px 13px;cursor:move;user-select:none;background:linear-gradient(100deg,#7650c9,#a16ad2)}.fm-disc{width:38px;height:38px;flex:0 0 38px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#2c1c4b,#d3a6ff);border:2px solid #ffffff80;box-shadow:0 0 0 4px #ffffff16;font-size:19px}.fm-disc.playing{animation:fmSpin 4s linear infinite}.fm-title{min-width:0;flex:1}.fm-title strong{display:block;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.fm-title small{display:block;font-size:11px;color:#f1e7ff;margin-top:3px}.fm-icon-btn{width:28px;height:28px;flex:0 0 28px;display:grid;place-items:center;border:1px solid #ffffff3a;border-radius:9px;background:#ffffff16;color:white;font-size:16px;padding:0}.fm-icon-btn:hover{background:#ffffff30}.fm-body{padding:12px}.fm-frame{overflow:hidden;border-radius:12px;background:#151020;line-height:0}.fm-frame iframe{width:100%;height:174px;border:0;display:block}.fm-controls{display:flex;gap:7px;margin-top:10px}.fm-action{flex:1;padding:9px 7px;border-radius:10px;background:#ffffff16;border:1px solid #ffffff2b;color:white;font-size:12px;font-weight:750}.fm-action:hover{background:#ffffff29;transform:translateY(-1px)}.fm-action.primary{background:linear-gradient(100deg,#a47af2,#d28ce9);border:0;color:#24163f}.fm-presets{display:flex;gap:6px;margin-top:9px}.fm-presets button{flex:1;padding:7px 4px;border-radius:9px;background:#ffffff0e;color:#f2eaff;border:1px solid #ffffff20;font-size:11px}.fm-presets button:hover{background:#ffffff24}.fm-note{font-size:10px;line-height:1.4;color:#d4c4ed;margin:9px 2px 0}.floating-music.minimized .fm-body{display:none}.floating-music.minimized .fm-head{border-radius:19px}.fm-reopen{position:fixed;right:22px;bottom:22px;z-index:9998;display:none;padding:12px 16px;border-radius:999px;background:linear-gradient(110deg,#7650c9,#b078dd);color:white;font-weight:800;box-shadow:0 12px 35px #10082170;animation:musicFloatIn .35s ease-out}.fm-reopen.visible{display:flex;align-items:center;gap:8px}.floating-music.dragging{transition:none;opacity:.94}
+@keyframes fmSpin{to{transform:rotate(360deg)}}@keyframes musicFloatIn{from{opacity:0;transform:translateY(18px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
+@media(max-width:560px){.floating-music{right:12px;bottom:12px;width:min(310px,calc(100vw - 24px))}.floating-music.minimized{width:220px}.fm-frame iframe{height:155px}.fm-reopen{right:12px;bottom:12px}}
+@media(prefers-reduced-motion:reduce){.floating-music,.fm-disc.playing,.fm-reopen{animation:none!important;transition:none!important}}
+
 </style>
 </head>
 <body>
@@ -756,6 +764,45 @@ updateStudyDashboard();
  quote.style.cursor='pointer';quote.title='Pista: toca 5 veces para descubrir un secreto';quote.setAttribute('tabindex','0');quote.addEventListener('click',reveal);quote.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();reveal();}});
  egg.addEventListener('click',()=>{egg.classList.toggle('lofi-glow')});egg.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();egg.classList.toggle('lofi-glow')}});
  }
+})();
+</script>
+
+
+<div class="floating-music" id="floatingMusic" role="region" aria-label="Reproductor de música flotante">
+ <div class="fm-head" id="floatingMusicHandle" title="Puedes arrastrar este reproductor">
+  <div class="fm-disc" id="fmDisc" aria-hidden="true">♫</div>
+  <div class="fm-title"><strong>EduPlan · Música</strong><small id="fmSubtitle">Tu rincón de concentración</small></div>
+  <button class="fm-icon-btn" type="button" id="fmMinimize" aria-label="Minimizar reproductor" title="Minimizar">−</button>
+  <button class="fm-icon-btn" type="button" id="fmHide" aria-label="Ocultar reproductor" title="Ocultar">×</button>
+ </div>
+ <div class="fm-body" id="fmBody">
+  <div class="fm-frame"><iframe id="floatingMusicFrame" src="https://www.youtube-nocookie.com/embed/jfKfPfyJRdk?rel=0&playsinline=1" title="Música lo-fi para estudiar" allow="autoplay; encrypted-media; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe></div>
+  <div class="fm-controls"><button class="fm-action primary" type="button" id="fmPlayFocus">▶ Música lo-fi</button><button class="fm-action" type="button" id="fmOpenYoutube">↗ YouTube</button></div>
+  <div class="fm-presets"><button type="button" data-fm-video="jfKfPfyJRdk" data-fm-label="Lo-fi chill">☾ Lo-fi</button><button type="button" data-fm-video="5qap5aO4i9A" data-fm-label="Lo-fi clásico">♫ Chill</button><button type="button" data-fm-video="DWcJFNfaw9c" data-fm-label="Piano relajante">♬ Piano</button></div>
+  <p class="fm-note">Pulsa ▶ en el video para iniciar el audio. Puedes minimizarlo mientras sigues estudiando.</p>
+ </div>
+</div>
+<button class="fm-reopen" id="fmReopen" type="button">♫ Abrir reproductor</button>
+
+
+<script>
+(function(){
+ const box=document.getElementById('floatingMusic'),handle=document.getElementById('floatingMusicHandle'),frame=document.getElementById('floatingMusicFrame'),disc=document.getElementById('fmDisc'),subtitle=document.getElementById('fmSubtitle'),minBtn=document.getElementById('fmMinimize'),hideBtn=document.getElementById('fmHide'),reopen=document.getElementById('fmReopen'),openYT=document.getElementById('fmOpenYoutube');
+ if(!box||!handle||!frame)return;
+ const videoUrl=id=>'https://www.youtube-nocookie.com/embed/'+id+'?rel=0&playsinline=1';let currentVideo='jfKfPfyJRdk',currentLabel='Lo-fi chill';
+ function setVideo(id,label){currentVideo=id;currentLabel=label;frame.src=videoUrl(id);frame.title=label+' para estudiar';subtitle.textContent=label+' · Pulsa ▶ para escuchar';disc.classList.remove('playing');}
+ document.querySelectorAll('[data-fm-video]').forEach(btn=>btn.addEventListener('click',()=>setVideo(btn.dataset.fmVideo,btn.dataset.fmLabel||'Música para estudiar')));
+ document.getElementById('fmPlayFocus').addEventListener('click',()=>{frame.src=videoUrl(currentVideo)+'&autoplay=1';subtitle.textContent=currentLabel+' · Reproducción solicitada';disc.classList.add('playing');});
+ openYT.addEventListener('click',()=>window.open('https://www.youtube.com/watch?v='+currentVideo,'_blank','noopener,noreferrer'));
+ minBtn.addEventListener('click',()=>{const mini=box.classList.toggle('minimized');minBtn.textContent=mini?'+':'−';minBtn.setAttribute('aria-label',mini?'Expandir reproductor':'Minimizar reproductor');minBtn.title=mini?'Expandir':'Minimizar';});
+ hideBtn.addEventListener('click',()=>{box.classList.add('hidden-player');reopen.classList.add('visible');});
+ reopen.addEventListener('click',()=>{box.classList.remove('hidden-player');reopen.classList.remove('visible');});
+ // Arrastre con ratón y tacto usando el encabezado, sin bloquear sus botones.
+ let dragging=false,startX=0,startY=0,startLeft=0,startTop=0;
+ handle.addEventListener('pointerdown',e=>{if(e.target.closest('button'))return;dragging=true;box.classList.add('dragging');const r=box.getBoundingClientRect();startX=e.clientX;startY=e.clientY;startLeft=r.left;startTop=r.top;handle.setPointerCapture(e.pointerId);});
+ handle.addEventListener('pointermove',e=>{if(!dragging)return;const x=Math.max(6,Math.min(window.innerWidth-box.offsetWidth-6,startLeft+e.clientX-startX));const y=Math.max(6,Math.min(window.innerHeight-55,startTop+e.clientY-startY));box.style.left=x+'px';box.style.top=y+'px';box.style.right='auto';box.style.bottom='auto';});
+ function stopDrag(){dragging=false;box.classList.remove('dragging');}handle.addEventListener('pointerup',stopDrag);handle.addEventListener('pointercancel',stopDrag);
+ window.addEventListener('resize',()=>{if(box.style.left){const r=box.getBoundingClientRect();box.style.left=Math.max(6,Math.min(window.innerWidth-box.offsetWidth-6,r.left))+'px';box.style.top=Math.max(6,Math.min(window.innerHeight-55,r.top))+'px';}});
 })();
 </script>
 
