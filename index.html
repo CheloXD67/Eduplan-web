@@ -92,19 +92,29 @@ button{cursor:pointer;border:0}
 @media(prefers-reduced-motion:reduce){.task-row,.task-actions label,.task-actions input[type="checkbox"]{transition:none;animation:none}}
 
 
-/* Reproductor flotante de EduPlan */
-#eduMiniMusic{position:fixed;right:22px;bottom:22px;width:292px;z-index:9999;background:linear-gradient(145deg,#29205e,#6252bd);color:#fff;border:1px solid #a99cff;border-radius:18px;padding:13px;box-shadow:0 16px 45px #21164c55;backdrop-filter:blur(14px);font-family:inherit;transition:transform .22s,opacity .22s}
-#eduMiniMusic.dragging{transition:none;opacity:.94;cursor:grabbing}
-#eduMiniMusic .mini-top{display:flex;align-items:center;gap:10px;margin-bottom:10px;cursor:grab;touch-action:none}
-#eduMiniMusic .mini-cover{width:48px;height:48px;flex:0 0 48px;border-radius:11px;background:#47358c url('https://img.youtube.com/vi/UGDQVZ4caR0/hqdefault.jpg') center/cover}
-#eduMiniMusic .mini-meta{min-width:0;flex:1}.mini-meta strong{display:block;font-size:13px}.mini-meta small{display:block;opacity:.78;font-size:11px;margin-top:3px}
-#eduMiniMusic button{border:0;color:inherit;cursor:pointer}#eduMiniMusic .mini-icon{background:transparent;font-size:19px;padding:7px;border-radius:9px}#eduMiniMusic .mini-icon:hover{background:#ffffff20}#eduMiniMusic .mini-controls{display:flex;justify-content:center;align-items:center;gap:18px}#eduMiniMusic .mini-play{width:42px;height:42px;border-radius:50%;background:#fff!important;color:#4e3db1!important;font-size:18px!important;font-weight:800}
-#eduMiniMusic .mini-hint{font-size:10px;opacity:.7;text-align:center;margin-top:7px}#eduMiniMusic.minimized{width:172px;padding:9px}#eduMiniMusic.minimized .mini-cover,#eduMiniMusic.minimized .mini-controls,#eduMiniMusic.minimized .mini-hint{display:none}#eduMiniMusic.minimized .mini-top{margin:0}#eduMiniMusic.minimized .mini-meta small{display:none}
-#eduTakanakaEgg{display:none;margin-top:14px;min-height:190px;border-radius:16px;overflow:hidden;position:relative;background:linear-gradient(0deg,#171033dc,#17103330),url('https://img.youtube.com/vi/UGDQVZ4caR0/maxresdefault.jpg') center/cover;color:white;padding:20px;box-sizing:border-box;align-items:end;box-shadow:inset 0 0 0 1px #ffffff45;cursor:pointer}
-#eduTakanakaEgg.show{display:flex;animation:eggReveal .55s ease-out both}#eduTakanakaEgg .egg-copy{font-size:18px;font-weight:750;line-height:1.4;text-shadow:0 2px 10px #10082b}#eduTakanakaEgg small{display:block;font-size:11px;opacity:.85;margin-top:8px;font-weight:500}
+/* Easter egg lo-fi */
+#eduLofiEgg{display:none;margin-top:14px;min-height:190px;border-radius:16px;overflow:hidden;position:relative;background:linear-gradient(0deg,rgba(24,16,58,.88),rgba(42,28,87,.20)),radial-gradient(circle at 78% 22%,#ffd6a8 0 3%,transparent 4%),linear-gradient(145deg,#27204f 0%,#6255a5 45%,#d69bc5 72%,#f6cba8 100%);color:white;padding:20px;box-sizing:border-box;align-items:end;box-shadow:inset 0 0 0 1px #ffffff45;cursor:pointer}
+#eduLofiEgg:before{content:"☾  ✦      ·    ✧        ·       ♡";position:absolute;left:18px;top:18px;color:#fff1d6;letter-spacing:8px;font-size:16px;opacity:.9}
+#eduLofiEgg:after{content:"♫  ♪  ♫";position:absolute;right:20px;top:42px;color:#f4d5ff;font-size:24px;letter-spacing:8px;transform:rotate(-8deg)}
+#eduLofiEgg.show{display:flex;animation:eggReveal .55s ease-out both}#eduLofiEgg .egg-copy{position:relative;z-index:1;font-size:18px;font-weight:750;line-height:1.4;text-shadow:0 2px 10px #10082b;max-width:90%}#eduLofiEgg small{display:block;font-size:11px;opacity:.9;margin-top:8px;font-weight:500}
 @keyframes eggReveal{from{opacity:0;transform:translateY(8px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
-@media(max-width:600px){#eduMiniMusic{right:10px;bottom:10px;width:250px}#eduMiniMusic.minimized{width:150px}}
 
+/* Tema lo-fi morado: se conserva intacto el diseño del logo y la estructura */
+:root{--bg:#17152f;--card:rgba(249,246,255,.96);--text:#28204f;--muted:#797194;--primary:#7654ed;--primary2:#b17aff;--line:#ded5fb;--success:#36b99b;--danger:#e96c9a;--shadow:0 14px 38px rgba(10,6,38,.24)}
+body{background:radial-gradient(ellipse at 72% 10%,rgba(132,91,206,.42),transparent 35%),radial-gradient(ellipse at 24% 45%,rgba(95,73,164,.3),transparent 42%),linear-gradient(145deg,#17152f 0%,#28204e 48%,#39265e 100%);background-attachment:fixed;color:#f5f0ff}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;opacity:.45;background-image:radial-gradient(2px 2px at 14% 20%,#fff 50%,transparent 60%),radial-gradient(1px 1px at 70% 14%,#f9d9ff 50%,transparent 60%),radial-gradient(2px 2px at 88% 42%,#fff 50%,transparent 60%),radial-gradient(1px 1px at 45% 72%,#fff 50%,transparent 60%),radial-gradient(1px 1px at 22% 85%,#f8d8ff 50%,transparent 60%)}
+.sidebar{background:linear-gradient(180deg,#1b1739 0%,#211944 100%);border-right:1px solid #51417e;box-shadow:8px 0 28px rgba(9,5,35,.22)}
+.logo{color:#fff}
+.nav button{color:#d0c5f5}.nav button.active,.nav button:hover{background:linear-gradient(100deg,#7654ed,#9b6cf4);color:white;box-shadow:inset 3px 0 0 #e2c9ff}
+.sidebar-footer{background:linear-gradient(145deg,#30245b,#3a2a69);border-color:#59458d}.sidebar-footer .footer-title,.sidebar-stat strong{color:#d5c3ff}.sidebar-footer p{color:#c3b9e4}.sidebar-stat{border-color:#59458d;color:#eee7ff}
+.content{position:relative}.greeting h1{color:#fff}.greeting p{color:#d2c8f2}.avatar{background:linear-gradient(135deg,#bca4ff,#e0b5e9);color:#30205f}
+.card,.stat,.mini-card{background:rgba(249,246,255,.96);border-color:#dcd1fb;box-shadow:0 12px 32px rgba(12,7,42,.16);color:#2b2057;backdrop-filter:blur(10px)}
+.hero{background:linear-gradient(125deg,rgba(91,62,175,.96),rgba(132,79,210,.94));color:#fff;box-shadow:0 16px 35px rgba(15,7,48,.28)}.hero p{color:#eee5ff}.cta{color:#6541d9}
+.stat{background:rgba(255,255,255,.94)}.badge{background:#e6defe;color:#6744c5}.nav-icon{background:#34275e;color:#d8c6ff}.nav button.active .nav-icon{background:#fff;color:#7551df}
+.calendar-head button,.quick-actions button{background:#eee8ff;color:#6546c5}.day{background:#fffaff}.day:hover,.day.selected,.day.today{background:#eee7ff}.progress{background:#e4dcf8}.bar,.chart-bar{background:linear-gradient(180deg,#c29bff,#7049e7)}.motivation-card{background:linear-gradient(135deg,#f1eaff,#fffafd)}
+.chat-messages{background:#eee8fa}.chat.bot{background:#fffaff}.chat.user{background:#e5dcff;color:#30205f}.bot-suggestions button{background:#f4efff;color:#35245f}.secondary-btn{background:#e8dfff;color:#6040c6}.empty-panel{background:#f7f2ff}.notification-trigger{color:#f5efff;background:#302452;border-color:#57467f}.notification-panel{background:#fbf8ff;color:#2b2057;border-color:#ddd2fa}
+button{transition:filter .18s,transform .18s}button:hover{filter:brightness(1.035)}
+@media(max-width:700px){.sidebar{background:linear-gradient(180deg,#1b1739,#211944)}}
 </style>
 </head>
 <body>
@@ -176,8 +186,8 @@ button{cursor:pointer;border:0}
           <div class="card motivation-card" style="margin-top:18px">
             <div class="kpi"><h3>💬 Mensaje del día</h3><span class="badge">EduPlan</span></div>
             <p id="motivationMessage" class="motivation">🌱 Cada tarea que completas es un paso más hacia tu meta. ¡Tú puedes!</p>
-            <div id="eduTakanakaEgg" role="button" tabindex="0" aria-label="Easter egg musical"><div class="egg-copy">“Un pequeño paso hoy, una gran aventura mañana.”<small>🎸 Easter egg desbloqueado · Masayoshi Takanaka — OH! TENGO SUERTE</small></div></div>
-            <p id="eduEggHint" style="font-size:11px;color:var(--muted,#777);margin-top:8px">Psst… toca esta frase 5 veces 👀</p>
+            <div id="eduLofiEgg" role="button" tabindex="0" aria-label="Easter egg lo-fi"><div class="egg-copy">“Respira, ponte tus audífonos y vuelve a intentarlo. No tienes que resolverlo todo hoy.”<small>☾ Easter egg lo-fi desbloqueado · un pequeño rincón de calma para ti</small></div></div>
+            <p id="eduEggHint" style="font-size:11px;color:var(--muted,#777);margin-top:8px">Psst… toca esta frase 5 veces para encontrar un rincón secreto 👀</p>
           </div>
         </div>
       </div>
@@ -581,27 +591,13 @@ renderTasks(); drawCalendar('calendar'); drawCalendar('calendar2');
 updateStudyDashboard();
 </script>
 
-<div id="eduMiniMusic" aria-label="Reproductor flotante de EduPlan">
-  <div class="mini-top" id="eduMiniDragHandle" title="Arrastra para mover el reproductor">
-    <div class="mini-cover" aria-hidden="true"></div><div class="mini-meta"><strong>EduPlan Music 🎧</strong><small id="eduMiniTrack">Música para estudiar</small></div>
-    <button class="mini-icon" id="eduMiniMin" aria-label="Minimizar reproductor" title="Minimizar">−</button>
-    <button class="mini-icon" id="eduMiniClose" aria-label="Ocultar reproductor" title="Ocultar">×</button>
-  </div>
-  <div class="mini-controls"><button class="mini-icon" id="eduMiniPrev" aria-label="Canción anterior" title="Anterior">⏮</button><button class="mini-play" id="eduMiniPlay" aria-label="Pausar o reproducir" title="Pausar/Reproducir">▶</button><button class="mini-icon" id="eduMiniNext" aria-label="Siguiente canción" title="Siguiente">⏭</button></div>
-  <div class="mini-hint">Arrastra desde la parte superior · controles de YouTube</div>
-</div>
 <script>
 (function(){
- const frame=document.getElementById('studyMusicPlayer'); const mini=document.getElementById('eduMiniMusic'); if(!frame||!mini)return;
- const tracks=[{id:'rFZHOHl-L8A',name:'Música elegida por ti'},{id:'UGDQVZ4caR0',name:'OH! TENGO SUERTE · Masayoshi Takanaka'}];let current=0,playing=false,minimized=false,eggClicks=0;
- function sendYT(func,args=[]){try{frame.contentWindow.postMessage(JSON.stringify({event:'command',func,args}), '*')}catch(e){}}
- function loadTrack(i){current=(i+tracks.length)%tracks.length;const t=tracks[current];frame.src='https://www.youtube.com/embed/'+t.id+'?rel=0&enablejsapi=1&autoplay=1';document.getElementById('eduMiniTrack').textContent=t.name;document.getElementById('eduMiniPlay').textContent='Ⅱ';playing=true;}
- document.getElementById('eduMiniPrev').addEventListener('click',()=>loadTrack(current-1));document.getElementById('eduMiniNext').addEventListener('click',()=>loadTrack(current+1));
- document.getElementById('eduMiniPlay').addEventListener('click',()=>{if(!playing){sendYT('playVideo');document.getElementById('eduMiniPlay').textContent='Ⅱ';playing=true}else{sendYT('pauseVideo');document.getElementById('eduMiniPlay').textContent='▶';playing=false}});
- document.getElementById('eduMiniMin').addEventListener('click',()=>{minimized=!minimized;mini.classList.toggle('minimized',minimized);document.getElementById('eduMiniMin').textContent=minimized?'+':'−'});
- document.getElementById('eduMiniClose').addEventListener('click',()=>{mini.style.display='none';const b=document.createElement('button');b.textContent='🎧 Música';b.title='Mostrar reproductor';b.style='position:fixed;right:18px;bottom:18px;z-index:9998;border:0;border-radius:999px;padding:12px 16px;background:#6252bd;color:white;box-shadow:0 8px 25px #21164c55;cursor:pointer';b.id='eduMiniRestore';b.onclick=()=>{mini.style.display='block';b.remove()};document.body.appendChild(b)});
- const handle=document.getElementById('eduMiniDragHandle');let drag=null;handle.addEventListener('pointerdown',e=>{if(e.target.closest('button'))return;const r=mini.getBoundingClientRect();drag={x:e.clientX-r.left,y:e.clientY-r.top};mini.classList.add('dragging');handle.setPointerCapture?.(e.pointerId)});handle.addEventListener('pointermove',e=>{if(!drag)return;mini.style.left=Math.max(0,e.clientX-drag.x)+'px';mini.style.top=Math.max(0,e.clientY-drag.y)+'px';mini.style.right='auto';mini.style.bottom='auto'});function stop(){drag=null;mini.classList.remove('dragging')}handle.addEventListener('pointerup',stop);handle.addEventListener('pointercancel',stop);
- const quote=document.getElementById('motivationMessage'),egg=document.getElementById('eduTakanakaEgg'),hint=document.getElementById('eduEggHint');if(quote&&egg){function tap(){eggClicks++;if(eggClicks>=5){egg.classList.add('show');if(hint)hint.textContent='¡Encontraste el easter egg! 🎸 OH! TENGO SUERTE';}}quote.style.cursor='pointer';quote.title='Pista: toca 5 veces';quote.addEventListener('click',tap);quote.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){tap()}});egg.addEventListener('click',()=>{window.open('https://www.youtube.com/watch?v=UGDQVZ4caR0','_blank','noopener,noreferrer')});egg.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){window.open('https://www.youtube.com/watch?v=UGDQVZ4caR0','_blank','noopener,noreferrer')}})}
+ const quote=document.getElementById('motivationMessage'),egg=document.getElementById('eduLofiEgg'),hint=document.getElementById('eduEggHint');let taps=0;
+ if(quote&&egg){function reveal(){taps++;if(taps>=5){egg.classList.add('show');if(hint)hint.textContent='¡Encontraste tu rincón secreto! ☾ Respira un momento y sigue a tu ritmo.';}}
+ quote.style.cursor='pointer';quote.title='Pista: toca 5 veces para descubrir un secreto';quote.setAttribute('tabindex','0');quote.addEventListener('click',reveal);quote.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();reveal();}});
+ egg.addEventListener('click',()=>{egg.classList.toggle('lofi-glow')});egg.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();egg.classList.toggle('lofi-glow')}});
+ }
 })();
 </script>
 
